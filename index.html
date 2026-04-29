@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ascend Indiana — Work-Based Learning Assessment (Prototype)</title>
+<title>Ascend Indiana — Work-Based Learning Assessment</title>
 <style>
   body { background: #FAF8F2; margin: 0; padding: 36px 20px; font-family: Tahoma, "Trebuchet MS", sans-serif; }
   .asc-page-frame { max-width: 760px; margin: 0 auto; background: #fff; padding: 28px 36px 36px; border-radius: 6px; box-shadow: 0 2px 24px rgba(0,0,0,0.06); }
@@ -13,8 +13,6 @@
 <body>
 <div class="asc-page-frame">
 <div class="asc-prototype-tag">Prototype v1</div>
-<h2 class="sr-only">Interactive prototype of the Ascend Indiana work-based learning quiz that asks employers questions and recommends matching WBL experiences with action checklists.</h2>
-
 <style>
 .asc-app { font-family: Tahoma, "Trebuchet MS", sans-serif; color: #1C1C1C; padding: 0; }
 .asc-app h1, .asc-app h2, .asc-app h3 { font-family: Tahoma, "Trebuchet MS", sans-serif; color: #1C1C1C; margin: 0; font-weight: 700; }
@@ -39,8 +37,11 @@
 .asc-card-best { border: 2px solid #45AADD; }
 .asc-progress-bar { height: 6px; background: #F1EFE8; border-radius: 999px; overflow: hidden; }
 .asc-progress-fill { height: 100%; background: #45AADD; transition: width 0.4s ease; }
-.asc-action-list { margin: 0; padding-left: 22px; font-size: 13.5px; line-height: 1.7; color: #1C1C1C; }
-.asc-action-list li { margin-bottom: 8px; }
+.asc-checklist-section { margin-bottom: 18px; }
+.asc-checklist-section-title { font-size: 11px; letter-spacing: 1.5px; color: #5F5E5A; font-weight: 700; text-transform: uppercase; margin: 0 0 8px; padding-bottom: 5px; border-bottom: 1px solid #F1EFE8; }
+.asc-checklist-item { display: flex; align-items: flex-start; gap: 10px; padding: 4px 0; font-size: 13.5px; line-height: 1.55; color: #1C1C1C; }
+.asc-checklist-subs { margin-left: 22px; margin-top: 2px; margin-bottom: 4px; }
+.asc-checklist-sub { display: flex; align-items: flex-start; gap: 10px; padding: 3px 0; font-size: 12.5px; line-height: 1.55; color: #444; }
 </style>
 
 <div class="asc-app" id="asc-app"></div>
@@ -72,7 +73,7 @@
   const SUPERVISION_TIERS = ["low", "moderate", "high"];
   
   const QUESTIONS = [
-    { id: "onsite", text: "Where can the work-based learning take place? (Select all that apply)", type: "multi", cumulative: false,
+    { id: "onsite", text: "Where can WBL experience take place? (Select all that apply)", type: "multi", cumulative: false,
       options: [
         { value: "yes", label: "Students can come to our workplace" },
         { value: "travel", label: "Our team can travel to the school" }
@@ -121,19 +122,22 @@
   ];
   
   const PROFILES = {
-    "School-Based Enterprise":           { onsite: ["travel"], duration: "short", projectrole: "*", individualteam: "*", supervision: "low",      talent: ["awareness","exploration"], pay: "*", dol: "no" },
-    "Workplace Simulation":              { onsite: ["travel"], duration: "short", projectrole: "*", individualteam: "*", supervision: "low",      talent: ["awareness","exploration"], pay: "*", dol: "no" },
-    "Student Entrepreneurial Experience":{ onsite: ["travel"], duration: "short", projectrole: "*", individualteam: "*", supervision: "low",      talent: ["awareness","exploration","readiness"], pay: "*", dol: "no" },
-    "Industry-Developed Team Challenge": { onsite: ["yes","travel"], duration: "short", projectrole: "project", individualteam: "team", supervision: "low", talent: ["handson","awareness","exploration"], pay: "*", dol: "no" },
-    "Academic Internship":               { onsite: ["yes"], duration: "moderate", projectrole: ["project","role"], individualteam: "individual", supervision: "moderate", talent: ["awareness","exploration","handson","internship","readiness"], pay: ["yes","no"], dol: "no" },
-    "Micro-Internship":                  { onsite: ["yes"], duration: "short", projectrole: ["project","role"], individualteam: "individual", supervision: "moderate", talent: ["awareness","exploration","handson","internship","readiness"], pay: ["yes","no"], dol: "no" },
-    "Employability Skills Co-Op":        { onsite: ["yes"], duration: "moderate", projectrole: ["project","role"], individualteam: "individual", supervision: "moderate", talent: ["awareness","exploration","handson","internship","readiness"], pay: "yes", dol: "no" },
-    "Technical Internship":              { onsite: ["yes"], duration: "moderate", projectrole: "role", individualteam: "*", supervision: "moderate", talent: ["handson","internship","readiness"], pay: "yes", dol: "no" },
-    "Modern Youth Apprenticeship":       { onsite: ["yes"], duration: "long", projectrole: "role", individualteam: "*", supervision: "high", talent: ["internship"], pay: "yes", dol: "no" },
-    "Pre-Apprenticeship":                { onsite: ["yes"], duration: "long", projectrole: "role", individualteam: "*", supervision: "high", talent: ["internship"], pay: "yes", dol: "no" },
+    "School-Based Enterprise":           { onsite: ["travel"], duration: "short", projectrole: "*", individualteam: "*", supervision: "low",      talent: ["awareness","exploration"], pay: "*", dol: ["yes","no"] },
+    "Workplace Simulation":              { onsite: ["travel"], duration: "short", projectrole: "*", individualteam: "*", supervision: "low",      talent: ["awareness","exploration"], pay: "*", dol: ["yes","no"] },
+    "Student Entrepreneurial Experience":{ onsite: ["travel"], duration: "short", projectrole: "*", individualteam: "*", supervision: "low",      talent: ["awareness","exploration","readiness"], pay: "*", dol: ["yes","no"] },
+    "Industry-Developed Team Challenge": { onsite: ["yes","travel"], duration: "short", projectrole: "project", individualteam: "team", supervision: "low", talent: ["handson","awareness","exploration"], pay: "*", dol: ["yes","no"] },
+    "Academic Internship":               { onsite: ["yes"], duration: "moderate", projectrole: ["project","role"], individualteam: "individual", supervision: "moderate", talent: ["awareness","exploration","handson","internship","readiness"], pay: ["yes","no"], dol: ["yes","no"] },
+    "Micro-Internship":                  { onsite: ["yes"], duration: "short", projectrole: ["project","role"], individualteam: "individual", supervision: "moderate", talent: ["awareness","exploration","handson","internship","readiness"], pay: ["yes","no"], dol: ["yes","no"] },
+    "Employability Skills Co-Op":        { onsite: ["yes"], duration: "moderate", projectrole: ["project","role"], individualteam: "individual", supervision: "moderate", talent: ["awareness","exploration","handson","internship","readiness"], pay: "yes", dol: ["yes","no"] },
+    "Technical Internship":              { onsite: ["yes"], duration: "moderate", projectrole: "role", individualteam: "*", supervision: "moderate", talent: ["handson","internship","readiness"], pay: "yes", dol: ["yes","no"] },
+    "Modern Youth Apprenticeship":       { onsite: ["yes"], duration: "long", projectrole: "role", individualteam: "*", supervision: "high", talent: ["internship"], pay: "yes", dol: ["yes","no"] },
+    "Pre-Apprenticeship":                { onsite: ["yes"], duration: "long", projectrole: "role", individualteam: "*", supervision: "high", talent: ["internship"], pay: "yes", dol: ["yes","no"] },
     "DOL Registered Apprenticeship":     { onsite: ["yes"], duration: "long", projectrole: "role", individualteam: "*", supervision: "high", talent: ["internship"], pay: "yes", dol: "yes" }
   };
   
+  const CONTENT = {"School-Based Enterprise": {"onsite": {"items": [{"text": "Ensure employees are available and willing to travel to the school to work directly with students.", "subs": []}]}, "duration": {"items": [{"text": "Ensure the team member travelling to the school during the spring/fall has a flexible schedule to do so anywhere from 2-4 hours/month.", "subs": []}]}, "supervision": {"conditional": "supervision", "branches": {"Minimal": [{"text": "Ensure there is a team member who will evaluate the student's target proficiency level across the Training Plan competencies.", "subs": []}], "Moderate": [{"text": "Ensure there is a team member who will:", "subs": ["Provide  constructive and specific feedback for tasks that students perform or skills and competencies included in the training plan,", "Schedule short check-ins to answer questions and address student challenges,"]}], "High": [{"text": "Ensure there is a team member who will:", "subs": ["Provide constructive and specific feedback for tasks that students perform or skills and competencies included in the training plan,", "Schedule consistent check-ins to answer questions and address student challenges,", "Coach the student's development of industry relevant skills and abilities."]}]}}, "talent": {"talent_keyed": true, "branches": {"Career Exploration": [{"text": "Provide opportunities for students to observe multiple roles within the enterprise through job shadowing or observation days.", "subs": []}, {"text": "Ensure those opportunities provide exposure to industry terminology, tools, and processes used in the field.", "subs": []}, {"text": "Include structured time for students to ask questions and reflect on what they observed and learned.", "subs": []}], "Hands-On Learning": [{"text": "Identify relevant equipment and materials that can be used as part of the experience.", "subs": []}, {"text": "Provide access to the equipment and any relevant safety training.", "subs": []}, {"text": "Assign students meaningful tasks that produce real or simulated products/services, not just observation.", "subs": []}, {"text": "Ensure students take on defined roles with responsibilities", "subs": []}, {"text": "Provide ongoing, specific, and constructive feedback tied to skill development and performance.", "subs": []}]}}}, "Workplace Simulation": {"onsite": {"items": [{"text": "Ensure employees are available and willing to travel to the school to work directly with students.", "subs": []}]}, "duration": {"items": [{"text": "Based on the type of work being simulated, ensure the team member will be able to support the student(s) for the specified time. This could range from 2-4 hours/month.", "subs": []}]}, "supervision": {"conditional": "supervision", "branches": {"Minimal": [{"text": "Ensure there is a team member who will evaluate the student's target proficiency level across the Training Plan competencies.", "subs": []}], "Moderate": [{"text": "Ensure there is a team member who will:", "subs": ["Provide detailed instructions", "Demonstrate tasks", "Observe work frequently", "Build in regular check-ins throughout the task or project at hand", "Break tasks into smaller, manageable components", "Document supervision thoroughly", "Answer questions and address student challenges"]}], "High": [{"text": "Ensure there is a team member who will:", "subs": ["Provide detailed  instructions", "Demonstrate tasks", "Observe work frequently", "Build in regular check-ins throughout the task or project at hand", "Break tasks into smaller, manageable components", "Document supervision thoroughly", "Answer questions and address student challenges", "Coach the student's development of industry relevant skills and abilities", "Provide formal professional development opportunities relevant to the business or industry"]}]}}, "talent": {"talent_keyed": true, "branches": {"Hands-On Learning": [{"text": "Identify relevant equipment and materials that can be used as part of the experience.", "subs": []}, {"text": "Provide access to the equipment and any relevant safety training.", "subs": []}, {"text": "Assign students meaningful tasks that produce real or simulated products/services, not just observation.", "subs": []}, {"text": "Ensure students take on defined roles with responsibilities.", "subs": []}, {"text": "Provide ongoing, specific, and constructive feedback tied to skill development and performance.", "subs": []}]}}}, "Student Entrepreneurial Experience": {"onsite": {"items": [{"text": "Ensure employees are available and willing to travel to the school to work directly with students.", "subs": []}]}, "duration": {"items": [{"text": "Based on the type of student entrepreneurial venture, ensure the team member will be able to support the student(s) for the specified time. This could range from 2-4 hours/month.", "subs": []}]}, "supervision": {"conditional": "supervision", "branches": {"Minimal": [{"text": "Ensure there is a team member who will evaluate the student's target proficiency level across the Training Plan competencies.", "subs": []}], "Moderate": [{"text": "Ensure there is a team member who will:", "subs": ["Provide  constructive and specific feedback for tasks that students perform or skills and competencies included in the training plan,", "Schedule short check-ins to answer questions and address student challenges,"]}], "High": [{"text": "Ensure there is a team member who will:", "subs": ["Provide constructive and specific feedback for tasks that students perform or skills and competencies included in the training plan,", "Schedule consistent check-ins to answer questions and address student challenges,", "Coach the student's development of industry relevant skills and abilities."]}]}}, "talent": {"talent_keyed": true, "branches": {"Hands-On Learning": [{"text": "Identify relevant equipment and materials that can be used as part of the experience.", "subs": []}, {"text": "Provide access to the equipment and any relevant safety training.", "subs": []}, {"text": "Provide ongoing, specific, and constructive feedback tied to skill development and performance.", "subs": []}]}}}, "Industry-Developed Team Challenge": {"onsite": {"conditional": "onsite", "branches": {"No": [{"text": "Ensure employees are available and willing to travel to the school to work directly with students.", "subs": []}], "Yes": [{"text": "Review any legal, safety, or company restrictions that limit a minor\u2019s use of certain equipment or involvement in specific workstreams.", "subs": []}, {"text": "Ensure there are employees available and willing to oversee the experience.", "subs": []}, {"text": "Reserve the physical space on-site needed for your selected team challenge, if applicable.", "subs": []}]}}, "duration": {"items": [{"text": "Ensure the team member will be able to support the student(s) for the specified time. This could range from 2-4 hours/month.", "subs": []}]}, "projectrole": {"items": [{"text": "Consider the following:", "subs": ["What skills and competencies a student should gain by the end of the experience?", "What are the structured tasks and how will that fit within the prescribed timeline?", "Are the tasks age-appropriate for the participant (e.g., safety, privacy, confidentiality, etc.)", "How will the student be welcomed into the team and into a supportive environment."]}]}, "supervision": {"items": [{"text": "Ensure there is a team member who will evaluate the student's target proficiency level across the Training Plan competencies.", "subs": []}]}, "talent": {"talent_keyed": true, "branches": {"Career Exploration": [{"text": "Identify relevant equipment and materials that can be used as part of the experience.", "subs": []}, {"text": "Provide access to the equipment and any relevant safety training.", "subs": []}, {"text": "Develop a real-life problem that your company has dealt with or a problem/challenge that students could use as a subject to develop solutions for.", "subs": []}, {"text": "Present the problem to student teams and include structured time for students to ask questions.", "subs": []}, {"text": "Consider if the students will need to stay engaged with your team to further guide the student solutions or answer questions.", "subs": []}], "Hands-On Learning": [{"text": "Identify relevant equipment and materials that can be used as part of the experience.", "subs": []}, {"text": "Provide access to the equipment and any relevant safety training.", "subs": []}, {"text": "Develop a real-life problem that your company has dealt with or a problem/challenge that students could use as a subject to develop solutions for.", "subs": []}, {"text": "Present the problem to student teams and include structured time for students to ask questions.", "subs": []}, {"text": "Consider if the students will need to stay engaged with your team to further guide the student solutions or answer questions.", "subs": []}]}}}, "Employability Skills Co-Op": {"onsite": {"items": [{"text": "Review any legal, safety, or company restrictions that limit a minor\u2019s use of certain equipment or involvement in specific workstreams.", "subs": []}, {"text": "Ensure there are employees available and willing to oversee the experience.", "subs": []}, {"text": "Decide which aspects of your business or production you would like to connect students to.", "subs": []}, {"text": "Reserve the physical space on-site.", "subs": []}]}, "duration": {"items": [{"text": "Ensure the team member will be able to support the student(s) for the specified time. This could range anywhere from 2-9 hrs./week.", "subs": []}]}, "projectrole": {"items": [{"text": "Whether the student will complete a project or fill a role, consider the following:", "subs": ["What skills and competencies a student should gain by the end of the experience?", "What are the structured tasks and how will that fit within the prescribed timeline?", "Are the tasks age-appropriate for the participant (e.g., safety, privacy, confidentiality, etc.)", "How will the student be welcomed into the team and into a supportive environment?"]}, {"text": "Identify the role(s) that a student would support/fill or identify a project(s) that a student would support.", "subs": []}]}, "supervision": {"items": [{"text": "Ensure there is a team member who will:", "subs": []}, {"text": "a. Provide detailed instructions and demonstrate tasks", "subs": []}, {"text": "b. Observe student work frequently", "subs": []}, {"text": "c. Build in regular check-ins throughout the task or project", "subs": []}, {"text": "d. Break tasks into smaller, manageable components", "subs": []}, {"text": "e. Document supervision and student progress", "subs": []}, {"text": "f. Answer questions and address challenges as they arise", "subs": []}, {"text": "g. Evaluate the student\u2019s target proficiency level across Training Plan competencies", "subs": []}, {"text": "h. Coach the student\u2019s development of industry-relevant skills and abilities", "subs": []}, {"text": "i. Provide professional development opportunities aligned to the business or industry", "subs": []}, {"text": "j. Include the student in team meetings and activities when appropriate", "subs": []}]}, "talent": {"talent_keyed": true, "branches": {"Hands-On Learning": [{"text": "Decide which business unit or office a student will be able to best learn and practice employability and transition skills through shadowing or observations.", "subs": []}, {"text": "Identify relevant equipment or materials that can be used as part of the experience.", "subs": []}, {"text": "Provide access to the equipment and any relevant safety training.", "subs": []}, {"text": "Assign students meaningful tasks where employability and transition skills can be used.", "subs": []}, {"text": "Ensure students take on defined roles with responsibilities.", "subs": []}, {"text": "Provide ongoing, specific, and constructive feedback tied to skill development and student performance.", "subs": []}], "Internships & Apprenticeships": [{"text": "Decide which business unit or office a student will be able to best learn and practice employability and transition skills through shadowing or observations.", "subs": []}, {"text": "Identify relevant equipment or materials that can be used as part of the experience.", "subs": []}, {"text": "Provide access to the equipment and any relevant safety training.", "subs": []}, {"text": "Assign students meaningful tasks where employability and transition skills can be used.", "subs": []}, {"text": "Ensure students take on defined roles with responsibilities.", "subs": []}, {"text": "Provide ongoing, specific, and constructive feedback tied to skill development and student performance.", "subs": []}]}}, "pay": {"items": [{"text": "Ensure policies and/or procedures allow the employment of minors, if not revise, accordingly.", "subs": []}, {"text": "Identify and allocate a budget to fund student wages, ensuring a minimum of 25 paid hours per student.", "subs": []}, {"text": "Determine if workers compensation applies.", "subs": []}, {"text": "Verify student's age and whether a work permit is required.", "subs": []}, {"text": "Confirm compliance with state and federal child labor laws.", "subs": []}, {"text": "Follow hour restrictions for minors.", "subs": []}]}}, "Academic Internship": {"onsite": {"items": [{"text": "Review any legal, safety, or company restrictions that limit a minor\u2019s use of certain equipment or involvement in specific workstreams.", "subs": []}, {"text": "Ensure there are employees available and willing to oversee the experience.", "subs": []}, {"text": "Decide which aspects of your business or production you would like to connect students to.", "subs": []}, {"text": "Reserve the physical space on-site.", "subs": []}]}, "duration": {"items": [{"text": "Ensure the team member will be able to support the student(s) for the specified time. This could range anywhere from 2-9 hrs./week.", "subs": []}]}, "projectrole": {"items": [{"text": "Whether the student will complete a project or fill a role, consider the following:", "subs": ["What skills and competencies a student should gain by the end of the experience?", "What are the structured tasks and how will that fit within the prescribed timeline?", "Are the tasks age-appropriate for the participant (e.g., safety, privacy, confidentiality, etc.)", "How will the student be welcomed into the team and into a supportive environment?"]}, {"text": "Identify the role(s) that a student would support/fill or identify a project(s) that a student would support.", "subs": []}]}, "supervision": {"conditional": "supervision", "branches": {"Moderate": [{"text": "Ensure there is a team member who will:", "subs": ["Provide detailed instructions", "Demonstrate tasks", "Observe work frequently", "Build in regular check-ins throughout the task or project at hand", "Break tasks into smaller, manageable components", "Document supervision thoroughly", "Answer questions and address student challenges", "Evaluate the student's target proficiency level across the Training Plan competencies"]}], "High": [{"text": "Ensure there is a team member who will:", "subs": ["Provide detailed  instructions", "Demonstrate tasks", "Observe work frequently", "Build in regular check-ins throughout the task or project at hand", "Break tasks into smaller, manageable components", "Document supervision thoroughly", "Answer questions and address student challenges", "Coach the student's development of industry relevant skills and abilities", "Provide formal professional development opportunities relevant to the business or industry", "Include the student in team meetings and activities when appropriate", "Evaluate the student's target proficiency level across the Training Plan competencies"]}]}}, "talent": {"talent_keyed": true, "branches": {"Internships & Apprenticeships": [{"text": "Decide which business unit or office a student will be able to best learn and practice employability and transition skills through shadowing or observations.", "subs": []}, {"text": "Identify relevant equipment or materials that can be used as part of the experience.", "subs": []}, {"text": "Provide access to the equipment and any relevant safety training.", "subs": []}, {"text": "Assign students meaningful tasks where employability and transition skills can be used.", "subs": []}, {"text": "Ensure students take on defined roles with responsibilities.", "subs": []}, {"text": "Provide ongoing, specific, and constructive feedback tied to skill development and student performance.", "subs": []}, {"text": "Consider incorporating the following Career Exploration Opportunities as part of the experience:", "subs": ["Provide opportunities for students to observe multiple roles within the enterprise through job shadowing or observation days.", "Ensure those opportunities provide exposure to industry terminology, tools, and processes used in the field.", "Include structured time for students to ask questions and reflect on what they observed and learned."]}]}}, "pay": {"conditional": "pay", "branches": {"Yes": [{"text": "Ensure policies and/or procedures allow the employment of minors, if not revise, accordingly.", "subs": []}, {"text": "Identify and allocate a budget to fund student wages, ensuring a minimum of 25 paid hours per student.", "subs": []}, {"text": "Determine if workers compensation applies.", "subs": []}, {"text": "Verify student's age and whether a work permit is required.", "subs": []}, {"text": "Confirm compliance with state and federal child labor laws.", "subs": []}, {"text": "Follow hour restrictions for minors.", "subs": []}], "No": [{"text": "No additional next steps as students do not have to be paid.", "subs": []}]}}}, "Micro-Internship": {"onsite": {"items": [{"text": "Review any legal, safety, or company restrictions that limit a minor\u2019s use of certain equipment or involvement in specific workstreams.", "subs": []}, {"text": "Ensure there are employees available and willing to oversee the experience.", "subs": []}, {"text": "Decide which aspects of your business or production you would like to connect students to.", "subs": []}, {"text": "Reserve the physical space on-site.", "subs": []}]}, "duration": {"items": [{"text": "Ensure the team member will be able to support the student(s) for the specified time. This could range anywhere from 2-9 hrs./week.", "subs": []}]}, "projectrole": {"items": [{"text": "Whether the student will complete a project or fill a role, consider the following:", "subs": ["What skills and competencies a student should gain by the end of the experience?", "What are the structured tasks and how will that fit within the prescribed timeline?", "Are the tasks age-appropriate for the participant (e.g., safety, privacy, confidentiality, etc.)", "How will the student be welcomed into the team and into a supportive environment?"]}, {"text": "Identify the role(s) that a student would support/fill or identify a project(s) that a student would support.", "subs": []}]}, "supervision": {"conditional": "supervision", "branches": {"Moderate": [{"text": "Ensure there is a team member who will:", "subs": ["Provide detailed instructions", "Demonstrate tasks", "Observe work frequently", "Build in regular check-ins throughout the task or project at hand", "Break tasks into smaller, manageable components", "Document supervision thoroughly", "Answer questions and address student challenges", "Evaluate the student's target proficiency level across the Training Plan competencies"]}], "High": [{"text": "Ensure there is a team member who will:", "subs": ["Provide detailed  instructions", "Demonstrate tasks", "Observe work frequently", "Build in regular check-ins throughout the task or project at hand", "Break tasks into smaller, manageable components", "Document supervision thoroughly", "Answer questions and address student challenges", "Coach the student's development of industry relevant skills and abilities", "Provide formal professional development opportunities relevant to the business or industry", "Include the student in team meetings and activities when appropriate", "Evaluate the student's target proficiency level across the Training Plan competencies"]}]}}, "talent": {"talent_keyed": true, "branches": {"Internships & Apprenticeships": [{"text": "Decide which business unit or office a student will be able to best learn and practice employability and transition skills through shadowing or observations.", "subs": []}, {"text": "Identify relevant equipment or materials that can be used as part of the experience.", "subs": []}, {"text": "Provide access to the equipment and any relevant safety training.", "subs": []}, {"text": "Assign students meaningful tasks where employability and transition skills can be used.", "subs": []}, {"text": "Ensure students take on defined roles with responsibilities.", "subs": []}, {"text": "Provide ongoing, specific, and constructive feedback tied to skill development and student performance.", "subs": []}, {"text": "Consider incorporating the following Career Exploration Opportunities as part of the experience:", "subs": ["Provide opportunities for students to observe multiple roles within the enterprise through job shadowing or observation days.", "Ensure those opportunities provide exposure to industry terminology, tools, and processes used in the field.", "Include structured time for students to ask questions and reflect on what they observed and learned."]}]}}, "pay": {"conditional": "pay", "branches": {"Yes": [{"text": "Ensure policies and/or procedures allow the employment of minors, if not revise, accordingly.", "subs": []}, {"text": "Identify and allocate a budget to fund student wages, ensuring a minimum of 25 paid hours per student.", "subs": []}, {"text": "Determine if workers compensation applies.", "subs": []}, {"text": "Verify student's age and whether a work permit is required.", "subs": []}, {"text": "Confirm compliance with state and federal child labor laws.", "subs": []}, {"text": "Follow hour restrictions for minors.", "subs": []}], "No": [{"text": "No additional next steps as students do not have to be paid.", "subs": []}]}}}, "Technical Internship": {"onsite": {"items": [{"text": "Review any legal, safety, or company restrictions that limit a minor\u2019s use of certain equipment or involvement in specific workstreams.", "subs": []}, {"text": "Ensure there are employees available and willing to oversee the experience.", "subs": []}, {"text": "Decide which aspects of your business or production you would like to connect students to.", "subs": []}, {"text": "Reserve the physical space on-site.", "subs": []}]}, "duration": {"items": [{"text": "Ensure the team member will be able to support the student(s) for the specified time. This could range anywhere from 2-8 hrs/week.", "subs": []}]}, "projectrole": {"items": [{"text": "Whether the student will complete a project or fill a role, consider the following:", "subs": ["What skills and competencies a student should gain by the end of the experience?", "What are the structured tasks and how will that fit within the prescribed timeline?", "Are the tasks age-appropriate for the participant (e.g., safety, privacy, confidentiality, etc.)", "How will the student be welcomed into the team and into a supportive environment?"]}, {"text": "Identify the role(s) that a student would support/fill or identify a project(s) that a student would support.", "subs": []}]}, "supervision": {"conditional": "supervision", "branches": {"Moderate": [{"text": "Ensure there is a team member who will:", "subs": ["Provide detailed instructions", "Demonstrate tasks", "Observe work frequently", "Build in regular check-ins throughout the task or project at hand", "Break tasks into smaller, manageable components", "Document supervision thoroughly", "Answer questions and address student challenges", "Evaluate the student's target proficiency level across the Training Plan competencies"]}], "High": [{"text": "Ensure there is a team member who will:", "subs": ["Provide detailed  instructions", "Demonstrate tasks", "Observe work frequently", "Build in regular check-ins throughout the task or project at hand", "Break tasks into smaller, manageable components", "Document supervision thoroughly", "Answer questions and address student challenges", "Coach the student's development of industry relevant skills and abilities", "Provide formal professional development opportunities relevant to the business or industry", "Include the student in team meetings and activities when appropriate", "Evaluate the student's target proficiency level across the Training Plan competencies"]}]}}, "talent": {"talent_keyed": true, "branches": {"Internships & Apprenticeships": [{"text": "Confirm which CTE pathway aligns to your business.", "subs": []}, {"text": "Review the NLPS Capstone Course competencies for your selected CTE pathway.", "subs": []}, {"text": "Identify relevant equipment or materials that can will be needed as part of the CTE pathway.", "subs": []}, {"text": "Provide access to the equipment and any relevant safety training.", "subs": []}, {"text": "Assign students meaningful tasks that cover the competencies included in the capstone course.", "subs": []}, {"text": "Provide ongoing, specific, and constructive feedback tied to skill development and student performance.", "subs": []}]}}, "pay": {"items": [{"text": "Ensure policies and/or procedures allow the employment of minors, if not revise, accordingly.", "subs": []}, {"text": "Identify and allocate a budget to fund student wages, ensuring a minimum of 75 paid hours per student.", "subs": []}, {"text": "Determine if workers compensation applies.", "subs": []}, {"text": "Verify student's age and whether a work permit is required.", "subs": []}, {"text": "Confirm compliance with state and federal child labor laws.", "subs": []}, {"text": "Follow hour restrictions for minors.", "subs": []}]}}, "Modern Youth Apprenticeship": {"onsite": {"items": [{"text": "Review any legal, safety, or company restrictions that limit a minor\u2019s use of certain equipment or involvement in specific workstreams.", "subs": []}, {"text": "Ensure there are employees available and willing to oversee the experience.", "subs": []}, {"text": "Decide which aspects of your business or production you would like to connect students to.", "subs": []}, {"text": "Reserve the physical space on-site.", "subs": []}]}, "duration": {"items": [{"text": "Ensure the team member  will be able to support the student(s) for the specified time. This could range from 10-20 hrs./week.", "subs": []}]}, "projectrole": {"items": [{"text": "Consider the following:", "subs": ["What skills and competencies a student should gain by the end of the experience?", "What are the structured tasks and how will that fit within the prescribed timeline?", "Are the tasks age-appropriate for the participant (e.g., safety, privacy, confidentiality, etc.)", "How will the student be welcomed into the team and into a supportive environment?"]}, {"text": "Identify the role(s) that a student would support/fill.", "subs": []}]}, "supervision": {"conditional": "supervision", "branches": {"Moderate": [{"text": "Ensure there is a team member who will:", "subs": ["Provide detailed instructions", "Demonstrate tasks", "Observe work frequently", "Build in regular check-ins throughout the task or project at hand", "Break tasks into smaller, manageable components", "Document supervision thoroughly", "Answer questions and address student challenges", "Evaluate the student's target proficiency level across the Training Plan competencies"]}], "High": [{"text": "Ensure there is a team member who will:", "subs": ["Provide detailed  instructions", "Demonstrate tasks", "Observe work frequently", "Build in regular check-ins throughout the task or project at hand", "Break tasks into smaller, manageable components", "Document supervision thoroughly", "Answer questions and address student challenges", "Coach the student's development of industry relevant skills and abilities", "Provide formal professional development opportunities relevant to the business or industry", "Include the student in team meetings and activities when appropriate", "Evaluate the student's target proficiency level across the Training Plan competencies"]}]}}, "talent": {"talent_keyed": true, "branches": {"Internships & Apprenticeship": [{"text": "Consider the potential legal, safety regulations, company policies, and/or procedures that would restrict a minor from utilizing specific equipment or interacting with specific company workstreams.", "subs": []}, {"text": "Ensure policies and/or procedures outline the organization's ability to employ individuals under 18.", "subs": []}, {"text": "Identify and allocate a budget to fund student wages for the required 650 hours across two academic years.", "subs": []}, {"text": "Ensure there are employees available and willing to oversee the experience.", "subs": []}, {"text": "Decide which aspects of your business or production you would like to connect students to.", "subs": []}, {"text": "Confirm which post-secondary credits and industry recognized credentials are aligned to your business.", "subs": []}, {"text": "Identify relevant equipment or materials that can be used as part of the experience.", "subs": []}, {"text": "Provide access to the equipment and any relevant safety training.", "subs": []}, {"text": "Assign students meaningful tasks where employability and transition skills can be used.", "subs": []}, {"text": "Provide ongoing, specific, and constructive feedback tied to skill development and student performance.", "subs": []}]}}, "pay": {"items": [{"text": "Ensure policies and/or procedures allow the employment of minors, if not revise, accordingly.", "subs": []}, {"text": "Identify and allocate a budget to fund student wages, ensuring a minimum of 150 paid hours per student.", "subs": []}, {"text": "Determine if workers compensation applies.", "subs": []}, {"text": "Verify student's age and whether a work permit is required.", "subs": []}, {"text": "Confirm compliance with state and federal child labor laws.", "subs": []}, {"text": "Follow hour restrictions for minors.", "subs": []}]}}, "Pre-Apprenticeship": {"onsite": {"items": [{"text": "Review any legal, safety, or company restrictions that limit a minor\u2019s use of certain equipment or involvement in specific workstreams.", "subs": []}, {"text": "Ensure there are employees available and willing to oversee the experience.", "subs": []}, {"text": "Decide which aspects of your business or production you would like to connect students to.", "subs": []}, {"text": "Reserve the physical space on-site.", "subs": []}]}, "duration": {"items": [{"text": "Ensure the team member  will be able to support the student(s) for the specified time. This could range from 10-20 hrs./week.", "subs": []}]}, "projectrole": {"items": [{"text": "Consider the following:", "subs": ["What skills and competencies a student should gain by the end of the experience?", "What are the structured tasks and how will that fit within the prescribed timeline?", "Are the tasks age-appropriate for the participant (e.g., safety, privacy, confidentiality, etc.)", "How will the student be welcomed into the team and into a supportive environment?"]}, {"text": "Identify the role(s) that a student would support/fill.", "subs": []}]}, "supervision": {"conditional": "supervision", "branches": {"Moderate": [{"text": "Ensure there is a team member who will:", "subs": ["Provide detailed instructions", "Demonstrate tasks", "Observe work frequently", "Build in regular check-ins throughout the task or project at hand", "Break tasks into smaller, manageable components", "Document supervision thoroughly", "Answer questions and address student challenges", "Evaluate the student's target proficiency level across the Training Plan competencies"]}], "High": [{"text": "Ensure there is a team member who will:", "subs": ["Provide detailed  instructions", "Demonstrate tasks", "Observe work frequently", "Build in regular check-ins throughout the task or project at hand", "Break tasks into smaller, manageable components", "Document supervision thoroughly", "Answer questions and address student challenges", "Coach the student's development of industry relevant skills and abilities", "Provide formal professional development opportunities relevant to the business or industry", "Include the student in team meetings and activities when appropriate", "Evaluate the student's target proficiency level across the Training Plan competencies"]}]}}, "talent": {"talent_keyed": true, "branches": {"Internships & Apprenticeships": [{"text": "Consider the potential legal, safety regulations, company policies, and/or procedures that would restrict a minor from utilizing specific equipment or interacting with specific company workstreams.", "subs": []}, {"text": "Ensure policies and/or procedures outline the organization's ability to employ individuals under 18.", "subs": []}, {"text": "Identify and allcoate a budget to fund student wages for the minimum required 150 hours across two academic years.", "subs": []}, {"text": "Ensure there are employees available and willing to oversee the experience.", "subs": []}, {"text": "Decide which aspects of your business or production you would like to connect students to.", "subs": []}, {"text": "Connect with a local school to align on the following:", "subs": ["Using the DOL Registered Apprenticeship website, select an apprenticeable occupation", "Is this program going to be built into an existing CTE program or will a new CTE program or pathway be needed", "Work with school to crosswalk the content and skills taught in dual credit courses, CTE course completions, or CTE course objectives with the requirements of the selected Registered Apprenticeship.", "Ensure that there is at least 40 hours of Related Technical Instruction offered through the school's dual credit course, CTE courses, or if you will provide that as part of the experience."]}, {"text": "Develop a minimum of 150 hours of meaningful hands-on learning experiences that are directly related to the selected Registered Apprenticeship Program.", "subs": []}, {"text": "Develop an articulation agreement with that outlines the developed Pre-Apprenticeship Program.", "subs": []}]}}, "pay": {"items": [{"text": "Ensure policies and/or procedures allow the employment of minors, if not revise, accordingly.", "subs": []}, {"text": "Identify and allocate a budget to fund student wages, ensuring a minimum of 150 paid hours per student.", "subs": []}, {"text": "Determine if workers compensation applies.", "subs": []}, {"text": "Verify student's age and whether a work permit is required.", "subs": []}, {"text": "Confirm compliance with state and federal child labor laws.", "subs": []}, {"text": "Follow hour restrictions for minors.", "subs": []}]}}, "DOL Registered Apprenticeship": {"onsite": {"items": [{"text": "Review any legal, safety, or company restrictions that limit a minor\u2019s use of certain equipment or involvement in specific workstreams.", "subs": []}, {"text": "Ensure there are employees available and willing to oversee the experience.", "subs": []}, {"text": "Decide which aspects of your business or production you would like to connect students to.", "subs": []}, {"text": "Reserve the physical space on-site.", "subs": []}]}, "duration": {"items": [{"text": "Ensure the team member  will be able to support the student(s) for the specified time. This could range from 10-20 hrs./week.", "subs": []}]}, "projectrole": {"items": [{"text": "Consider the following:", "subs": ["What skills and competencies a student should gain by the end of the experience?", "What are the structured tasks and how will that fit within the prescribed timeline?", "Are the tasks age-appropriate for the participant (e.g., safety, privacy, confidentiality, etc.)", "How will the student be welcomed into the team and into a supportive environment?"]}, {"text": "Identify the role(s) that a student would support/fill.", "subs": []}]}, "supervision": {"conditional": "supervision", "branches": {"Moderate": [{"text": "Ensure there is a team member who will:", "subs": ["Provide detailed instructions", "Demonstrate tasks", "Observe work frequently", "Build in regular check-ins throughout the task or project at hand", "Break tasks into smaller, manageable components", "Document supervision thoroughly", "Answer questions and address student challenges", "Evaluate the student's target proficiency level across the Training Plan competencies"]}], "High": [{"text": "Ensure there is a team member who will:", "subs": ["Provide detailed  instructions", "Demonstrate tasks", "Observe work frequently", "Build in regular check-ins throughout the task or project at hand", "Break tasks into smaller, manageable components", "Document supervision thoroughly", "Answer questions and address student challenges", "Coach the student's development of industry relevant skills and abilities", "Provide formal professional development opportunities relevant to the business or industry", "Include the student in team meetings and activities when appropriate", "Evaluate the student's target proficiency level across the Training Plan competencies"]}]}}, "talent": {"talent_keyed": true, "branches": {"Internships & Apprenticeships": [{"text": "Find a USDOL OA representative servicing your area and contact them to indicate interest.", "subs": []}, {"text": "Review materials sent by USDOL OA and make a go/no go decision", "subs": []}, {"text": "Select occupation(s) to apprentice from the list of USDOL OA apprenticeable occupations", "subs": []}, {"text": "Obtain samples for selected occupations (search online and/or request samples from USDOL OA); review sample Work Process from USDOL OA for selected occupation(s)", "subs": []}, {"text": "Review and customize Work Process for each occupation.", "subs": []}, {"text": "Select related technical instruction (RTI) provider(s) and request RTI", "subs": []}, {"text": "Draft and finalize RTI curriculum", "subs": []}, {"text": "Define minimum wage scale (with at least one increase).", "subs": []}, {"text": "Send Work Process, RTI, and wage scale to USDOL OA for review and approval", "subs": []}, {"text": "Review, customize, and sign Registered Apprenticeship Standards (provided by USDOL OA)", "subs": []}, {"text": "Submit all final documents to USDOL OA and obtain approval.", "subs": []}]}}, "pay": {"items": [{"text": "Ensure policies and/or procedures allow the employment of minors, if not revise, accordingly.", "subs": []}, {"text": "Identify and allocate a budget to fund student wages, ensuring the required 2,000 hours of on-the-job learning over a 2-3 year period.", "subs": []}, {"text": "Determine if workers compensation applies.", "subs": []}, {"text": "Verify student's age and whether a work permit is required.", "subs": []}, {"text": "Confirm compliance with state and federal child labor laws.", "subs": []}, {"text": "Follow hour restrictions for minors.", "subs": []}]}, "dol": {"items": [{"text": "Find a USDOL OA representative servicing your area and contact them to indicate interest.", "subs": []}, {"text": "Review materials sent by USDOL OA and make a go/no go decision", "subs": []}, {"text": "Select occupation(s) to apprentice from the list of USDOL OA apprenticeable occupations", "subs": []}, {"text": "Obtain samples for selected occupations (search online and/or request samples from USDOL OA); review sample Work Process from USDOL OA for selected occupation(s)", "subs": []}, {"text": "Review and customize Work Process for each occupation.", "subs": []}, {"text": "Select related technical instruction (RTI) provider(s) and request RTI", "subs": []}, {"text": "Draft and finalize RTI curriculum", "subs": []}, {"text": "Define minimum wage scale (with at least one increase).", "subs": []}, {"text": "Send Work Process, RTI, and wage scale to USDOL OA for review and approval", "subs": []}, {"text": "Review, customize, and sign Registered Apprenticeship Standards (provided by USDOL OA)", "subs": []}, {"text": "Submit all final documents to USDOL OA and obtain approval.", "subs": []}]}}};
+  
+  // Short-form action steps shown in the drawer (one-liner per item)
   const ACTIONS = {
     "School-Based Enterprise": [ "Identify a team member who can travel to the school 1\u20134 hours per month with a flexible schedule", "Provide opportunities for students to observe multiple roles within your organization", "Identify equipment and materials students can use during the experience", "Provide ongoing, specific feedback tied to skill development" ],
     "Workplace Simulation": [ "Identify a team member who can support students 1\u20134 hours per month for the simulation", "Identify relevant equipment and materials that can be used in the school workplace simulation", "Provide detailed instructions and demonstrate tasks", "Provide ongoing, specific feedback tied to skill development" ],
@@ -148,8 +152,113 @@
     "DOL Registered Apprenticeship": [ "Find a USDOL OA representative servicing your area and indicate interest", "Review materials from USDOL OA and make a go/no-go decision", "Select apprenticeable occupation(s) and review sample Work Process", "Select Related Technical Instruction (RTI) provider(s) and finalize curriculum", "Define wage scale with at least one increase", "Submit Work Process, RTI, and wage scale to USDOL OA for approval", "Allocate budget for 2,000 hours of on-the-job learning over 2\u20133 years" ]
   };
   
+  // Intensity ranking (lowest → highest) — used to surface harder experiences first within non-exact matches
+  const INTENSITY = {
+    "School-Based Enterprise": 1,
+    "Student Entrepreneurial Experience": 2,
+    "Workplace Simulation": 3,
+    "Industry-Developed Team Challenge": 4,
+    "Micro-Internship": 5,
+    "Academic Internship": 6,
+    "Employability Skills Co-Op": 7,
+    "Technical Internship": 8,
+    "Pre-Apprenticeship": 9,
+    "Modern Youth Apprenticeship": 10,
+    "DOL Registered Apprenticeship": 11
+  };
+  
+  // Category groupings (mirroring the spreadsheet's "Qualifying Work-Based Learning Experience" header structure)
+  // Each category has: a user-facing label, a sort-order index (least → most intense),
+  // a background color and matching text color for the pill.
+  const CATEGORIES = {
+    "Student-Led Businesses": { order: 1, bg: "#88EA9E", text: "#1C1C1C" },
+    "Industry Team Challenges": { order: 2, bg: "#7CFCEA", text: "#1C1C1C" },
+    "Internships": { order: 3, bg: "#C485FB", text: "#1C1C1C" },
+    "Co-Ops": { order: 4, bg: "#FFD166", text: "#1C1C1C" },
+    "CTE / Technical Internships": { order: 5, bg: "#4D8DFF", text: "#FFFFFF" },
+    "Apprenticeships": { order: 6, bg: "#1C1C1C", text: "#FFFFFF" }
+  };
+  
+  // Map each experience to its category
+  const EXP_CATEGORY = {
+    "School-Based Enterprise": "Student-Led Businesses",
+    "Workplace Simulation": "Student-Led Businesses",
+    "Student Entrepreneurial Experience": "Student-Led Businesses",
+    "Industry-Developed Team Challenge": "Industry Team Challenges",
+    "Academic Internship": "Internships",
+    "Micro-Internship": "Internships",
+    "Employability Skills Co-Op": "Co-Ops",
+    "Technical Internship": "CTE / Technical Internships",
+    "Modern Youth Apprenticeship": "Apprenticeships",
+    "Pre-Apprenticeship": "Apprenticeships",
+    "DOL Registered Apprenticeship": "Apprenticeships"
+  };
+  
+  const SECTION_LABELS = {
+    onsite: "Location",
+    duration: "Duration",
+    projectrole: "Project or role",
+    supervision: "Supervision",
+    talent: "Talent development",
+    pay: "Compensation",
+    dol: "USDOL registration"
+  };
+  
+  function mapAnswerToKey(qid, userAns) {
+    if (qid === "supervision") return { low: "Minimal", moderate: "Moderate", high: "High" }[userAns];
+    if (qid === "pay") return userAns === "yes" ? "Yes" : "No";
+    if (qid === "onsite") {
+      if (Array.isArray(userAns) && userAns.includes("yes")) return "Yes";
+      return "No";
+    }
+    return null;
+  }
+  
+  function resolveContent(content, qid, userAns) {
+    if (!content) return null;
+    if (content.items) return content.items;
+    if (content.conditional) {
+      const key = mapAnswerToKey(qid, userAns);
+      if (content.branches[key]) return content.branches[key];
+      const keys = Object.keys(content.branches);
+      return keys.length ? content.branches[keys[0]] : null;
+    }
+    if (content.talent_keyed) {
+      const TALENT_MAP = {
+        awareness: ["Career Exploration", "Industry Awareness"],
+        exploration: ["Career Exploration"],
+        handson: ["Hands-On Learning", "Hands-on Learning"],
+        internship: ["Internships & Apprenticeships", "Internships & Apprenticeship"],
+        readiness: ["Career Readiness", "Career Exploration"]
+      };
+      const branches = content.branches;
+      const branchKeys = Object.keys(branches);
+      const matched = new Set();
+      const userArr = Array.isArray(userAns) ? userAns : [];
+      userArr.forEach(u => {
+        (TALENT_MAP[u] || []).forEach(name => {
+          branchKeys.forEach(k => { if (k.toLowerCase() === name.toLowerCase()) matched.add(k); });
+        });
+      });
+      if (matched.size === 0) {
+        const out = [];
+        branchKeys.forEach(k => { branches[k].forEach(item => out.push(item)); });
+        return out;
+      }
+      const out = [];
+      const matchedArr = Array.from(matched);
+      matchedArr.forEach(k => {
+        if (matchedArr.length > 1) out.push({ text: k, subs: [], _isHeading: true });
+        branches[k].forEach(item => out.push(item));
+      });
+      return out;
+    }
+    return null;
+  }
+  
   let screen = "intro";
   let currentQ = 0;
+  let hasSeenResults = false;
   const answers = {};
   
   const visibleQuestions = () => QUESTIONS.filter(q => {
@@ -174,9 +283,8 @@
         else misses.push({ q, accepted: acceptedArr });
       } else {
         const acceptedArr = Array.isArray(accepted) ? accepted : [accepted];
-        if (acceptedArr.includes(userAns)) {
-          exactMatches++;
-        } else if (q.cumulative) {
+        if (acceptedArr.includes(userAns)) exactMatches++;
+        else if (q.cumulative) {
           const userIdx = q.tiers.indexOf(userAns);
           const requiredIdx = Math.min(...acceptedArr.map(a => q.tiers.indexOf(a)).filter(i => i >= 0));
           if (userIdx > requiredIdx) lowerTierMatches++;
@@ -190,15 +298,30 @@
   }
   
   function classifyResults() {
-    // New simpler logic: one sorted list of "achievable + 1-step-away"
     const scored = EXPERIENCES.map(scoreExperience);
-    const achievable = scored.filter(s => s.misses.length === 0);
+    // Exact: 0 misses AND 0 lower-tier matches (employer's answer fits the experience precisely)
+    const exact = scored.filter(s => s.misses.length === 0 && s.lowerTierMatches === 0);
+    // Achievable but not exact: 0 misses, but employer is over-capacity on at least one cumulative dimension
+    const achievableLooser = scored.filter(s => s.misses.length === 0 && s.lowerTierMatches > 0);
+    // 1-miss stretches
     const oneStepAway = scored.filter(s => s.misses.length === 1);
-    // Sort by exactMatches desc (more aligned with stated capacity = top), then by lower tier matches asc (fewer overcapacity = closer fit)
-    const sortByFit = (a, b) => (b.exactMatches - a.exactMatches) || (a.lowerTierMatches - b.lowerTierMatches);
-    achievable.sort(sortByFit);
-    oneStepAway.sort((a, b) => b.exactMatches - a.exactMatches);
-    return { achievable, oneStepAway };
+    
+    // Sort by category order ascending, then by intensity descending within category
+    // (Lower category order = lighter-weight experiences first; within each, hardest first to encourage stretching)
+    const sortByCategoryThenIntensity = (a, b) => {
+      const catA = CATEGORIES[EXP_CATEGORY[a.name]].order;
+      const catB = CATEGORIES[EXP_CATEGORY[b.name]].order;
+      if (catA !== catB) return catA - catB;
+      return INTENSITY[b.name] - INTENSITY[a.name];
+    };
+    
+    exact.sort(sortByCategoryThenIntensity);
+    achievableLooser.sort(sortByCategoryThenIntensity);
+    oneStepAway.sort(sortByCategoryThenIntensity);
+    
+    // Combined non-exact list: achievable-but-looser come first (no misses), then 1-step-away
+    const nonExact = [...achievableLooser, ...oneStepAway];
+    return { exact, nonExact, oneStepAway };
   }
   
   function describeStretch(miss) {
@@ -217,6 +340,55 @@
   
   function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
   
+  function buildChecklist(name) {
+    const profile = PROFILES[name];
+    const expContent = CONTENT[name] || {};
+    const sections = [];
+    for (const q of QUESTIONS) {
+      const ind = q.id;
+      if (ind === "individualteam") continue;
+      const profileVal = profile[ind];
+      if (profileVal === "*") continue;
+      const userAns = answers[ind];
+      const content = expContent[ind];
+      if (!content) continue;
+      const items = resolveContent(content, ind, userAns);
+      if (!items || items.length === 0) continue;
+      sections.push({ id: ind, label: SECTION_LABELS[ind], items });
+    }
+    return sections;
+  }
+  
+  // Inline checkbox SVG helpers
+  function cbInline(size) {
+    const s = size === 'sm' ? 12 : 14;
+    const r = size === 'sm' ? 1.5 : 2;
+    const stroke = size === 'sm' ? '#888780' : '#1C1C1C';
+    const sw = size === 'sm' ? 1.2 : 1.5;
+    return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 ' + s + ' ' + s + '" style="flex-shrink:0; margin-top:3px;"><rect x="' + (sw/2) + '" y="' + (sw/2) + '" width="' + (s-sw) + '" height="' + (s-sw) + '" rx="' + r + '" ry="' + r + '" fill="#fff" stroke="' + stroke + '" stroke-width="' + sw + '"/></svg>';
+  }
+  
+  function renderChecklistSection(section) {
+    let html = '<div class="asc-checklist-section">';
+    html += '<div class="asc-checklist-section-title">' + escapeHtml(section.label) + '</div>';
+    section.items.forEach(item => {
+      if (item._isHeading) {
+        html += '<div style="font-weight:700; font-size:13px; margin: 10px 0 4px; color:#1C1C1C;">' + escapeHtml(item.text) + '</div>';
+        return;
+      }
+      html += '<div class="asc-checklist-item">' + cbInline('lg') + '<span>' + escapeHtml(item.text) + '</span></div>';
+      if (item.subs && item.subs.length) {
+        html += '<div class="asc-checklist-subs">';
+        item.subs.forEach(sub => {
+          html += '<div class="asc-checklist-sub">' + cbInline('sm') + '<span>' + escapeHtml(sub) + '</span></div>';
+        });
+        html += '</div>';
+      }
+    });
+    html += '</div>';
+    return html;
+  }
+  
   function renderHeader() {
     return '<div style="display: flex; align-items: center; justify-content: space-between; padding: 0 0 16px; border-bottom: 1px solid #E8E6DD;">' +
       '<img src="' + LOGO_URL + '" alt="Ascend Indiana" style="height: 32px; width: auto;" />' +
@@ -227,8 +399,8 @@
   function renderIntro() {
     return renderHeader() +
       '<div style="position: relative; margin: 16px 0 0 0; height: 280px; overflow: hidden; border-radius: 4px; background: #fff;">' +
-        '<img src="' + HERO_URL + '" alt="" style="position: absolute; right: 0; top: 0; height: 100%; width: 65%; object-fit: cover; object-position: center 30%;" />' +
-        '<div style="position: absolute; inset: 0; background: linear-gradient(90deg, #fff 0%, #fff 38%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 70%);"></div>' +
+        '<img src="' + HERO_URL + '" alt="" style="position: absolute; right: 0; top: 0; height: 100%; width: 55%; object-fit: cover; object-position: center 30%;" />' +
+        '<div style="position: absolute; inset: 0; background: linear-gradient(90deg, #fff 0%, #fff 45%, rgba(255,255,255,0.85) 55%, rgba(255,255,255,0) 75%);"></div>' +
         '<div style="position: absolute; left: 28px; top: 50%; transform: translateY(-50%); max-width: 380px;">' +
           '<div style="font-size: 11px; letter-spacing: 2px; color: #45AADD; font-weight: 700; margin-bottom: 12px;">FOR EMPLOYERS</div>' +
           '<h1 style="font-size: 28px; line-height: 1.18; margin-bottom: 14px; color: #1C1C1C;">Curious what work-based learning experience is best for your organization?</h1>' +
@@ -266,6 +438,24 @@
         '<span>' + escapeHtml(opt.label) + '</span>' +
       '</label>';
     }).join("");
+    
+    // Bottom nav: in revisit mode (already saw results), show "See updated results" jump-back
+    let bottomNav = '';
+    if (hasSeenResults) {
+      bottomNav = '<div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 4px 8px; border-top: 1px solid #F1EFE8; margin-top: 8px; gap: 12px; flex-wrap: wrap;">' +
+        '<button class="asc-btn-ghost" onclick="window.__ascBack()" ' + (currentQ === 0 ? 'style="visibility: hidden;"' : '') + '>\u2190 Back</button>' +
+        '<div style="display: flex; gap: 10px; flex-wrap: wrap;">' +
+          (currentQ < totalVisible - 1 ? '<button class="asc-btn-ghost" onclick="window.__ascNext()" ' + (showNext ? "" : "disabled") + '>Next \u2192</button>' : '') +
+          '<button class="asc-btn-primary" onclick="window.__ascReturnToResults()" ' + (showNext ? "" : "disabled") + '>See updated results</button>' +
+        '</div>' +
+      '</div>';
+    } else {
+      bottomNav = '<div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 4px 8px; border-top: 1px solid #F1EFE8; margin-top: 8px;">' +
+        '<button class="asc-btn-ghost" onclick="window.__ascBack()" ' + (currentQ === 0 ? 'style="visibility: hidden;"' : '') + '>\u2190 Back</button>' +
+        '<button class="asc-btn-primary" onclick="window.__ascNext()" ' + (showNext ? "" : "disabled") + '>' + (currentQ === totalVisible - 1 ? "See your results" : "Next \u2192") + '</button>' +
+      '</div>';
+    }
+    
     return renderHeader() +
       '<div style="padding: 24px 4px 12px;">' +
         '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">' +
@@ -277,65 +467,108 @@
         '<h2 style="font-size: 22px; line-height: 1.3; margin-bottom: 22px; font-weight: 700;">' + escapeHtml(q.text) + '</h2>' +
         '<div>' + optionsHtml + '</div>' +
       '</div>' +
-      '<div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 4px 8px; border-top: 1px solid #F1EFE8; margin-top: 8px;">' +
-        '<button class="asc-btn-ghost" onclick="window.__ascBack()" ' + (currentQ === 0 ? 'style="visibility: hidden;"' : '') + '>\u2190 Back</button>' +
-        '<button class="asc-btn-primary" onclick="window.__ascNext()" ' + (showNext ? "" : "disabled") + '>' + (currentQ === totalVisible - 1 ? "See your results" : "Next \u2192") + '</button>' +
-      '</div>';
+      bottomNav;
   }
   
-  function renderExperienceCard(scored, isStretch, isTopAchievable) {
+  function renderExperienceCard(scored, isStretch, isExact) {
     const name = scored.name;
     const cardId = "card-" + name.replace(/[^a-z0-9]/gi, "");
-    const actions = ACTIONS[name] || [];
     const definition = DEFINITIONS[name] || "";
-    let pillHtml = "";
-    if (isTopAchievable) pillHtml = '<span class="asc-pill-blue">Best match</span>';
-    else if (isStretch) pillHtml = '<span class="asc-pill-teal">Almost a fit</span>';
+    const actions = ACTIONS[name] || [];
+    const categoryName = EXP_CATEGORY[name];
+    const category = CATEGORIES[categoryName];
+    
+    // Pills row: category tag (always) + status pill (Best match for exact, Almost a fit for stretch)
+    let pillsRow = '<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">';
+    if (category) {
+      pillsRow += '<span style="display: inline-block; background: ' + category.bg + '; color: ' + category.text + '; padding: 3px 10px; border-radius: 999px; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 700;">' + escapeHtml(categoryName) + '</span>';
+    }
+    if (isExact) pillsRow += '<span class="asc-pill-blue">Best match</span>';
+    else if (isStretch) pillsRow += '<span class="asc-pill-teal">Almost a fit</span>';
+    pillsRow += '</div>';
+    
     let stretchNote = "";
     if (isStretch && scored.misses.length === 1) {
-      stretchNote = '<div style="margin-top: 10px; padding: 10px 14px; background: #F0FFFA; border-left: 3px solid #7CFCEA; border-radius: 0 4px 4px 0; font-size: 13px; color: #2C2C2A;">' +
-        '<strong style="font-weight: 700;">To unlock this:</strong> ' + escapeHtml(describeStretch(scored.misses[0])) +
-      '</div>';
+      const miss = scored.misses[0];
+      const stretchText = describeStretch(miss);
+      stretchNote = '<button onclick="window.__ascJumpToQuestion(\'' + miss.q.id + '\')" style="display: block; width: 100%; text-align: left; margin-top: 10px; padding: 12px 14px; background: #F0FFFA; border: 1px solid #7CFCEA; border-left: 3px solid #7CFCEA; border-radius: 0 4px 4px 0; font-size: 13px; color: #2C2C2A; cursor: pointer; font-family: inherit; transition: background 0.15s;" onmouseover="this.style.background=\'#E0FFF6\'" onmouseout="this.style.background=\'#F0FFFA\'">' +
+        '<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">' +
+          '<div><strong style="font-weight: 700;">To unlock this:</strong> ' + escapeHtml(stretchText) + '</div>' +
+          '<span style="color: #45AADD; font-weight: 700; white-space: nowrap; font-size: 12.5px;">Update answer \u2192</span>' +
+        '</div>' +
+      '</button>';
     }
-    return '<div class="asc-card ' + (isTopAchievable ? "asc-card-best" : "") + '">' +
-      (pillHtml ? '<div style="margin-bottom: 10px;">' + pillHtml + '</div>' : "") +
+    const actionsHtml = '<ol style="margin: 0; padding-left: 22px; font-size: 13.5px; line-height: 1.7; color: #1C1C1C;">' +
+      actions.map(a => '<li style="margin-bottom: 6px;">' + escapeHtml(a) + '</li>').join("") +
+      '</ol>';
+    return '<div class="asc-card ' + (isExact ? "asc-card-best" : "") + '">' +
+      pillsRow +
       '<h3 style="font-size: 18px; margin-bottom: 8px; font-weight: 700;">' + escapeHtml(name) + '</h3>' +
       '<p style="font-size: 13.5px; color: #444; margin-bottom: 14px; line-height: 1.55;">' + escapeHtml(definition) + '</p>' +
       stretchNote +
       '<div style="margin-top: 14px;">' +
         '<button class="asc-btn-link" onclick="window.__ascToggle(\'' + cardId + '\', this)">Show next steps \u2193</button>' +
-        '<div id="' + cardId + '" style="display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid #F1EFE8;">' +
-          '<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 12px; flex-wrap: wrap;">' +
+        '<div id="' + cardId + '" style="display: none; margin-top: 14px; padding-top: 16px; border-top: 1px solid #F1EFE8;">' +
+          '<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 12px; flex-wrap: wrap;">' +
             '<p style="font-size: 12px; letter-spacing: 1px; color: #5F5E5A; font-weight: 700; margin: 0;">TO PREPARE FOR THIS EXPERIENCE</p>' +
-            '<button class="asc-btn-print" onclick="window.__ascPrint(\'' + escapeHtml(name).replace(/'/g, "\\\\'") + '\')">' +
+            '<button class="asc-btn-print" onclick="window.__ascPrint(\'' + escapeHtml(name).replace(/\'/g, "\\\\'") + '\')">' +
               '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>' +
-              'Print checklist' +
+              'Print full checklist' +
             '</button>' +
           '</div>' +
-          '<ol class="asc-action-list">' + actions.map(a => '<li>' + escapeHtml(a) + '</li>').join("") + '</ol>' +
+          actionsHtml +
         '</div>' +
       '</div>' +
     '</div>';
   }
   
   function renderResults() {
-    const { achievable, oneStepAway } = classifyResults();
-    const total = achievable.length;
+    const { exact, nonExact, oneStepAway } = classifyResults();
+    
+    // Combine exact matches at top + non-exact (achievable looser + 1-step-away) below
+    // Cap at 3 visible by default; rest go behind "See more"
+    const allCards = [];
+    exact.forEach(s => allCards.push({ scored: s, isStretch: false, isExact: true }));
+    nonExact.forEach(s => allCards.push({ scored: s, isStretch: s.misses.length > 0, isExact: false }));
+    
+    const totalCards = allCards.length;
+    const totalAchievable = exact.length + (nonExact.length - oneStepAway.length);
+    
     let html = renderHeader();
     html += '<div style="padding: 24px 4px 12px;">';
     html += '<h1 style="font-size: 26px; margin-bottom: 8px; line-height: 1.25;">Your work-based learning matches</h1>';
-    if (total === 0 && oneStepAway.length === 0) {
-      html += '<p style="font-size: 14px; color: #5F5E5A;">No experiences fully matched your answers. Use the back button to revisit your responses.</p>';
-    } else if (total === 0) {
+    if (totalCards === 0) {
+      html += '<p style="font-size: 14px; color: #5F5E5A;">No experiences matched your answers. Use the back button to revisit your responses.</p>';
+    } else if (totalAchievable === 0) {
       html += '<p style="font-size: 14px; color: #5F5E5A; margin-bottom: 24px;">No experiences fully matched, but the options below are close to your current capacity.</p>';
     } else {
-      const word = total === 1 ? "experience fits" : "experiences fit";
+      const word = totalAchievable === 1 ? "experience fits" : "experiences fit";
       let extra = oneStepAway.length > 0 ? " A few more are within reach with a small adjustment." : "";
-      html += '<p style="font-size: 14px; color: #5F5E5A; margin-bottom: 24px;">Based on your answers, ' + total + ' ' + word + ' your current capacity.' + extra + '</p>';
+      html += '<p style="font-size: 14px; color: #5F5E5A; margin-bottom: 24px;">Based on your answers, ' + totalAchievable + ' ' + word + ' your current capacity.' + extra + '</p>';
     }
     html += '</div>';
-    achievable.forEach((s, idx) => { html += renderExperienceCard(s, false, idx === 0); });
-    oneStepAway.forEach(s => { html += renderExperienceCard(s, true, false); });
+    
+    // First 3 cards visible
+    const visibleCount = Math.min(3, totalCards);
+    for (let i = 0; i < visibleCount; i++) {
+      const c = allCards[i];
+      html += renderExperienceCard(c.scored, c.isStretch, c.isExact);
+    }
+    
+    // Remaining cards behind a "See more" expander
+    if (totalCards > 3) {
+      const hiddenCount = totalCards - 3;
+      html += '<div id="asc-more-wrap" style="display: none;">';
+      for (let i = 3; i < totalCards; i++) {
+        const c = allCards[i];
+        html += renderExperienceCard(c.scored, c.isStretch, c.isExact);
+      }
+      html += '</div>';
+      html += '<div style="display: flex; justify-content: center; margin: 8px 0 16px;">' +
+        '<button class="asc-btn-ghost" id="asc-more-btn" onclick="window.__ascShowMore()">See ' + hiddenCount + ' more option' + (hiddenCount === 1 ? '' : 's') + ' \u2193</button>' +
+        '</div>';
+    }
+    
     html += '<div style="margin-top: 32px; padding: 24px 26px; background: #1C1C1C; color: #fff; border-radius: 4px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">' +
       '<div style="flex: 1; min-width: 220px;">' +
         '<h3 style="font-size: 18px; color: #fff; margin-bottom: 6px;">Ready to start?</h3>' +
@@ -354,13 +587,28 @@
     else root.innerHTML = renderResults();
   }
   
-  window.__ascStart = function() { screen = "quiz"; currentQ = 0; render(); };
-  window.__ascReset = function() { screen = "intro"; currentQ = 0; Object.keys(answers).forEach(k => delete answers[k]); render(); };
+  window.__ascStart = function() { screen = "quiz"; currentQ = 0; hasSeenResults = false; render(); };
+  window.__ascReset = function() { screen = "intro"; currentQ = 0; hasSeenResults = false; Object.keys(answers).forEach(k => delete answers[k]); render(); };
   window.__ascBack = function() { if (currentQ > 0) { currentQ--; render(); } };
   window.__ascNext = function() {
     const visible = visibleQuestions();
     if (currentQ < visible.length - 1) { currentQ++; render(); }
-    else { screen = "results"; render(); }
+    else { screen = "results"; hasSeenResults = true; render(); }
+  };
+  window.__ascJumpToQuestion = function(qid) {
+    const visible = visibleQuestions();
+    const idx = visible.findIndex(q => q.id === qid);
+    if (idx === -1) return;
+    currentQ = idx;
+    screen = "quiz";
+    // Scroll to top so the user clearly lands on the question
+    render();
+    setTimeout(() => { try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch(e) { window.scrollTo(0, 0); } }, 0);
+  };
+  window.__ascReturnToResults = function() {
+    screen = "results";
+    render();
+    setTimeout(() => { try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch(e) { window.scrollTo(0, 0); } }, 0);
   };
   window.__ascAnswer = function(qid, val, isMulti) {
     if (isMulti) {
@@ -375,6 +623,9 @@
         }
       });
     }
+    // Clamp currentQ if a conditional question was removed and currentQ now exceeds visible length
+    const visible = visibleQuestions();
+    if (currentQ >= visible.length) currentQ = visible.length - 1;
     render();
   };
   window.__ascToggle = function(id, btn) {
@@ -384,30 +635,61 @@
     el.style.display = open ? "none" : "block";
     btn.innerHTML = open ? "Show next steps \u2193" : "Hide next steps \u2191";
   };
+  window.__ascShowMore = function() {
+    const wrap = document.getElementById("asc-more-wrap");
+    const btn = document.getElementById("asc-more-btn");
+    if (wrap) wrap.style.display = "block";
+    if (btn) btn.style.display = "none";
+  };
   window.__ascCTA = function() {
     if (typeof openLink === "function") openLink(INTERMEDIARY_URL);
     else window.open(INTERMEDIARY_URL, "_blank");
   };
   window.__ascPrint = function(name) {
-    const actions = ACTIONS[name] || [];
     const definition = DEFINITIONS[name] || "";
-    const actionsHtml = actions.map(a => '<li>' + a.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])) + '</li>').join('');
-    const html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Checklist: ' + name + ' \u2014 Ascend Indiana</title>' +
+    const sections = buildChecklist(name);
+    function escHtml(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+    let sectionsHtml = '';
+    sections.forEach(section => {
+      sectionsHtml += '<div class="section">';
+      sectionsHtml += '<div class="section-title">' + escHtml(section.label) + '</div>';
+      section.items.forEach(item => {
+        if (item._isHeading) {
+          sectionsHtml += '<div class="heading">' + escHtml(item.text) + '</div>';
+          return;
+        }
+        sectionsHtml += '<div class="item"><span class="cb"></span><span>' + escHtml(item.text) + '</span></div>';
+        if (item.subs && item.subs.length) {
+          sectionsHtml += '<div class="subs">';
+          item.subs.forEach(sub => {
+            sectionsHtml += '<div class="sub-item"><span class="cb-small"></span><span>' + escHtml(sub) + '</span></div>';
+          });
+          sectionsHtml += '</div>';
+        }
+      });
+      sectionsHtml += '</div>';
+    });
+    const html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Readiness checklist: ' + escHtml(name) + ' \u2014 Ascend Indiana</title>' +
       '<style>' +
-      '@media print { @page { margin: 0.6in; } .no-print { display: none !important; } body { padding: 0 !important; } }' +
+      '@media print { @page { margin: 0.6in; } .no-print { display: none !important; } body { padding: 0 !important; max-width: none !important; } }' +
       'body { font-family: Tahoma, "Trebuchet MS", sans-serif; color: #1C1C1C; max-width: 720px; margin: 0 auto; padding: 40px 32px; line-height: 1.55; }' +
-      '.hd { display: flex; align-items: center; justify-content: space-between; padding-bottom: 18px; border-bottom: 1px solid #E8E6DD; margin-bottom: 28px; }' +
+      '.hd { display: flex; align-items: center; justify-content: space-between; padding-bottom: 18px; border-bottom: 1px solid #E8E6DD; margin-bottom: 24px; }' +
       '.hd img { height: 32px; width: auto; }' +
       '.tag { font-size: 11px; letter-spacing: 2px; color: #45AADD; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }' +
       'h1 { font-size: 26px; margin: 0 0 12px; line-height: 1.2; font-weight: 700; }' +
-      '.def { font-size: 14px; color: #444; margin-bottom: 28px; }' +
-      'h2 { font-size: 13px; letter-spacing: 1px; color: #5F5E5A; font-weight: 700; text-transform: uppercase; margin: 0 0 14px; }' +
-      'ol { padding-left: 22px; font-size: 14.5px; line-height: 1.75; }' +
-      'ol li { margin-bottom: 10px; }' +
-      '.help { margin-top: 36px; padding: 20px 22px; background: #F2F8FC; border-left: 4px solid #45AADD; border-radius: 0 4px 4px 0; }' +
+      '.def { font-size: 13.5px; color: #444; margin-bottom: 28px; }' +
+      '.section { margin-bottom: 22px; page-break-inside: avoid; }' +
+      '.section-title { font-size: 11px; letter-spacing: 1.5px; color: #5F5E5A; font-weight: 700; text-transform: uppercase; margin: 0 0 10px; padding-bottom: 6px; border-bottom: 1px solid #F1EFE8; }' +
+      '.heading { font-weight: 700; font-size: 13px; margin: 10px 0 6px; }' +
+      '.item { display: flex; align-items: flex-start; gap: 10px; padding: 5px 0; font-size: 13.5px; line-height: 1.5; }' +
+      '.cb { flex-shrink: 0; width: 14px; height: 14px; border: 1.5px solid #1C1C1C; border-radius: 2px; margin-top: 3px; background: #fff; display: inline-block; }' +
+      '.subs { margin-left: 26px; margin-top: 2px; margin-bottom: 4px; }' +
+      '.sub-item { display: flex; align-items: flex-start; gap: 10px; padding: 3px 0; font-size: 12.5px; line-height: 1.5; color: #444; }' +
+      '.cb-small { flex-shrink: 0; width: 12px; height: 12px; border: 1.2px solid #888780; border-radius: 2px; margin-top: 3px; background: #fff; display: inline-block; }' +
+      '.help { margin-top: 32px; padding: 18px 22px; background: #F2F8FC; border-left: 4px solid #45AADD; border-radius: 0 4px 4px 0; page-break-inside: avoid; }' +
       '.help-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; }' +
-      '.help-txt { font-size: 13.5px; color: #444; margin: 0; }' +
-      '.help-link { color: #45AADD; text-decoration: none; font-weight: 700; }' +
+      '.help-txt { font-size: 13px; color: #444; margin: 0; line-height: 1.5; }' +
+      '.help-link { color: #45AADD; text-decoration: none; font-weight: 700; word-break: break-all; }' +
       '.print-btn { background: #45AADD; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }' +
       '.print-btn:hover { background: #2E94C9; }' +
       '</style></head><body>' +
@@ -416,10 +698,9 @@
         '<button class="print-btn no-print" onclick="window.print()">Print this page</button>' +
       '</div>' +
       '<div class="tag">Readiness checklist</div>' +
-      '<h1>' + name + '</h1>' +
-      '<p class="def">' + definition + '</p>' +
-      '<h2>To prepare for this experience</h2>' +
-      '<ol>' + actionsHtml + '</ol>' +
+      '<h1>' + escHtml(name) + '</h1>' +
+      '<p class="def">' + escHtml(definition) + '</p>' +
+      sectionsHtml +
       '<div class="help">' +
         '<div class="help-title">For help</div>' +
         '<p class="help-txt">Connect with a local intermediary who can help you launch this work-based learning experience: <a class="help-link" href="' + INTERMEDIARY_URL + '">' + INTERMEDIARY_URL + '</a></p>' +
