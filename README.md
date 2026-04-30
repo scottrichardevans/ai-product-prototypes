@@ -1,6 +1,6 @@
 # AI Product Prototypes
 
-A small collection of AI-assisted product prototypes and workflow experiments.
+A growing collection of AI-assisted product prototypes and workflow experiments.
 
 These are lightweight concepts built to explore product ideas, clarify requirements, and test user experiences before engineering investment.
 
