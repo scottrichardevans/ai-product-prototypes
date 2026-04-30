@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Product Prototypes | Scott Evans</title>
+  <title>Product Experiments & Advisory | Scott Evans</title>
   <style>
     :root {
       --text: #1c1c1c;
@@ -16,6 +16,7 @@
       --crimson-dark: #6f0000;
       --crimson-soft: #f3e3df;
       --cream: #f8f3e8;
+      --ink: #111111;
       --shadow: 0 12px 34px rgba(45, 20, 10, 0.08);
       --radius: 16px;
     }
@@ -35,13 +36,13 @@
     }
 
     .page {
-      max-width: 960px;
+      max-width: 980px;
       margin: 0 auto;
       padding: 56px 24px 72px;
     }
 
     .hero {
-      margin-bottom: 32px;
+      margin-bottom: 34px;
       padding-top: 8px;
     }
 
@@ -57,14 +58,14 @@
 
     h1 {
       margin: 0 0 14px;
-      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
       line-height: 1.08;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.04em;
       color: var(--text);
     }
 
     .intro {
-      max-width: 760px;
+      max-width: 780px;
       font-size: 1.08rem;
       color: #342f2a;
       margin: 0;
@@ -99,6 +100,13 @@
       line-height: 1.2;
       letter-spacing: -0.02em;
       color: var(--text);
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 1.15rem;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
     }
 
     p {
@@ -157,8 +165,118 @@
       padding-left: 14px;
     }
 
+    .section {
+      margin-top: 44px;
+    }
+
+    .section-heading {
+      max-width: 760px;
+      margin-bottom: 22px;
+    }
+
+    .section-heading p {
+      color: #342f2a;
+      margin-bottom: 0;
+    }
+
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .mini-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 260px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(45, 20, 10, 0.06);
+      color: var(--text);
+      text-decoration: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .mini-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(45, 20, 10, 0.1);
+      border-color: rgba(153, 0, 0, 0.35);
+    }
+
+    .mini-card p {
+      color: #403a34;
+      margin-bottom: 20px;
+    }
+
+    .mini-card span {
+      color: var(--crimson);
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .mini-card-kicker {
+      display: inline-block;
+      width: fit-content;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      background: var(--crimson-soft);
+      padding: 5px 9px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+    }
+
+    .dark-card {
+      background:
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.16), transparent 34%),
+        #111111;
+      color: #ffffff;
+      border-color: #111111;
+    }
+
+    .dark-card:hover {
+      border-color: #111111;
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
+    }
+
+    .dark-card p {
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .dark-card span {
+      color: #ffffff;
+    }
+
+    .gravitate-wordmark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: #ffffff;
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .gravitate-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 900;
+    }
+
     .footer {
-      margin-top: 28px;
+      margin-top: 32px;
       font-size: 0.95rem;
       color: var(--muted);
     }
@@ -174,6 +292,12 @@
       text-decoration: underline;
     }
 
+    @media (max-width: 760px) {
+      .link-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 640px) {
       .page {
         padding: 40px 18px 56px;
@@ -182,21 +306,25 @@
       .card {
         padding: 24px 20px;
       }
+
+      .mini-card {
+        min-height: auto;
+      }
     }
   </style>
 </head>
 <body>
   <main class="page">
     <section class="hero">
-      <div class="eyebrow">AI-assisted product prototypes</div>
-      <h1>Product Experiments</h1>
+      <div class="eyebrow">Product strategy · AI prototyping · advisory</div>
+      <h1>Product Experiments, Advisory & Venture Work</h1>
       <p class="intro">
-        A small collection of lightweight product prototypes and workflow experiments built to turn ambiguous product needs into tangible concepts that stakeholders, users, and teams can react to quickly.
+        A small collection of AI-assisted prototypes, product advisory work, and community contributions that show how I turn ambiguous problems into practical, testable product direction.
       </p>
     </section>
 
     <section class="card">
-      <div class="card-label">Current prototype</div>
+      <div class="card-label">Featured prototype</div>
       <h2>Ascend Indiana WBL Employer Readiness Assessment</h2>
 
       <p>
@@ -233,6 +361,43 @@
       <p class="note">
         These prototypes are not production applications. They are intended to show product thinking, rapid validation, and how AI-assisted workflows can reduce the time required to test complex product ideas before committing engineering and design resources.
       </p>
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <div class="eyebrow">Advisory & venture work</div>
+        <h2>Product work beyond full-time roles</h2>
+        <p>
+          Examples of product advisory, startup involvement, and community participation outside of core operating roles.
+        </p>
+      </div>
+
+      <div class="link-grid">
+        <a class="mini-card dark-card" href="https://www.justgravitate.com" target="_blank" rel="noopener noreferrer">
+          <div>
+            <div class="gravitate-wordmark">
+              <span class="gravitate-mark">G</span>
+              <span>Gravitate</span>
+            </div>
+            <h3>Principal Advisor & Investor</h3>
+            <p>
+              Principal Advisor and personal investor in Gravitate, a CRE-focused SaaS platform helping brokerage teams move from property research to client-ready deliverables, engagement signal, and faster follow-up.
+            </p>
+          </div>
+          <span>Visit Gravitate →</span>
+        </a>
+
+        <a class="mini-card" href="https://applandeo.com/blog/how-we-innovate-podcast-with-scott-evans/" target="_blank" rel="noopener noreferrer">
+          <div>
+            <div class="mini-card-kicker">Community</div>
+            <h3>How We Innovate Podcast</h3>
+            <p>
+              Guest appearance discussing product leadership, logistics software, career lessons, and innovation during my time as Director of Product at RunBuggy.
+            </p>
+          </div>
+          <span>Listen / read more →</span>
+        </a>
+      </div>
     </section>
 
     <div class="footer">
