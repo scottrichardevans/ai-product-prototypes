@@ -7,13 +7,16 @@
   <style>
     :root {
       --text: #1c1c1c;
-      --muted: #5f5e5a;
-      --border: #d9d7cf;
-      --bg: #f7f5ef;
+      --muted: #645f58;
+      --border: #ded6c8;
+      --bg: #f8f3e8;
+      --bg-soft: #fbf7ef;
       --card: #ffffff;
-      --blue: #45aadd;
-      --blue-dark: #2f93c4;
-      --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      --crimson: #990000;
+      --crimson-dark: #6f0000;
+      --crimson-soft: #f3e3df;
+      --cream: #f8f3e8;
+      --shadow: 0 12px 34px rgba(45, 20, 10, 0.08);
       --radius: 16px;
     }
 
@@ -24,7 +27,9 @@
     body {
       margin: 0;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: linear-gradient(180deg, #faf8f2 0%, #f5f3ec 100%);
+      background:
+        radial-gradient(circle at top left, rgba(153, 0, 0, 0.08), transparent 32%),
+        linear-gradient(180deg, var(--bg-soft) 0%, var(--cream) 100%);
       color: var(--text);
       line-height: 1.65;
     }
@@ -37,15 +42,16 @@
 
     .hero {
       margin-bottom: 32px;
+      padding-top: 8px;
     }
 
     .eyebrow {
       display: inline-block;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--crimson);
       margin-bottom: 14px;
     }
 
@@ -54,18 +60,20 @@
       font-size: clamp(2rem, 4vw, 3.25rem);
       line-height: 1.08;
       letter-spacing: -0.03em;
+      color: var(--text);
     }
 
     .intro {
       max-width: 760px;
       font-size: 1.08rem;
-      color: #333;
+      color: #342f2a;
       margin: 0;
     }
 
     .card {
-      background: var(--card);
+      background: rgba(255, 255, 255, 0.94);
       border: 1px solid var(--border);
+      border-top: 5px solid var(--crimson);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 32px;
@@ -75,11 +83,14 @@
     .card-label {
       display: inline-block;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--blue);
-      margin-bottom: 12px;
+      color: var(--crimson);
+      background: var(--crimson-soft);
+      padding: 5px 10px;
+      border-radius: 999px;
+      margin-bottom: 14px;
     }
 
     h2 {
@@ -87,6 +98,7 @@
       font-size: clamp(1.5rem, 2vw, 2rem);
       line-height: 1.2;
       letter-spacing: -0.02em;
+      color: var(--text);
     }
 
     p {
@@ -98,8 +110,8 @@
       margin-top: 28px;
       margin-bottom: 14px;
       font-size: 0.98rem;
-      font-weight: 700;
-      color: var(--text);
+      font-weight: 800;
+      color: var(--crimson-dark);
     }
 
     ul {
@@ -111,36 +123,55 @@
       margin-bottom: 10px;
     }
 
+    li::marker {
+      color: var(--crimson);
+    }
+
     .button-row {
       margin-top: 28px;
     }
 
     .button {
       display: inline-block;
-      background: var(--blue);
+      background: var(--crimson);
       color: #fff;
       text-decoration: none;
-      font-weight: 700;
+      font-weight: 800;
       padding: 13px 18px;
       border-radius: 10px;
-      transition: background 0.18s ease, transform 0.18s ease;
+      transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+      box-shadow: 0 8px 18px rgba(153, 0, 0, 0.18);
     }
 
     .button:hover {
-      background: var(--blue-dark);
+      background: var(--crimson-dark);
       transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(153, 0, 0, 0.22);
     }
 
     .note {
       margin-top: 26px;
       font-size: 0.95rem;
       color: var(--muted);
+      border-left: 3px solid var(--crimson-soft);
+      padding-left: 14px;
     }
 
     .footer {
       margin-top: 28px;
       font-size: 0.95rem;
       color: var(--muted);
+    }
+
+    .footer a {
+      color: var(--crimson);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: var(--crimson-dark);
+      text-decoration: underline;
     }
 
     @media (max-width: 640px) {
@@ -205,6 +236,9 @@
     </section>
 
     <div class="footer">
-  Created by Scott Evans · 
-  <a href="https://github.com/scottrichardevans/ai-product-prototypes">View project notes</a>
-</div>
+      Created by Scott Evans ·
+      <a href="https://github.com/scottrichardevans/ai-product-prototypes">View project notes</a>
+    </div>
+  </main>
+</body>
+</html>
