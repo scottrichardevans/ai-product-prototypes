@@ -1,8 +1,8 @@
 # AI Product Prototypes
 
-A growing collection of AI-assisted product prototypes and workflow experiments.
-
-These are lightweight concepts built to explore product ideas, clarify requirements, and test user experiences before engineering investment.
+<p>
+  A growing collection of AI-assisted product prototypes and workflow experiments built to turn ambiguous product needs into tangible concepts that stakeholders, users, and teams can react to quickly.
+</p>
 
 ## Current Prototype
 
@@ -25,4 +25,6 @@ View prototype: https://scottrichardevans.github.io/ai-product-prototypes/ascend
 
 ## Notes
 
-These prototypes are not production applications. They are intended to show product thinking, rapid prototyping, and how AI-assisted workflows can help turn early concepts into something users and stakeholders can react to quickly.
+<p class="note">
+  These prototypes are not production applications. They are intended to show product thinking, rapid validation, and how AI-assisted workflows can reduce the time required to test complex product ideas before committing engineering and design resources.
+</p>
