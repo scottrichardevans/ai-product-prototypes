@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="asc-page-frame">
-<div class="asc-prototype-tag">Prototype v1</div>
+<div class="asc-prototype-tag">Prototype v7</div>
 <style>
 .asc-app { font-family: Tahoma, "Trebuchet MS", sans-serif; color: #1C1C1C; padding: 0; }
 .asc-app h1, .asc-app h2, .asc-app h3 { font-family: Tahoma, "Trebuchet MS", sans-serif; color: #1C1C1C; margin: 0; font-weight: 700; }
@@ -69,7 +69,7 @@
     "DOL Registered Apprenticeship": "A structured talent development program approved by the U.S. Department of Labor that combines on-the-job learning, classroom learning, and mentorship to train experts in a field."
   };
   
-  const DURATION_TIERS = ["short", "moderate", "long"];
+  const DURATION_TIERS = ["monthly", "short", "moderate", "long"];
   const SUPERVISION_TIERS = ["low", "moderate", "high"];
   
   const QUESTIONS = [
@@ -78,18 +78,19 @@
         { value: "yes", label: "Students can come to our workplace" },
         { value: "travel", label: "Our team can travel to the school" }
       ]},
-    { id: "duration", text: "How much time per week can you support a student?", type: "single", cumulative: true, tiers: DURATION_TIERS,
+    { id: "duration", text: "How many hours per week can you provide meaningful work for a student?", type: "single", cumulative: true, tiers: DURATION_TIERS,
       options: [
+        { value: "monthly", label: "Monthly support only \u2014 I can't commit weekly" },
         { value: "short", label: "Short-term (2\u20134 hours per week)" },
         { value: "moderate", label: "Moderate (5\u20139 hours per week)" },
         { value: "long", label: "Long (10\u201320 hours per week)" }
       ]},
-    { id: "projectrole", text: "Are you looking for help with a specific project, or for a student to take on an ongoing role?", type: "single", cumulative: false,
+    { id: "projectrole", text: "Will the student's experience be focused on a defined project, or on a specific role with ongoing responsibilities? (Select all that apply)", type: "multi", cumulative: false,
       options: [
-        { value: "project", label: "Project-based" },
-        { value: "role", label: "Role-based (ongoing position)" }
+        { value: "project", label: "Defined project" },
+        { value: "role", label: "Specific role with ongoing responsibilities" }
       ]},
-    { id: "individualteam", text: "If students are completing a project, can they work individually or must they work in a team?", type: "single", cumulative: false, conditional: { questionId: "projectrole", value: "project" },
+    { id: "individualteam", text: "If students are completing a project, can they work individually or must they work in a team?", type: "single", cumulative: false, conditional: { questionId: "projectrole", value: "project", multi: true },
       options: [
         { value: "individual", label: "Individually" },
         { value: "team", label: "In a team" },
@@ -122,10 +123,10 @@
   ];
   
   const PROFILES = {
-    "School-Based Enterprise":           { onsite: ["travel"], duration: "short", projectrole: "*", individualteam: "*", supervision: "low",      talent: ["awareness","exploration"], pay: "*", dol: ["yes","no"] },
-    "Workplace Simulation":              { onsite: ["travel"], duration: "short", projectrole: "*", individualteam: "*", supervision: "low",      talent: ["awareness","exploration"], pay: "*", dol: ["yes","no"] },
-    "Student Entrepreneurial Experience":{ onsite: ["travel"], duration: "short", projectrole: "*", individualteam: "*", supervision: "low",      talent: ["awareness","exploration","readiness"], pay: "*", dol: ["yes","no"] },
-    "Industry-Developed Team Challenge": { onsite: ["yes","travel"], duration: "short", projectrole: "project", individualteam: "team", supervision: "low", talent: ["handson","awareness","exploration"], pay: "*", dol: ["yes","no"] },
+    "School-Based Enterprise":           { onsite: ["travel"], duration: ["monthly","short"], projectrole: "*", individualteam: "*", supervision: "low",      talent: ["awareness","exploration"], pay: "*", dol: ["yes","no"] },
+    "Workplace Simulation":              { onsite: ["travel"], duration: ["monthly","short"], projectrole: "*", individualteam: "*", supervision: "low",      talent: ["awareness","exploration"], pay: "*", dol: ["yes","no"] },
+    "Student Entrepreneurial Experience":{ onsite: ["travel"], duration: ["monthly","short"], projectrole: "*", individualteam: "*", supervision: "low",      talent: ["awareness","exploration","readiness"], pay: "*", dol: ["yes","no"] },
+    "Industry-Developed Team Challenge": { onsite: ["yes","travel"], duration: ["monthly","short"], projectrole: "project", individualteam: "team", supervision: "low", talent: ["handson","awareness","exploration"], pay: "*", dol: ["yes","no"] },
     "Academic Internship":               { onsite: ["yes"], duration: "moderate", projectrole: ["project","role"], individualteam: "individual", supervision: "moderate", talent: ["awareness","exploration","handson","internship","readiness"], pay: ["yes","no"], dol: ["yes","no"] },
     "Micro-Internship":                  { onsite: ["yes"], duration: "short", projectrole: ["project","role"], individualteam: "individual", supervision: "moderate", talent: ["awareness","exploration","handson","internship","readiness"], pay: ["yes","no"], dol: ["yes","no"] },
     "Employability Skills Co-Op":        { onsite: ["yes"], duration: "moderate", projectrole: ["project","role"], individualteam: "individual", supervision: "moderate", talent: ["awareness","exploration","handson","internship","readiness"], pay: "yes", dol: ["yes","no"] },
@@ -261,9 +262,17 @@
   let hasSeenResults = false;
   const answers = {};
   
+  // Check if a conditional question's parent answer matches its trigger value
+  // Handles both single-select (answer === value) and multi-select (value in answer array)
+  const conditionalActive = (cond) => {
+    const ans = answers[cond.questionId];
+    if (cond.multi) return Array.isArray(ans) && ans.includes(cond.value);
+    return ans === cond.value;
+  };
+  
   const visibleQuestions = () => QUESTIONS.filter(q => {
     if (!q.conditional) return true;
-    return answers[q.conditional.questionId] === q.conditional.value;
+    return conditionalActive(q.conditional);
   });
   
   function scoreExperience(name) {
@@ -271,7 +280,7 @@
     let exactMatches = 0, lowerTierMatches = 0, total = 0;
     const misses = [];
     for (const q of QUESTIONS) {
-      if (q.conditional && answers[q.conditional.questionId] !== q.conditional.value) continue;
+      if (q.conditional && !conditionalActive(q.conditional)) continue;
       const accepted = profile[q.id];
       if (accepted === "*") continue;
       total++;
@@ -332,7 +341,7 @@
     if (q.id === "pay") return "Requires the ability to pay students";
     if (q.id === "dol") return "Requires willingness to register with the U.S. Department of Labor";
     if (q.id === "onsite") return "Requires " + labels;
-    if (q.id === "projectrole") return "Better fit for a " + labels + " setup";
+    if (q.id === "projectrole") return "Requires a " + labels + " setup";
     if (q.id === "individualteam") return "Requires students to work " + labels;
     if (q.id === "talent") return "Requires offering: " + labels;
     return "Adjust your answer on: " + q.text;
@@ -617,12 +626,13 @@
       else answers[qid] = [...cur, val];
     } else {
       answers[qid] = val;
-      QUESTIONS.forEach(q => {
-        if (q.conditional && q.conditional.questionId === qid && q.conditional.value !== val) {
-          delete answers[q.id];
-        }
-      });
     }
+    // Clean up answers for any conditional question whose trigger is no longer satisfied
+    QUESTIONS.forEach(q => {
+      if (q.conditional && q.conditional.questionId === qid && !conditionalActive(q.conditional)) {
+        delete answers[q.id];
+      }
+    });
     // Clamp currentQ if a conditional question was removed and currentQ now exceeds visible length
     const visible = visibleQuestions();
     if (currentQ >= visible.length) currentQ = visible.length - 1;
