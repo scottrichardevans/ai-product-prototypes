@@ -1,33 +1,212 @@
-<div class="card">
-  <p class="eyebrow">Current prototype</p>
-  <h2>Ascend Indiana WBL Employer Readiness Assessment</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Product Prototypes | Scott Evans</title>
+  <style>
+    :root {
+      --text: #1c1c1c;
+      --muted: #5f5e5a;
+      --border: #d9d7cf;
+      --bg: #f7f5ef;
+      --card: #ffffff;
+      --blue: #45aadd;
+      --blue-dark: #2f93c4;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      --radius: 16px;
+    }
 
-  <p>
-    Indiana’s new diploma requirements place greater emphasis on work-based learning, creating an urgent need for more employer-hosted experiences across the state. Employers and intermediaries, including workforce organizations, often want to participate but do not always know where to start, which experience type fits their capacity, or what next steps are required.
-  </p>
+    * {
+      box-sizing: border-box;
+    }
 
-  <p>
-    Ascend needed a practical way to help employers and intermediaries navigate that complexity. The broader challenge is significant: Indiana will need to create tens of thousands of additional work-based learning experiences in the coming years, so the solution needed to simplify decision-making without oversimplifying the policy, operational, and employer-readiness considerations behind it.
-  </p>
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(180deg, #faf8f2 0%, #f5f3ec 100%);
+      color: var(--text);
+      line-height: 1.65;
+    }
 
-  <p>
-    In collaboration with Ascend leadership, workforce strategy stakeholders, and our CEO, I synthesized the ask into a lightweight assessment prototype. I created the dynamic scoring logic, mapped employer responses to recommended WBL experience types, and designed the interaction around Ascend’s brand standards so the concept could be reviewed quickly with employers.
-  </p>
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 56px 24px 72px;
+    }
 
-  <p>
-    Built in roughly 2–3 hours as an AI-assisted HTML, CSS, and JavaScript prototype, this helped save design and engineering time while giving the team something tangible to validate before investing in production work.
-  </p>
+    .hero {
+      margin-bottom: 32px;
+    }
 
-  <p><strong>The prototype explores:</strong></p>
-  <ul>
-    <li>Guided intake for employers and intermediaries exploring work-based learning options</li>
-    <li>Dynamic scoring logic that recommends WBL experience types based on readiness, capacity, and constraints</li>
-    <li>Conditional question paths that keep the assessment relevant to each organization</li>
-    <li>Best-fit and stretch recommendations to support both immediate action and longer-term planning</li>
-    <li>Next-step checklists that help employers understand what is required to move forward</li>
-    <li>An intermediary-friendly structure that can support consultative conversations with organizations</li>
-    <li>A fast prototype workflow used to support an urgent statewide employer council demo and gather direct feedback from employers</li>
-  </ul>
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
 
-  <a class="button" href="./ascendindiana/wbl/">View WBL Assessment Prototype</a>
-</div>
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .intro {
+      max-width: 760px;
+      font-size: 1.08rem;
+      color: #333;
+      margin: 0;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 32px;
+      margin-top: 32px;
+    }
+
+    .card-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: clamp(1.5rem, 2vw, 2rem);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      margin: 0 0 18px;
+      font-size: 1rem;
+    }
+
+    .section-title {
+      margin-top: 28px;
+      margin-bottom: 14px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    ul {
+      margin: 0 0 8px 0;
+      padding-left: 1.2rem;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    .button-row {
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-block;
+      background: var(--blue);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 13px 18px;
+      border-radius: 10px;
+      transition: background 0.18s ease, transform 0.18s ease;
+    }
+
+    .button:hover {
+      background: var(--blue-dark);
+      transform: translateY(-1px);
+    }
+
+    .note {
+      margin-top: 26px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 28px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 40px 18px 56px;
+      }
+
+      .card {
+        padding: 24px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow">AI-assisted product prototypes</div>
+      <h1>Product Experiments</h1>
+      <p class="intro">
+        A small collection of lightweight product prototypes and workflow experiments built to turn ambiguous product needs into tangible concepts that stakeholders, users, and teams can react to quickly.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="card-label">Current prototype</div>
+      <h2>Ascend Indiana WBL Employer Readiness Assessment</h2>
+
+      <p>
+        Indiana’s new diploma requirements place greater emphasis on work-based learning, creating an urgent need for more employer-hosted experiences across the state. Employers and intermediaries, including workforce organizations, often want to participate but do not always know where to start, which experience type fits their capacity, or what next steps are required.
+      </p>
+
+      <p>
+        Ascend needed a practical way to help employers and intermediaries navigate that complexity. The broader challenge is significant: Indiana will need to create tens of thousands of additional work-based learning experiences in the coming years, so the solution needed to simplify decision-making without oversimplifying the policy, operational, and employer-readiness considerations behind it.
+      </p>
+
+      <p>
+        In collaboration with Ascend leadership, workforce strategy stakeholders, and our CEO, I synthesized the ask into a lightweight assessment prototype. I created the dynamic scoring logic, mapped employer responses to recommended WBL experience types, and designed the interaction around Ascend’s brand standards so the concept could be reviewed quickly with employers.
+      </p>
+
+      <p>
+        Built in roughly 2–3 hours as an AI-assisted HTML, CSS, and JavaScript prototype, this helped save design and engineering time while giving the team something tangible to validate before investing in production work.
+      </p>
+
+      <div class="section-title">The prototype explores:</div>
+      <ul>
+        <li>Guided intake for employers and intermediaries exploring work-based learning options</li>
+        <li>Dynamic scoring logic that recommends WBL experience types based on readiness, capacity, and constraints</li>
+        <li>Conditional question paths that keep the assessment relevant to each organization</li>
+        <li>Best-fit and stretch recommendations to support both immediate action and longer-term planning</li>
+        <li>Next-step checklists that help employers understand what is required to move forward</li>
+        <li>An intermediary-friendly structure that can support consultative conversations with organizations</li>
+        <li>A fast prototype workflow used to support an urgent statewide employer council demo and gather direct feedback from employers</li>
+      </ul>
+
+      <div class="button-row">
+        <a class="button" href="./ascendindiana/wbl/">View WBL Assessment Prototype</a>
+      </div>
+
+      <p class="note">
+        These prototypes are not production applications. They are intended to show product thinking, rapid validation, and how AI-assisted workflows can reduce the time required to test complex product ideas before committing engineering and design resources.
+      </p>
+    </section>
+
+    <div class="footer">
+      Created by Scott Evans
+    </div>
+  </main>
+</body>
+</html>
