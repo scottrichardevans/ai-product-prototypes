@@ -21,9 +21,7 @@
       --radius: 16px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -109,10 +107,7 @@
       letter-spacing: -0.01em;
     }
 
-    p {
-      margin: 0 0 18px;
-      font-size: 1rem;
-    }
+    p { margin: 0 0 18px; font-size: 1rem; }
 
     .section-title {
       margin-top: 28px;
@@ -122,22 +117,11 @@
       color: var(--crimson-dark);
     }
 
-    ul {
-      margin: 0 0 8px 0;
-      padding-left: 1.2rem;
-    }
+    ul { margin: 0 0 8px 0; padding-left: 1.2rem; }
+    li { margin-bottom: 10px; }
+    li::marker { color: var(--crimson); }
 
-    li {
-      margin-bottom: 10px;
-    }
-
-    li::marker {
-      color: var(--crimson);
-    }
-
-    .button-row {
-      margin-top: 28px;
-    }
+    .button-row { margin-top: 28px; }
 
     .button {
       display: inline-block;
@@ -165,19 +149,14 @@
       padding-left: 14px;
     }
 
-    .section {
-      margin-top: 44px;
-    }
+    .section { margin-top: 44px; }
 
     .section-heading {
       max-width: 760px;
       margin-bottom: 22px;
     }
 
-    .section-heading p {
-      color: #342f2a;
-      margin-bottom: 0;
-    }
+    .section-heading p { color: #342f2a; margin-bottom: 0; }
 
     .link-grid {
       display: grid;
@@ -206,16 +185,8 @@
       border-color: rgba(153, 0, 0, 0.35);
     }
 
-    .mini-card p {
-      color: #403a34;
-      margin-bottom: 20px;
-    }
-
-    .mini-card span {
-      color: var(--crimson);
-      font-weight: 800;
-      font-size: 0.95rem;
-    }
+    .mini-card p { color: #403a34; margin-bottom: 20px; }
+    .mini-card span { color: var(--crimson); font-weight: 800; font-size: 0.95rem; }
 
     .mini-card-kicker {
       display: inline-block;
@@ -231,48 +202,21 @@
       margin-bottom: 16px;
     }
 
-    .dark-card {
-      background:
-        radial-gradient(circle at top right, rgba(255, 255, 255, 0.16), transparent 34%),
-        #111111;
-      color: #ffffff;
-      border-color: #111111;
+    .gravitate-card {
+      background: linear-gradient(135deg, #f5f0e8 0%, #ede8dc 100%);
+      border: 1px solid #d6ceba;
+      color: var(--text);
     }
 
-    .dark-card:hover {
-      border-color: #111111;
-      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
-    }
-
-    .dark-card p {
-      color: rgba(255, 255, 255, 0.78);
-    }
-
-    .dark-card span {
-      color: #ffffff;
-    }
+    .gravitate-card:hover { border-color: rgba(153, 0, 0, 0.3); }
+    .gravitate-card p { color: #403a34; }
+    .gravitate-card span { color: var(--crimson); }
 
     .gravitate-wordmark {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 18px;
-      color: #ffffff;
-      font-size: 1.5rem;
-      font-weight: 900;
-      letter-spacing: -0.04em;
-    }
-
-    .gravitate-mark {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 34px;
-      height: 34px;
-      border: 2px solid rgba(255, 255, 255, 0.8);
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 900;
+      margin-bottom: 14px;
     }
 
     .footer {
@@ -293,23 +237,13 @@
     }
 
     @media (max-width: 760px) {
-      .link-grid {
-        grid-template-columns: 1fr;
-      }
+      .link-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 640px) {
-      .page {
-        padding: 40px 18px 56px;
-      }
-
-      .card {
-        padding: 24px 20px;
-      }
-
-      .mini-card {
-        min-height: auto;
-      }
+      .page { padding: 40px 18px 56px; }
+      .card { padding: 24px 20px; }
+      .mini-card { min-height: auto; }
     }
   </style>
 </head>
@@ -326,23 +260,18 @@
     <section class="card">
       <div class="card-label">Featured prototype</div>
       <h2>Ascend Indiana WBL Employer Readiness Assessment</h2>
-
       <p>
-        Indiana’s new diploma requirements place greater emphasis on work-based learning, creating an urgent need for more employer-hosted experiences across the state. Employers and intermediaries, including workforce organizations, often want to participate but do not always know where to start, which experience type fits their capacity, or what next steps are required.
+        Indiana's new diploma requirements place greater emphasis on work-based learning, creating an urgent need for more employer-hosted experiences across the state. Employers and intermediaries, including workforce organizations, often want to participate but do not always know where to start, which experience type fits their capacity, or what next steps are required.
       </p>
-
       <p>
         Ascend needed a practical way to help employers and intermediaries navigate that complexity. The broader challenge is significant: Indiana will need to create tens of thousands of additional work-based learning experiences in the coming years, so the solution needed to simplify decision-making without oversimplifying the policy, operational, and employer-readiness considerations behind it.
       </p>
-
       <p>
-        In collaboration with Ascend leadership, workforce strategy stakeholders, and our CEO, I synthesized the ask into a lightweight assessment prototype. I created the dynamic scoring logic, mapped employer responses to recommended WBL experience types, and designed the interaction around Ascend’s brand standards so the concept could be reviewed quickly with employers.
+        In collaboration with Ascend leadership, workforce strategy stakeholders, and our CEO, I synthesized the ask into a lightweight assessment prototype. I created the dynamic scoring logic, mapped employer responses to recommended WBL experience types, and designed the interaction around Ascend's brand standards so the concept could be reviewed quickly with employers.
       </p>
-
       <p>
         Built in roughly 2–3 hours as an AI-assisted HTML, CSS, and JavaScript prototype, this helped save design and engineering time while giving the team something tangible to validate before investing in production work.
       </p>
-
       <div class="section-title">The prototype explores:</div>
       <ul>
         <li>Guided intake for employers and intermediaries exploring work-based learning options</li>
@@ -353,11 +282,38 @@
         <li>An intermediary-friendly structure that can support consultative conversations with organizations</li>
         <li>A fast prototype workflow used to support an urgent statewide employer council demo and gather direct feedback from employers</li>
       </ul>
-
       <div class="button-row">
         <a class="button" href="./ascendindiana/wbl/">View WBL Assessment Prototype</a>
       </div>
+      <p class="note">
+        These prototypes are not production applications. They are intended to show product thinking, rapid validation, and how AI-assisted workflows can reduce the time required to test complex product ideas before committing engineering and design resources.
+      </p>
+    </section>
 
+    <section class="card">
+      <div class="card-label">Exploratory prototype</div>
+      <h2>SMB Marketplace — Intelligent Business Platform</h2>
+      <p>
+        Small business owners — especially those in trades and home services — spend significant time searching for the right vendors, service providers, funding programs, and peer connections. Most existing directories surface options without context. This prototype explores what it would look like if a marketplace understood who you are, where your business is in its growth journey, and what you're dealing with right now.
+      </p>
+      <p>
+        The core interaction is a natural language prompt — "what's new with your business" — that updates the user's context and drives intelligent, stage-aware suggestions across services, software, commercial real estate, staffing, peer connections, and available grant funding. The demo persona is a home services entrepreneur (HVAC and plumbing) in the ramping-up stage, giving the prototype enough specificity to show how the intelligence layer would actually behave.
+      </p>
+      <p>
+        Built as a single-file HTML prototype to explore the concept before any engineering investment.
+      </p>
+      <div class="section-title">The prototype explores:</div>
+      <ul>
+        <li>A natural language prompt that updates business context and re-ranks marketplace suggestions in real time</li>
+        <li>Stage-aware provider cards (Getting Started, Ramping Up, Established) with contextual match rationale for each recommendation</li>
+        <li>Integrated grants and funding surface — including EARN Indiana wage reimbursement for trades apprentices — presented as a smart-money insight rather than a separate directory</li>
+        <li>Peer network suggestions based on industry, geography, and complementary service offerings</li>
+        <li>Provider connection flow with modal introduction requests</li>
+        <li>A category filter system spanning financial, software, CRE, staffing, marketing, funding, and peer categories</li>
+      </ul>
+      <div class="button-row">
+        <a class="button" href="./exploratory/smb-marketplace/">View SMB Marketplace Prototype</a>
+      </div>
       <p class="note">
         These prototypes are not production applications. They are intended to show product thinking, rapid validation, and how AI-assisted workflows can reduce the time required to test complex product ideas before committing engineering and design resources.
       </p>
@@ -373,11 +329,10 @@
       </div>
 
       <div class="link-grid">
-        <a class="mini-card dark-card" href="https://www.justgravitate.com" target="_blank" rel="noopener noreferrer">
+        <a class="mini-card gravitate-card" href="https://www.justgravitate.com" target="_blank" rel="noopener noreferrer">
           <div>
             <div class="gravitate-wordmark">
-              <span class="gravitate-mark">G</span>
-              <span>Gravitate</span>
+              <span style="font-size:1.4rem;font-weight:900;letter-spacing:-0.03em;color:#1c1c1c;">Gravitate</span>
             </div>
             <h3>Principal Advisor & Investor</h3>
             <p>
