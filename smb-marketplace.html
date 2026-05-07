@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marketplace — SMB Intelligence Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #F5F0E8;
+      --cream-dark: #EDE6D6;
+      --cream-border: #DDD4BE;
+      --crimson: #9B1B30;
+      --crimson-light: #B52240;
+      --crimson-muted: rgba(155, 27, 48, 0.08);
+      --crimson-muted2: rgba(155, 27, 48, 0.14);
+      --ink: #1C1A17;
+      --ink-muted: #5A5040;
+      --ink-faint: #9A8E7A;
+      --white: #FDFCFA;
+      --tag-bg: #EDE6D6;
+      --shadow-sm: 0 1px 3px rgba(28,26,23,0.06), 0 1px 2px rgba(28,26,23,0.04);
+      --shadow-md: 0 4px 16px rgba(28,26,23,0.08), 0 1px 4px rgba(28,26,23,0.05);
+      --shadow-lg: 0 12px 40px rgba(28,26,23,0.10);
+      --radius: 10px;
+      --radius-sm: 6px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--cream-border);
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--crimson);
+      letter-spacing: -0.3px;
+    }
+
+    .nav-logo span {
+      color: var(--ink-muted);
+      font-weight: 400;
+      font-size: 13px;
+      margin-left: 8px;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--crimson);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .nav-stage-badge {
+      background: var(--crimson-muted2);
+      color: var(--crimson);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── LAYOUT ── */
+    .layout {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: sticky;
+      top: 80px;
+    }
+
+    .profile-card {
+      background: var(--white);
+      border: 1px solid var(--cream-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .profile-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+
+    .profile-card .biz-meta {
+      font-size: 12px;
+      color: var(--ink-faint);
+      margin-bottom: 14px;
+    }
+
+    .profile-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .tag {
+      background: var(--tag-bg);
+      color: var(--ink-muted);
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-weight: 400;
+    }
+
+    .tag.highlight {
+      background: var(--crimson-muted2);
+      color: var(--crimson);
+    }
+
+    .profile-stat-row {
+      display: flex;
+      gap: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--cream-border);
+    }
+
+    .profile-stat {
+      flex: 1;
+      text-align: center;
+    }
+
+    .profile-stat .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--crimson);
+      line-height: 1.2;
+    }
+
+    .profile-stat .label {
+      font-size: 10px;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-section {
+      background: var(--white);
+      border: 1px solid var(--cream-border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .sidebar-section h4 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--ink-faint);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .filter-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .filter-list li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.15s;
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+
+    .filter-list li:hover {
+      background: var(--cream-dark);
+    }
+
+    .filter-list li.active {
+      background: var(--crimson-muted);
+      color: var(--crimson);
+      font-weight: 500;
+    }
+
+    .filter-count {
+      background: var(--cream-border);
+      color: var(--ink-faint);
+      font-size: 10px;
+      padding: 1px 7px;
+      border-radius: 20px;
+    }
+
+    .filter-list li.active .filter-count {
+      background: var(--crimson-muted2);
+      color: var(--crimson);
+    }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ── AI PROMPT BOX ── */
+    .prompt-card {
+      background: var(--white);
+      border: 1px solid var(--cream-border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .prompt-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .prompt-icon {
+      width: 30px;
+      height: 30px;
+      background: var(--crimson);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .prompt-icon svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: white;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .prompt-card-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .prompt-input-wrap {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    .prompt-input {
+      flex: 1;
+      border: 1.5px solid var(--cream-border);
+      border-radius: var(--radius-sm);
+      padding: 11px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--ink);
+      background: var(--cream);
+      resize: none;
+      height: 52px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    .prompt-input::placeholder { color: var(--ink-faint); }
+
+    .prompt-input:focus {
+      border-color: var(--crimson);
+      box-shadow: 0 0 0 3px var(--crimson-muted);
+    }
+
+    .prompt-btn {
+      background: var(--crimson);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0 20px;
+      height: 52px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    .prompt-btn:hover { background: var(--crimson-light); }
+    .prompt-btn:active { transform: scale(0.98); }
+
+    .prompt-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: white;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .prompt-chips {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .prompt-chip {
+      background: var(--cream-dark);
+      border: 1px solid var(--cream-border);
+      color: var(--ink-muted);
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .prompt-chip:hover {
+      border-color: var(--crimson);
+      color: var(--crimson);
+      background: var(--crimson-muted);
+    }
+
+    /* ── AI RESPONSE CARD ── */
+    .ai-response {
+      background: var(--crimson-muted);
+      border: 1px solid var(--crimson-muted2);
+      border-left: 3px solid var(--crimson);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      display: none;
+      animation: slideDown 0.3s ease;
+    }
+
+    .ai-response.visible { display: block; }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .ai-response-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--crimson);
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .ai-response p {
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.65;
+    }
+
+    .ai-response strong { color: var(--crimson); font-weight: 500; }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 2px;
+    }
+
+    .section-header h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .section-header .see-all {
+      font-size: 12px;
+      color: var(--crimson);
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: var(--ink-faint);
+      margin-bottom: 16px;
+    }
+
+    /* ── CARD GRID ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .card-grid.wide {
+      grid-template-columns: 1fr;
+    }
+
+    /* ── PROVIDER CARD ── */
+    .provider-card {
+      background: var(--white);
+      border: 1px solid var(--cream-border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .provider-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--crimson);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .provider-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--crimson-muted2);
+      transform: translateY(-1px);
+    }
+
+    .provider-card:hover::after { opacity: 1; }
+
+    .provider-card.featured {
+      border-color: var(--crimson-muted2);
+      background: linear-gradient(135deg, var(--white) 0%, #FDF8F0 100%);
+    }
+
+    .provider-card.featured::after { opacity: 1; }
+
+    .featured-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: var(--crimson);
+      color: white;
+      font-size: 9px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .provider-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: var(--cream-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--crimson);
+      flex-shrink: 0;
+      border: 1px solid var(--cream-border);
+    }
+
+    .card-top-info { flex: 1; min-width: 0; }
+
+    .provider-name {
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--ink);
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 60px;
+    }
+
+    .provider-type {
+      font-size: 11px;
+      color: var(--ink-faint);
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.55;
+    }
+
+    .card-match {
+      background: var(--crimson-muted);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .match-icon {
+      font-size: 12px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .match-text {
+      font-size: 12px;
+      color: var(--crimson);
+      line-height: 1.5;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1px solid var(--cream-border);
+    }
+
+    .card-tags {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .card-action {
+      background: none;
+      border: 1.5px solid var(--crimson);
+      color: var(--crimson);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+
+    .card-action:hover {
+      background: var(--crimson);
+      color: white;
+    }
+
+    /* ── PEER CARD ── */
+    .peer-card {
+      background: var(--white);
+      border: 1px solid var(--cream-border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      cursor: pointer;
+      transition: box-shadow 0.2s, transform 0.15s;
+    }
+
+    .peer-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    .peer-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--cream-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--crimson);
+      flex-shrink: 0;
+      border: 1.5px solid var(--cream-border);
+    }
+
+    .peer-info { flex: 1; }
+
+    .peer-name {
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--ink);
+      margin-bottom: 1px;
+    }
+
+    .peer-biz {
+      font-size: 12px;
+      color: var(--ink-faint);
+      margin-bottom: 8px;
+    }
+
+    .peer-reason {
+      font-size: 12.5px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    .peer-action {
+      background: none;
+      border: 1.5px solid var(--cream-border);
+      color: var(--ink-muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.15s;
+      flex-shrink: 0;
+      align-self: center;
+    }
+
+    .peer-action:hover {
+      border-color: var(--crimson);
+      color: var(--crimson);
+    }
+
+    /* ── ACTIVITY FEED ── */
+    .activity-card {
+      background: var(--white);
+      border: 1px solid var(--cream-border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--cream-border);
+    }
+
+    .activity-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .activity-item:first-child { padding-top: 0; }
+
+    .activity-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cream-border);
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .activity-dot.active { background: var(--crimson); }
+
+    .activity-text {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    .activity-text strong { color: var(--ink); font-weight: 500; }
+
+    .activity-time {
+      font-size: 11px;
+      color: var(--ink-faint);
+      margin-top: 2px;
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(28,26,23,0.45);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      padding: 20px;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 32px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(10px);
+      transition: transform 0.2s;
+    }
+
+    .modal-overlay.open .modal {
+      transform: translateY(0);
+    }
+
+    .modal-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--crimson);
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .modal h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .modal .modal-sub {
+      font-size: 13px;
+      color: var(--ink-faint);
+      margin-bottom: 20px;
+    }
+
+    .modal-field {
+      margin-bottom: 14px;
+    }
+
+    .modal-field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      margin-bottom: 5px;
+    }
+
+    .modal-field textarea, .modal-field input {
+      width: 100%;
+      border: 1.5px solid var(--cream-border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--ink);
+      background: var(--cream);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+
+    .modal-field textarea:focus, .modal-field input:focus {
+      border-color: var(--crimson);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-primary {
+      flex: 1;
+      background: var(--crimson);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover { background: var(--crimson-light); }
+
+    .btn-secondary {
+      background: none;
+      color: var(--ink-muted);
+      border: 1.5px solid var(--cream-border);
+      border-radius: var(--radius-sm);
+      padding: 12px 18px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .btn-secondary:hover { border-color: var(--ink-muted); }
+
+    /* ── TYPING INDICATOR ── */
+    .typing {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+      padding: 4px 0;
+    }
+
+    .typing span {
+      width: 5px;
+      height: 5px;
+      background: var(--crimson);
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+      opacity: 0.6;
+    }
+
+    .typing span:nth-child(2) { animation-delay: 0.2s; }
+    .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-4px); }
+    }
+
+    /* ── GRANT CARD ── */
+    .grant-card {
+      background: var(--white);
+      border: 1px solid var(--cream-border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      transition: box-shadow 0.2s, transform 0.15s;
+      cursor: default;
+    }
+
+    .grant-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    .grant-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: #F0F7F0;
+      border: 1px solid #C8DFC8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .grant-body { flex: 1; }
+
+    .grant-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .grant-title {
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--ink);
+    }
+
+    .grant-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #2E7D32;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .grant-org {
+      font-size: 11px;
+      color: var(--ink-faint);
+      margin-bottom: 10px;
+    }
+
+    .grant-desc {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.55;
+      margin-bottom: 12px;
+    }
+
+    .grant-eligibility {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .grant-tag {
+      background: #EBF5EB;
+      color: #2E7D32;
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-weight: 400;
+    }
+
+    .grant-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1px solid var(--cream-border);
+    }
+
+    .grant-note {
+      font-size: 11.5px;
+      color: var(--ink-faint);
+      font-style: italic;
+    }
+
+    .grant-link {
+      background: none;
+      border: 1.5px solid #2E7D32;
+      color: #2E7D32;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .grant-link:hover {
+      background: #2E7D32;
+      color: white;
+    }
+
+    .grant-match {
+      background: #EBF5EB;
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      margin-bottom: 12px;
+    }
+
+    .grant-match-text {
+      font-size: 12px;
+      color: #2E7D32;
+      line-height: 1.5;
+    }
+
+    /* ── FOOTER NOTE ── */
+    .proto-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--ink-faint);
+      padding-top: 20px;
+      border-top: 1px solid var(--cream-border);
+      margin-top: 16px;
+    }
+
+    @media (max-width: 800px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .card-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    Marketplace
+    <span>SMB Intelligence Platform</span>
+  </div>
+  <div class="nav-right">
+    <span class="nav-stage-badge">Ramping Up</span>
+    <div class="nav-user">
+      <div class="avatar">MR</div>
+      <span>Marcus Reid</span>
+    </div>
+  </div>
+</nav>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="profile-card">
+      <h3>Reid Home Services</h3>
+      <div class="biz-meta">HVAC · Indianapolis, IN · Est. 2022</div>
+      <div class="profile-tags">
+        <span class="tag highlight">Ramping Up</span>
+        <span class="tag">HVAC</span>
+        <span class="tag">Plumbing</span>
+        <span class="tag">Residential</span>
+      </div>
+      <div class="profile-stat-row">
+        <div class="profile-stat">
+          <div class="num">3</div>
+          <div class="label">Techs</div>
+        </div>
+        <div class="profile-stat">
+          <div class="num">$840K</div>
+          <div class="label">Rev.</div>
+        </div>
+        <div class="profile-stat">
+          <div class="num">14</div>
+          <div class="label">Connections</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h4>Browse by Category</h4>
+      <ul class="filter-list">
+        <li class="active" onclick="setFilter(this)">All Suggestions <span class="filter-count">24</span></li>
+        <li onclick="setFilter(this)">Financial & Legal <span class="filter-count">6</span></li>
+        <li onclick="setFilter(this)">Software & Tools <span class="filter-count">5</span></li>
+        <li onclick="setFilter(this)">Commercial Real Estate <span class="filter-count">3</span></li>
+        <li onclick="setFilter(this)">Staffing & HR <span class="filter-count">4</span></li>
+        <li onclick="setFilter(this)">Marketing <span class="filter-count">3</span></li>
+        <li onclick="setFilter(this)">Grants & Funding <span class="filter-count">2</span></li>
+        <li onclick="setFilter(this)">Peer Network <span class="filter-count">3</span></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-section">
+      <h4>Your Stage</h4>
+      <ul class="filter-list">
+        <li onclick="setFilter(this)">Getting Started</li>
+        <li class="active" onclick="setFilter(this)">Ramping Up ✓</li>
+        <li onclick="setFilter(this)">Established</li>
+      </ul>
+    </div>
+
+    <div class="activity-card">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--ink-faint);font-weight:500;margin-bottom:10px;">Recent Activity</div>
+      <div class="activity-item">
+        <div class="activity-dot active"></div>
+        <div>
+          <div class="activity-text">Connected with <strong>Greenline Accounting</strong></div>
+          <div class="activity-time">2 days ago</div>
+        </div>
+      </div>
+      <div class="activity-item">
+        <div class="activity-dot"></div>
+        <div>
+          <div class="activity-text">Viewed <strong>FleetRoute</strong> profile</div>
+          <div class="activity-time">5 days ago</div>
+        </div>
+      </div>
+      <div class="activity-item">
+        <div class="activity-dot"></div>
+        <div>
+          <div class="activity-text">Profile updated · <strong>+Plumbing</strong></div>
+          <div class="activity-time">1 week ago</div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- AI PROMPT BOX -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="prompt-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <h2>What's new with your business?</h2>
+      </div>
+      <div class="prompt-input-wrap">
+        <textarea
+          class="prompt-input"
+          id="promptInput"
+          placeholder="e.g. I'm thinking about hiring two more technicians and maybe expanding our service radius..."
+        ></textarea>
+        <button class="prompt-btn" onclick="handlePrompt()">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Update
+        </button>
+      </div>
+      <div class="prompt-chips">
+        <span class="prompt-chip" onclick="fillPrompt(this)">💼 Thinking about a second location</span>
+        <span class="prompt-chip" onclick="fillPrompt(this)">👥 Looking to hire 2 more techs</span>
+        <span class="prompt-chip" onclick="fillPrompt(this)">🚐 Need to add a service vehicle</span>
+        <span class="prompt-chip" onclick="fillPrompt(this)">📊 Want to get financials tightened up</span>
+      </div>
+    </div>
+
+    <!-- AI RESPONSE -->
+    <div class="ai-response" id="aiResponse">
+      <div class="ai-response-label">Marketplace Intelligence</div>
+      <p id="aiResponseText"></p>
+    </div>
+
+    <!-- FEATURED SUGGESTIONS -->
+    <div>
+      <div class="section-header">
+        <h3>Suggested for You</h3>
+        <a class="see-all" href="#">See all →</a>
+      </div>
+      <p class="section-sub">Based on your industry, stage, and recent activity.</p>
+
+      <div class="card-grid">
+
+        <!-- Card 1 -->
+        <div class="provider-card featured" onclick="openModal('Greenline Accounting', 'Financial & Legal', 'Accounting built for trades and home services — job costing, seasonal cash flow, and tax strategy for crews on the move.', 'You connected recently. Most home services businesses at your revenue stage benefit from job-cost accounting to understand which service lines are most profitable.')">
+          <div class="featured-badge">Connected</div>
+          <div class="card-top">
+            <div class="provider-logo">G</div>
+            <div class="card-top-info">
+              <div class="provider-name">Greenline Accounting</div>
+              <div class="provider-type">Financial & Legal · CPA Firm</div>
+            </div>
+          </div>
+          <div class="card-desc">Accounting built for trades and home services — job costing, seasonal cash flow, and tax strategy for service businesses.</div>
+          <div class="card-match">
+            <span class="match-icon">💡</span>
+            <span class="match-text">You're connected. Consider asking about job-cost reporting to see which service lines are most profitable.</span>
+          </div>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="tag">Accounting</span>
+              <span class="tag">Trades</span>
+            </div>
+            <button class="card-action">Message</button>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="provider-card" onclick="openModal('FleetRoute', 'Software & Tools', 'Dispatch, routing, and job scheduling software designed for home services teams with 2–10 technicians.', 'Growing home services businesses typically hit a scheduling bottleneck around 3 techs. FleetRoute can reduce drive time and help you take on more jobs without adding headcount.')">
+          <div class="card-top">
+            <div class="provider-logo">FR</div>
+            <div class="card-top-info">
+              <div class="provider-name">FleetRoute</div>
+              <div class="provider-type">Software & Tools · Field Service</div>
+            </div>
+          </div>
+          <div class="card-desc">Dispatch, routing, and job scheduling for home services teams with 2–10 technicians. Integrates with QuickBooks.</div>
+          <div class="card-match">
+            <span class="match-icon">🔧</span>
+            <span class="match-text">At 3 techs, routing efficiency matters. Most businesses see 15–20% more jobs per week after adoption.</span>
+          </div>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="tag">Scheduling</span>
+              <span class="tag">Dispatch</span>
+            </div>
+            <button class="card-action">Connect</button>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="provider-card" onclick="openModal('Meridian Commercial Real Estate', 'Commercial Real Estate', 'Local CRE brokerage specializing in small bay industrial and flex warehouse space for trades businesses in the greater Indianapolis metro.', 'If you\'re thinking about a second location or a dedicated shop / storage space, this is the right time to start conversations. Lead time on small bay industrial in Indy is typically 90–120 days.')">
+          <div class="card-top">
+            <div class="provider-logo">MC</div>
+            <div class="card-top-info">
+              <div class="provider-name">Meridian CRE</div>
+              <div class="provider-type">Commercial Real Estate · Tenant Rep</div>
+            </div>
+          </div>
+          <div class="card-desc">Local tenant rep brokerage specializing in small bay industrial and flex space for trades businesses in the Indianapolis metro.</div>
+          <div class="card-match">
+            <span class="match-icon">🏢</span>
+            <span class="match-text">If a second location is on your radar, industrial flex in Indy has 90–120 day lead times. Worth an early conversation.</span>
+          </div>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="tag">CRE</span>
+              <span class="tag">Flex Space</span>
+            </div>
+            <button class="card-action">Connect</button>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="provider-card" onclick="openModal('TradeStaff Indiana', 'Staffing & HR', 'HVAC and plumbing technician staffing, background screening, and 1099/W2 flexibility for growing home services businesses.', 'Adding technicians is the primary growth lever at your stage. TradeStaff pre-screens candidates for HVAC and plumbing certifications, reducing time-to-hire significantly.')">
+          <div class="card-top">
+            <div class="provider-logo">TS</div>
+            <div class="card-top-info">
+              <div class="provider-name">TradeStaff Indiana</div>
+              <div class="provider-type">Staffing & HR · Trades</div>
+            </div>
+          </div>
+          <div class="card-desc">HVAC and plumbing technician staffing with pre-screening, cert verification, and W2 or 1099 flexibility.</div>
+          <div class="card-match">
+            <span class="match-icon">👥</span>
+            <span class="match-text">Adding techs is the primary lever at your stage. They pre-screen HVAC/plumbing certs, cutting time-to-hire in half.</span>
+          </div>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="tag">Staffing</span>
+              <span class="tag">HVAC</span>
+            </div>
+            <button class="card-action">Connect</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- GRANTS & FUNDING -->
+    <div>
+      <div class="section-header">
+        <h3>Grants & Available Funding</h3>
+        <a class="see-all" href="#">View all programs →</a>
+      </div>
+      <p class="section-sub">State and local programs you may qualify for based on your industry, location, and growth plans.</p>
+
+      <div class="card-grid wide" style="gap:14px;">
+
+        <!-- EARN Indiana -->
+        <div class="grant-card">
+          <div class="grant-icon-wrap">🎓</div>
+          <div class="grant-body">
+            <div class="grant-header">
+              <div class="grant-title">EARN Indiana — Apprentice Wage Reimbursement</div>
+              <div class="grant-amount">Up to $45K/yr</div>
+            </div>
+            <div class="grant-org">Indiana Commission for Higher Education · Work and Learn Indiana</div>
+            <div class="grant-match">
+              <span style="font-size:13px;flex-shrink:0;">💡</span>
+              <span class="grant-match-text">If you're adding a tech, consider pairing that hire with an EARN-funded apprentice. Indiana reimburses employer wages for qualifying students in trades — Building & Construction is an eligible pathway for HVAC and plumbing work.</span>
+            </div>
+            <div class="grant-desc">EARN Indiana matches employers with college or high school students for paid, experiential internships — and reimburses a significant portion of the wages. For trades businesses, this is a practical way to build a pipeline of future technicians at reduced labor cost while the apprentice gains real field experience.</div>
+            <div class="grant-eligibility">
+              <span class="grant-tag">Building & Construction</span>
+              <span class="grant-tag">HVAC eligible</span>
+              <span class="grant-tag">Indiana-based</span>
+              <span class="grant-tag">HS & College students</span>
+              <span class="grant-tag">Paid hourly · 8+ weeks</span>
+            </div>
+            <div class="grant-footer">
+              <span class="grant-note">Register as employer on Work and Learn Indiana to apply</span>
+              <a class="grant-link" href="https://www.workandlearnindiana.com/earn_info" target="_blank" rel="noopener">Learn more →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Placeholder second grant -->
+        <div class="grant-card" style="opacity:0.7;">
+          <div class="grant-icon-wrap">🏗️</div>
+          <div class="grant-body">
+            <div class="grant-header">
+              <div class="grant-title">Next Level Jobs — Employer Training Grant</div>
+              <div class="grant-amount">Up to $50K</div>
+            </div>
+            <div class="grant-org">Indiana Department of Workforce Development</div>
+            <div class="grant-match">
+              <span style="font-size:13px;flex-shrink:0;">💡</span>
+              <span class="grant-match-text">If you're upskilling existing techs — adding plumbing to an HVAC-only crew, for example — the Employer Training Grant can offset training costs. Cannot be combined with EARN funds.</span>
+            </div>
+            <div class="grant-desc">Reimburses Indiana employers for the cost of training existing or newly hired employees in high-demand sectors including Building & Construction. Covers third-party training costs, certification programs, and apprenticeship fees.</div>
+            <div class="grant-eligibility">
+              <span class="grant-tag">Building & Construction</span>
+              <span class="grant-tag">Existing employees</span>
+              <span class="grant-tag">Indiana-based</span>
+              <span class="grant-tag">3rd-party training</span>
+            </div>
+            <div class="grant-footer">
+              <span class="grant-note">Cannot be combined with EARN Indiana funds</span>
+              <a class="grant-link" href="https://www.in.gov/dwd/employer-resources/employer-training-grant/" target="_blank" rel="noopener">Learn more →</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PEER CONNECTIONS -->
+    <div>
+      <div class="section-header">
+        <h3>Peer Connections</h3>
+        <a class="see-all" href="#">Browse network →</a>
+      </div>
+      <p class="section-sub">Other entrepreneurs on the platform in complementary businesses.</p>
+
+      <div class="card-grid wide">
+
+        <div class="peer-card">
+          <div class="peer-avatar">JL</div>
+          <div class="peer-info">
+            <div class="peer-name">Jamie Lawson</div>
+            <div class="peer-biz">Lawson Electric · Indianapolis · Ramping Up</div>
+            <div class="peer-reason">Electrician serving the same residential neighborhoods — potential to cross-refer when jobs call for both trades.</div>
+          </div>
+          <button class="peer-action">Introduce</button>
+        </div>
+
+        <div class="peer-card">
+          <div class="peer-avatar">AC</div>
+          <div class="peer-info">
+            <div class="peer-name">Aisha Chambers</div>
+            <div class="peer-biz">Chambers Roofing · Carmel · Established</div>
+            <div class="peer-reason">Roofing and HVAC are commonly bundled in insurance work. She's been in the market 7 years and open to referral partnerships.</div>
+          </div>
+          <button class="peer-action">Introduce</button>
+        </div>
+
+        <div class="peer-card">
+          <div class="peer-avatar">DR</div>
+          <div class="peer-info">
+            <div class="peer-name">Derek Ruiz</div>
+            <div class="peer-biz">Ruiz Lawn & Landscaping · Fishers · Ramping Up</div>
+            <div class="peer-reason">Same growth stage, same service area. He recently hired using TradeStaff and can share what worked.</div>
+          </div>
+          <button class="peer-action">Introduce</button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="proto-note">
+      Prototype · Not a production application · Built to explore SMB marketplace concepts
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-label" id="modalLabel">Provider</div>
+    <h2 id="modalTitle"></h2>
+    <div class="modal-sub" id="modalSub"></div>
+    <div style="background:var(--crimson-muted);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:20px;font-size:13px;color:var(--crimson);line-height:1.55;" id="modalMatch"></div>
+    <div class="modal-field">
+      <label>Add a note (optional)</label>
+      <textarea rows="3" placeholder="Anything specific you'd like to discuss with this provider..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="closeModal()">Send Introduction Request</button>
+      <button class="btn-secondary" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setFilter(el) {
+    document.querySelectorAll('.filter-list li').forEach(li => li.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function fillPrompt(chip) {
+    const text = chip.textContent.replace(/^[^\s]+\s/, '').trim();
+    document.getElementById('promptInput').value = text;
+    document.getElementById('promptInput').focus();
+  }
+
+  const responses = {
+    default: "Based on your update, here are some providers worth exploring. Your profile has been updated to reflect this context.",
+    location: "Thinking about a <strong>second location</strong> is a significant step — and the right one at your revenue stage. I've surfaced <strong>Meridian CRE</strong> (tenant rep, small bay industrial) and <strong>Greenline Accounting</strong> (to model the financial impact of a second location). Lead times on flex space in the Indy market are typically 90–120 days, so an early conversation with a broker makes sense now.",
+    hire: "Adding <strong>2 more technicians</strong> would put you at 5 — worth thinking about the mix before you post. One angle: rather than hiring two experienced techs at full market rate, some businesses pair one experienced hire with an <strong>EARN Indiana-funded apprentice</strong>. Indiana reimburses up to $45K/year in apprentice wages for qualified trades businesses under the Building & Construction pathway — offsetting a meaningful chunk of your labor cost while you build the bench. I've surfaced this under <strong>Grants & Funding</strong> below. For the experienced hire, <strong>TradeStaff Indiana</strong> pre-screens HVAC/plumbing certs. And at 5 techs, <strong>FleetRoute</strong> becomes a real efficiency lever.",
+    vehicle: "Adding a <strong>service vehicle</strong> touches both your financing options and insurance coverage. I've flagged <strong>Greenline Accounting</strong> to walk through Section 179 deduction options, and there may be relevant equipment financing providers worth surfacing. Want me to add commercial auto to your filter?",
+    financials: "Getting <strong>financials tightened up</strong> at your stage usually means moving from basic bookkeeping to job-cost accounting — understanding which service lines (HVAC install vs. maintenance vs. plumbing) actually make money. <strong>Greenline Accounting</strong> specializes in exactly this for trades businesses. You're already connected — a good time to have that conversation."
+  };
+
+  function handlePrompt() {
+    const input = document.getElementById('promptInput').value.toLowerCase();
+    const responseEl = document.getElementById('aiResponse');
+    const responseText = document.getElementById('aiResponseText');
+
+    let msg = responses.default;
+    if (input.includes('location') || input.includes('expand')) msg = responses.location;
+    else if (input.includes('hire') || input.includes('tech')) msg = responses.hire;
+    else if (input.includes('vehicle') || input.includes('van') || input.includes('truck')) msg = responses.vehicle;
+    else if (input.includes('financial') || input.includes('accounting') || input.includes('tighten')) msg = responses.financials;
+
+    responseText.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+    responseEl.classList.add('visible');
+
+    setTimeout(() => {
+      responseText.innerHTML = msg;
+    }, 1100);
+  }
+
+  document.getElementById('promptInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handlePrompt();
+    }
+  });
+
+  function openModal(title, label, sub, match) {
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalLabel').textContent = label;
+    document.getElementById('modalSub').textContent = sub;
+    document.getElementById('modalMatch').innerHTML = '💡 ' + match;
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+</script>
+</body>
+</html>
