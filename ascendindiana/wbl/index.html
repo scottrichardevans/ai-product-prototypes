@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="asc-page-frame">
-<div class="asc-prototype-tag">Prototype v7</div>
+<div class="asc-prototype-tag">Prototype v8</div>
 <style>
 .asc-app { font-family: Tahoma, "Trebuchet MS", sans-serif; color: #1C1C1C; padding: 0; }
 .asc-app h1, .asc-app h2, .asc-app h3 { font-family: Tahoma, "Trebuchet MS", sans-serif; color: #1C1C1C; margin: 0; font-weight: 700; }
@@ -73,7 +73,7 @@
   const SUPERVISION_TIERS = ["low", "moderate", "high"];
   
   const QUESTIONS = [
-    { id: "onsite", text: "Where can WBL experience take place? (Select all that apply)", type: "multi", cumulative: false,
+    { id: "onsite", text: "Where can the experience take place? (Select all that apply)", type: "multi", cumulative: false,
       options: [
         { value: "yes", label: "Students can come to our workplace" },
         { value: "travel", label: "Our team can travel to the school" }
@@ -87,8 +87,8 @@
       ]},
     { id: "projectrole", text: "Will the student's experience be focused on a defined project, or on a specific role with ongoing responsibilities? (Select all that apply)", type: "multi", cumulative: false,
       options: [
-        { value: "project", label: "Defined project" },
-        { value: "role", label: "Specific role with ongoing responsibilities" }
+        { value: "project", label: "Defined project", sub: "Event logistics coordination, creating an event webpage, developing a solution to a real-world problem" },
+        { value: "role", label: "Specific role with ongoing responsibilities", sub: "Shadowing nursing staff, filling a role such as IT helpdesk customer-service representative or general administrative support" }
       ]},
     { id: "individualteam", text: "If students are completing a project, can they work individually or must they work in a team?", type: "single", cumulative: false, conditional: { questionId: "projectrole", value: "project", multi: true },
       options: [
@@ -115,7 +115,8 @@
         { value: "yes", label: "Yes" },
         { value: "no", label: "No" }
       ]},
-    { id: "dol", text: "Are you willing and able to develop a program that would need to be registered with the U.S. Department of Labor?", type: "single", cumulative: false,
+    { id: "dol", text: "Are you willing and able to develop a U.S. DOL Registered Apprenticeship Program?", type: "single", cumulative: false,
+      tooltip: "A Registered Apprenticeship Program is an employer-built training program \u2014 employers define the job, design the training, pay the apprentice a wage, and get it officially approved by the U.S. Department of Labor \u2014 essentially committing to a structured, multi-year pathway that turns a new or existing employee into a fully credentialed worker in your industry.",
       options: [
         { value: "yes", label: "Yes, we can meet USDOL standards" },
         { value: "no", label: "No, or we prefer a structured apprenticeship that isn't DOL-registered" }
@@ -189,11 +190,72 @@
     "Academic Internship": "Internships",
     "Micro-Internship": "Internships",
     "Employability Skills Co-Op": "Co-Ops",
-    "Technical Internship": "CTE / Technical Internships",
+    "Technical Internship": "Internships",
     "Modern Youth Apprenticeship": "Apprenticeships",
     "Pre-Apprenticeship": "Apprenticeships",
     "DOL Registered Apprenticeship": "Apprenticeships"
   };
+  
+  // Result items — the 5 cards displayed on the results page. Each item may aggregate multiple child experiences.
+  // Combined cards have their own definition and action list and HIDE the category tag (redundant).
+  // Standalone cards reuse the underlying experience's definition/actions and SHOW their category tag.
+  const RESULT_ITEMS = [
+    {
+      id: "student-led-businesses",
+      name: "Student-Led Businesses",
+      combined: true,
+      children: ["School-Based Enterprise", "Workplace Simulation", "Student Entrepreneurial Experience"],
+      order: 1,
+      definition: "An experience that brings real work into the school day. There are three types of Student-Led Businesses recognized by the Indiana Department of Education: Workplace Simulation, Student Entrepreneurial Experience, and School-Based Enterprise.",
+      actions: [
+        "Work with your local intermediary to understand current Student-Led Business offerings",
+        "If no current offering aligns with your industry, work with your local intermediary to explore developing a new one with a school",
+        "Identify a team member who can support students 2\u20134 hours per month at the school"
+      ]
+    },
+    {
+      id: "industry-developed-team-challenge",
+      name: "Industry-Developed Team Challenge",
+      combined: false,
+      children: ["Industry-Developed Team Challenge"],
+      order: 2
+      // definition/actions pulled from DEFINITIONS/ACTIONS by child name
+    },
+    {
+      id: "internships",
+      name: "Internships",
+      combined: true,
+      children: ["Academic Internship", "Micro-Internship", "Technical Internship"],
+      order: 3,
+      definition: "A structured, short-term work experience where a student applies classroom learning in a real workplace setting, with the employer providing meaningful tasks, supervision, and mentorship \u2014 ranging from a single project lasting a few days to a semester-long commitment tied to school credit or a specific technical skill pathway. There are three types of Internships recognized by the Indiana Department of Education: Academic Internship, Micro-Internship, and Technical Internship.",
+      actions: [
+        "Review legal, safety, or company restrictions that limit a minor\u2019s use of equipment",
+        "Ensure a team member can support the student for the specified duration",
+        "Identify the role(s) or project(s) a student would support",
+        "Work with your local intermediary to confirm if there is an aligned CTE pathway",
+        "If paying, confirm compliance with state and federal child labor laws"
+      ]
+    },
+    {
+      id: "employability-skills-co-op",
+      name: "Employability Skills Co-Op",
+      combined: false,
+      children: ["Employability Skills Co-Op"],
+      order: 4
+    },
+    {
+      id: "apprenticeships",
+      name: "Apprenticeships",
+      combined: true,
+      children: ["Modern Youth Apprenticeship", "Pre-Apprenticeship", "DOL Registered Apprenticeship"],
+      order: 5,
+      definition: "An apprenticeship is a structured, employer-driven training model where an individual learns a skilled trade or career pathway through a combination of paid on-the-job training and related technical instruction. There are three types of apprenticeships recognized by the Indiana Department of Education: Modern Youth Apprenticeship, Pre-Apprenticeship, and DOL Registered Apprenticeship.",
+      actions: [
+        "Review any legal, safety, or company restrictions that limit a minor\u2019s use of certain equipment or involvement in specific workstreams",
+        "Ensure your organization can budget for paying a student across two academic years (range from 150 hours to 2,000 hours)"
+      ]
+    }
+  ];
   
   const SECTION_LABELS = {
     onsite: "Location",
@@ -260,6 +322,11 @@
   let screen = "intro";
   let currentQ = 0;
   let hasSeenResults = false;
+  let printName = "";
+  let printOrg = "";
+  let printDetailsSaved = false;
+  // Tooltip open-state persisted across re-renders so picking an option doesn't collapse the explanation
+  const openTooltips = new Set();
   const answers = {};
   
   // Check if a conditional question's parent answer matches its trigger value
@@ -285,6 +352,12 @@
       if (accepted === "*") continue;
       total++;
       const userAns = answers[q.id];
+      // Special case: individualteam="either" means the user can accommodate any setup,
+      // so it should always count as an exact match for whatever the experience requires.
+      if (q.id === "individualteam" && userAns === "either") {
+        exactMatches++;
+        continue;
+      }
       if (q.type === "multi") {
         const acceptedArr = Array.isArray(accepted) ? accepted : [accepted];
         const hit = userAns && userAns.some(a => acceptedArr.includes(a));
@@ -307,28 +380,47 @@
   }
   
   function classifyResults() {
-    const scored = EXPERIENCES.map(scoreExperience);
-    // Exact: 0 misses AND 0 lower-tier matches (employer's answer fits the experience precisely)
-    const exact = scored.filter(s => s.misses.length === 0 && s.lowerTierMatches === 0);
-    // Achievable but not exact: 0 misses, but employer is over-capacity on at least one cumulative dimension
-    const achievableLooser = scored.filter(s => s.misses.length === 0 && s.lowerTierMatches > 0);
-    // 1-miss stretches
-    const oneStepAway = scored.filter(s => s.misses.length === 1);
+    // Score every underlying experience first
+    const scoredByName = {};
+    EXPERIENCES.forEach(name => { scoredByName[name] = scoreExperience(name); });
     
-    // Sort by category order ascending, then by intensity descending within category
-    // (Lower category order = lighter-weight experiences first; within each, hardest first to encourage stretching)
-    const sortByCategoryThenIntensity = (a, b) => {
-      const catA = CATEGORIES[EXP_CATEGORY[a.name]].order;
-      const catB = CATEGORIES[EXP_CATEGORY[b.name]].order;
-      if (catA !== catB) return catA - catB;
-      return INTENSITY[b.name] - INTENSITY[a.name];
-    };
+    // For each result item (which may aggregate multiple children), pick the best child.
+    // "Best" priority:
+    //   1) exact match (0 misses, 0 lowerTierMatches)
+    //   2) achievable looser (0 misses, lowerTierMatches > 0)
+    //   3) one-step-away (1 miss) — sort children by fewest misses
+    // The card inherits the best child's status, but we keep a reference to which child won.
+    function pickBestChild(childNames) {
+      const scores = childNames.map(n => scoredByName[n]).filter(s => s); // guard
+      const sorted = scores.slice().sort((a, b) => {
+        if (a.misses.length !== b.misses.length) return a.misses.length - b.misses.length;
+        return a.lowerTierMatches - b.lowerTierMatches;
+      });
+      return sorted[0];
+    }
     
-    exact.sort(sortByCategoryThenIntensity);
-    achievableLooser.sort(sortByCategoryThenIntensity);
-    oneStepAway.sort(sortByCategoryThenIntensity);
+    // Wrap each result item with classification metadata
+    const items = RESULT_ITEMS.map(ri => {
+      const best = pickBestChild(ri.children);
+      return {
+        ri: ri,
+        bestChild: best,
+        misses: best.misses.length,
+        lowerTierMatches: best.lowerTierMatches,
+        exactMatches: best.exactMatches
+      };
+    });
     
-    // Combined non-exact list: achievable-but-looser come first (no misses), then 1-step-away
+    const exact = items.filter(i => i.misses === 0 && i.lowerTierMatches === 0);
+    const achievableLooser = items.filter(i => i.misses === 0 && i.lowerTierMatches > 0);
+    const oneStepAway = items.filter(i => i.misses === 1);
+    
+    // Sort by the result item's order (low = light → high = intense)
+    const sortByOrder = (a, b) => a.ri.order - b.ri.order;
+    exact.sort(sortByOrder);
+    achievableLooser.sort(sortByOrder);
+    oneStepAway.sort(sortByOrder);
+    
     const nonExact = [...achievableLooser, ...oneStepAway];
     return { exact, nonExact, oneStepAway };
   }
@@ -442,11 +534,28 @@
     let optionsHtml = q.options.map(opt => {
       const isMulti = q.type === "multi";
       const checked = isMulti ? (answers[q.id] || []).includes(opt.value) : answers[q.id] === opt.value;
+      const subHtml = opt.sub ? '<div style="font-size: 12.5px; color: #5F5E5A; margin-top: 4px; line-height: 1.45;">' + escapeHtml(opt.sub) + '</div>' : '';
       return '<label class="asc-option ' + (checked ? "asc-option-checked" : "") + '">' +
         '<input type="' + (isMulti ? "checkbox" : "radio") + '" name="q-' + q.id + '" value="' + opt.value + '"' + (checked ? " checked" : "") + ' onchange="window.__ascAnswer(\'' + q.id + '\', \'' + opt.value + '\', ' + isMulti + ')" />' +
-        '<span>' + escapeHtml(opt.label) + '</span>' +
+        '<div style="flex: 1;"><div>' + escapeHtml(opt.label) + '</div>' + subHtml + '</div>' +
       '</label>';
     }).join("");
+    
+    // Tooltip toggle (renders as expand-below explanation, not hover)
+    // Open-state persisted via openTooltips so re-rendering on answer change doesn't collapse it
+    let tooltipHtml = '';
+    if (q.tooltip) {
+      const tipId = "tip-" + q.id;
+      const isOpen = openTooltips.has(q.id);
+      const btnLabel = isOpen ? 'Hide explanation' : 'What does this mean?';
+      const iconSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
+      tooltipHtml = '<div style="margin: -8px 0 18px;">' +
+        '<button id="' + tipId + '-btn" type="button" onclick="window.__ascToggleTip(\'' + q.id + '\', this)" style="background: none; border: none; padding: 0; cursor: pointer; color: #45AADD; font-size: 13px; font-weight: 700; font-family: inherit; display: inline-flex; align-items: center; gap: 6px;">' +
+          iconSvg + btnLabel +
+        '</button>' +
+        '<div id="' + tipId + '" style="display: ' + (isOpen ? 'block' : 'none') + '; margin-top: 10px; padding: 14px 16px; background: #F2F8FC; border-left: 3px solid #45AADD; border-radius: 0 4px 4px 0; font-size: 13px; line-height: 1.55; color: #2C2C2A;">' + escapeHtml(q.tooltip) + '</div>' +
+      '</div>';
+    }
     
     // Bottom nav: in revisit mode (already saw results), show "See updated results" jump-back
     let bottomNav = '';
@@ -473,32 +582,36 @@
         '<div class="asc-progress-bar"><div class="asc-progress-fill" style="width: ' + progress + '%;"></div></div>' +
       '</div>' +
       '<div style="padding: 20px 4px 8px;">' +
-        '<h2 style="font-size: 22px; line-height: 1.3; margin-bottom: 22px; font-weight: 700;">' + escapeHtml(q.text) + '</h2>' +
+        '<h2 style="font-size: 22px; line-height: 1.3; margin-bottom: 12px; font-weight: 700;">' + escapeHtml(q.text) + '</h2>' +
+        tooltipHtml +
         '<div>' + optionsHtml + '</div>' +
       '</div>' +
       bottomNav;
   }
   
-  function renderExperienceCard(scored, isStretch, isExact) {
-    const name = scored.name;
-    const cardId = "card-" + name.replace(/[^a-z0-9]/gi, "");
-    const definition = DEFINITIONS[name] || "";
-    const actions = ACTIONS[name] || [];
-    const categoryName = EXP_CATEGORY[name];
-    const category = CATEGORIES[categoryName];
+  function renderExperienceCard(item, isStretch, isExact) {
+    const ri = item.ri;
+    const name = ri.name;
+    const cardId = "card-" + ri.id;
     
-    // Pills row: category tag (always) + status pill (Best match for exact, Almost a fit for stretch)
-    let pillsRow = '<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">';
-    if (category) {
-      pillsRow += '<span style="display: inline-block; background: ' + category.bg + '; color: ' + category.text + '; padding: 3px 10px; border-radius: 999px; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 700;">' + escapeHtml(categoryName) + '</span>';
+    // For combined items, definition and actions come from the result item itself.
+    // For standalone items, fall back to DEFINITIONS / ACTIONS by child name.
+    const definition = ri.combined ? ri.definition : (DEFINITIONS[ri.children[0]] || "");
+    const actions = ri.combined ? ri.actions : (ACTIONS[ri.children[0]] || []);
+    
+    // Status pill only (category tags removed per feedback — only Best match / Almost a fit remain)
+    let pillsRow = '';
+    if (isExact || isStretch) {
+      pillsRow = '<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">';
+      if (isExact) pillsRow += '<span class="asc-pill-blue">Best match</span>';
+      else if (isStretch) pillsRow += '<span class="asc-pill-teal">Almost a fit</span>';
+      pillsRow += '</div>';
     }
-    if (isExact) pillsRow += '<span class="asc-pill-blue">Best match</span>';
-    else if (isStretch) pillsRow += '<span class="asc-pill-teal">Almost a fit</span>';
-    pillsRow += '</div>';
     
+    // Stretch CTA — shows the bestChild's miss (per Alejandro: just the closest child's miss)
     let stretchNote = "";
-    if (isStretch && scored.misses.length === 1) {
-      const miss = scored.misses[0];
+    if (isStretch && item.bestChild && item.bestChild.misses.length === 1) {
+      const miss = item.bestChild.misses[0];
       const stretchText = describeStretch(miss);
       stretchNote = '<button onclick="window.__ascJumpToQuestion(\'' + miss.q.id + '\')" style="display: block; width: 100%; text-align: left; margin-top: 10px; padding: 12px 14px; background: #F0FFFA; border: 1px solid #7CFCEA; border-left: 3px solid #7CFCEA; border-radius: 0 4px 4px 0; font-size: 13px; color: #2C2C2A; cursor: pointer; font-family: inherit; transition: background 0.15s;" onmouseover="this.style.background=\'#E0FFF6\'" onmouseout="this.style.background=\'#F0FFFA\'">' +
         '<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">' +
@@ -507,9 +620,13 @@
         '</div>' +
       '</button>';
     }
+    
+    // Action list — heading text varies based on combined vs standalone
+    const actionHeading = ri.combined ? "TO PREPARE FOR THESE EXPERIENCES" : "TO PREPARE FOR THIS EXPERIENCE";
     const actionsHtml = '<ol style="margin: 0; padding-left: 22px; font-size: 13.5px; line-height: 1.7; color: #1C1C1C;">' +
       actions.map(a => '<li style="margin-bottom: 6px;">' + escapeHtml(a) + '</li>').join("") +
       '</ol>';
+    
     return '<div class="asc-card ' + (isExact ? "asc-card-best" : "") + '">' +
       pillsRow +
       '<h3 style="font-size: 18px; margin-bottom: 8px; font-weight: 700;">' + escapeHtml(name) + '</h3>' +
@@ -519,8 +636,8 @@
         '<button class="asc-btn-link" onclick="window.__ascToggle(\'' + cardId + '\', this)">Show next steps \u2193</button>' +
         '<div id="' + cardId + '" style="display: none; margin-top: 14px; padding-top: 16px; border-top: 1px solid #F1EFE8;">' +
           '<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 12px; flex-wrap: wrap;">' +
-            '<p style="font-size: 12px; letter-spacing: 1px; color: #5F5E5A; font-weight: 700; margin: 0;">TO PREPARE FOR THIS EXPERIENCE</p>' +
-            '<button class="asc-btn-print" onclick="window.__ascPrint(\'' + escapeHtml(name).replace(/\'/g, "\\\\'") + '\')">' +
+            '<p style="font-size: 12px; letter-spacing: 1px; color: #5F5E5A; font-weight: 700; margin: 0;">' + actionHeading + '</p>' +
+            '<button class="asc-btn-print" onclick="window.__ascPrint(\'' + ri.id + '\')">' +
               '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>' +
               'Print full checklist' +
             '</button>' +
@@ -537,8 +654,8 @@
     // Combine exact matches at top + non-exact (achievable looser + 1-step-away) below
     // Cap at 3 visible by default; rest go behind "See more"
     const allCards = [];
-    exact.forEach(s => allCards.push({ scored: s, isStretch: false, isExact: true }));
-    nonExact.forEach(s => allCards.push({ scored: s, isStretch: s.misses.length > 0, isExact: false }));
+    exact.forEach(item => allCards.push({ item: item, isStretch: false, isExact: true }));
+    nonExact.forEach(item => allCards.push({ item: item, isStretch: item.misses > 0, isExact: false }));
     
     const totalCards = allCards.length;
     const totalAchievable = exact.length + (nonExact.length - oneStepAway.length);
@@ -553,15 +670,47 @@
     } else {
       const word = totalAchievable === 1 ? "experience fits" : "experiences fit";
       let extra = oneStepAway.length > 0 ? " A few more are within reach with a small adjustment." : "";
-      html += '<p style="font-size: 14px; color: #5F5E5A; margin-bottom: 24px;">Based on your answers, ' + totalAchievable + ' ' + word + ' your current capacity.' + extra + '</p>';
+      html += '<p style="font-size: 14px; color: #5F5E5A; margin-bottom: 20px;">Based on your answers, ' + totalAchievable + ' ' + word + ' your current capacity.' + extra + '</p>';
     }
     html += '</div>';
+    
+    // Optional Name + Organization fields — used on the printed checklist
+    // Save/Edit pattern: when not saved, show inputs + Save; when saved, show summary + Edit
+    const nameVal = escapeHtml(printName || "");
+    const orgVal = escapeHtml(printOrg || "");
+    if (printDetailsSaved) {
+      // Saved state — read-only summary
+      let summary = '';
+      const trimmedN = (printName || "").trim();
+      const trimmedO = (printOrg || "").trim();
+      if (trimmedN && trimmedO) summary = escapeHtml(trimmedN) + ' \u2022 ' + escapeHtml(trimmedO);
+      else if (trimmedN) summary = escapeHtml(trimmedN);
+      else if (trimmedO) summary = escapeHtml(trimmedO);
+      else summary = '<span style="color: #888780; font-weight: 400; font-style: italic;">No details added</span>';
+      html += '<div style="padding: 14px 16px; margin-bottom: 22px; background: #F2F8FC; border-radius: 4px; border: 1px solid #B5D4F4; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">' +
+        '<div>' +
+          '<div style="font-size: 11px; letter-spacing: 1px; color: #5F5E5A; font-weight: 700; text-transform: uppercase; margin-bottom: 3px;">Printing as</div>' +
+          '<div style="font-size: 14px; color: #1C1C1C; font-weight: 700;">' + summary + '</div>' +
+        '</div>' +
+        '<button class="asc-btn-link" onclick="window.__ascEditPrintDetails()">Edit</button>' +
+      '</div>';
+    } else {
+      // Editable state — inputs + Save
+      html += '<div style="padding: 14px 16px; margin-bottom: 22px; background: #FAF8F2; border-radius: 4px; border: 1px solid #E8E6DD;">' +
+        '<div style="font-size: 12px; letter-spacing: 1px; color: #5F5E5A; font-weight: 700; text-transform: uppercase; margin-bottom: 10px;">Add your details to printed checklists <span style="text-transform: none; font-weight: 400; letter-spacing: 0; color: #888780; font-size: 12px;">(optional)</span></div>' +
+        '<div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">' +
+          '<input type="text" id="asc-print-name" placeholder="Your name" value="' + nameVal + '" oninput="window.__ascSetPrintName(this.value)" style="flex: 1; min-width: 160px; padding: 9px 12px; border: 1px solid #D3D1C7; border-radius: 4px; font-size: 13.5px; font-family: inherit; color: #1C1C1C; background: #fff;" />' +
+          '<input type="text" id="asc-print-org" placeholder="Organization" value="' + orgVal + '" oninput="window.__ascSetPrintOrg(this.value)" style="flex: 1; min-width: 160px; padding: 9px 12px; border: 1px solid #D3D1C7; border-radius: 4px; font-size: 13.5px; font-family: inherit; color: #1C1C1C; background: #fff;" />' +
+          '<button class="asc-btn-primary" style="padding: 9px 18px; font-size: 13.5px;" onclick="window.__ascSavePrintDetails()">Save</button>' +
+        '</div>' +
+      '</div>';
+    }
     
     // First 3 cards visible
     const visibleCount = Math.min(3, totalCards);
     for (let i = 0; i < visibleCount; i++) {
       const c = allCards[i];
-      html += renderExperienceCard(c.scored, c.isStretch, c.isExact);
+      html += renderExperienceCard(c.item, c.isStretch, c.isExact);
     }
     
     // Remaining cards behind a "See more" expander
@@ -570,7 +719,7 @@
       html += '<div id="asc-more-wrap" style="display: none;">';
       for (let i = 3; i < totalCards; i++) {
         const c = allCards[i];
-        html += renderExperienceCard(c.scored, c.isStretch, c.isExact);
+        html += renderExperienceCard(c.item, c.isStretch, c.isExact);
       }
       html += '</div>';
       html += '<div style="display: flex; justify-content: center; margin: 8px 0 16px;">' +
@@ -596,13 +745,28 @@
     else root.innerHTML = renderResults();
   }
   
-  window.__ascStart = function() { screen = "quiz"; currentQ = 0; hasSeenResults = false; render(); };
-  window.__ascReset = function() { screen = "intro"; currentQ = 0; hasSeenResults = false; Object.keys(answers).forEach(k => delete answers[k]); render(); };
-  window.__ascBack = function() { if (currentQ > 0) { currentQ--; render(); } };
+  window.__ascStart = function() { screen = "quiz"; currentQ = 0; hasSeenResults = false; openTooltips.clear(); render(); };
+  window.__ascReset = function() { screen = "intro"; currentQ = 0; hasSeenResults = false; printName = ""; printOrg = ""; printDetailsSaved = false; openTooltips.clear(); Object.keys(answers).forEach(k => delete answers[k]); render(); };
+  window.__ascBack = function() { if (currentQ > 0) { currentQ--; openTooltips.clear(); render(); } };
+  window.__ascSetPrintName = function(v) { printName = v; };
+  window.__ascSetPrintOrg = function(v) { printOrg = v; };
+  window.__ascSavePrintDetails = function() {
+    // Pull latest values from the inputs (in case oninput state is stale)
+    const nameEl = document.getElementById("asc-print-name");
+    const orgEl = document.getElementById("asc-print-org");
+    if (nameEl) printName = nameEl.value;
+    if (orgEl) printOrg = orgEl.value;
+    printDetailsSaved = true;
+    render();
+  };
+  window.__ascEditPrintDetails = function() {
+    printDetailsSaved = false;
+    render();
+  };
   window.__ascNext = function() {
     const visible = visibleQuestions();
-    if (currentQ < visible.length - 1) { currentQ++; render(); }
-    else { screen = "results"; hasSeenResults = true; render(); }
+    if (currentQ < visible.length - 1) { currentQ++; openTooltips.clear(); render(); }
+    else { screen = "results"; hasSeenResults = true; openTooltips.clear(); render(); }
   };
   window.__ascJumpToQuestion = function(qid) {
     const visible = visibleQuestions();
@@ -610,6 +774,7 @@
     if (idx === -1) return;
     currentQ = idx;
     screen = "quiz";
+    openTooltips.clear();
     // Scroll to top so the user clearly lands on the question
     render();
     setTimeout(() => { try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch(e) { window.scrollTo(0, 0); } }, 0);
@@ -645,6 +810,11 @@
     el.style.display = open ? "none" : "block";
     btn.innerHTML = open ? "Show next steps \u2193" : "Hide next steps \u2191";
   };
+  window.__ascToggleTip = function(qid) {
+    if (openTooltips.has(qid)) openTooltips.delete(qid);
+    else openTooltips.add(qid);
+    render();
+  };
   window.__ascShowMore = function() {
     const wrap = document.getElementById("asc-more-wrap");
     const btn = document.getElementById("asc-more-btn");
@@ -655,30 +825,60 @@
     if (typeof openLink === "function") openLink(INTERMEDIARY_URL);
     else window.open(INTERMEDIARY_URL, "_blank");
   };
-  window.__ascPrint = function(name) {
-    const definition = DEFINITIONS[name] || "";
-    const sections = buildChecklist(name);
+  window.__ascPrint = function(itemId) {
+    const ri = RESULT_ITEMS.find(r => r.id === itemId);
+    if (!ri) return;
     function escHtml(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
-    let sectionsHtml = '';
-    sections.forEach(section => {
-      sectionsHtml += '<div class="section">';
-      sectionsHtml += '<div class="section-title">' + escHtml(section.label) + '</div>';
-      section.items.forEach(item => {
-        if (item._isHeading) {
-          sectionsHtml += '<div class="heading">' + escHtml(item.text) + '</div>';
-          return;
-        }
-        sectionsHtml += '<div class="item"><span class="cb"></span><span>' + escHtml(item.text) + '</span></div>';
-        if (item.subs && item.subs.length) {
-          sectionsHtml += '<div class="subs">';
-          item.subs.forEach(sub => {
-            sectionsHtml += '<div class="sub-item"><span class="cb-small"></span><span>' + escHtml(sub) + '</span></div>';
-          });
-          sectionsHtml += '</div>';
-        }
+    
+    const name = ri.name;
+    let definition, sectionsHtml = '';
+    
+    if (ri.combined) {
+      // Family-level definition and flat checklist
+      definition = ri.definition;
+      sectionsHtml = '<div class="section">';
+      sectionsHtml += '<div class="section-title">To prepare for these experiences</div>';
+      ri.actions.forEach(action => {
+        sectionsHtml += '<div class="item"><span class="cb"></span><span>' + escHtml(action) + '</span></div>';
       });
       sectionsHtml += '</div>';
-    });
+    } else {
+      // Standalone: pull long-form, conditional content from the spreadsheet
+      const childName = ri.children[0];
+      definition = DEFINITIONS[childName] || "";
+      const sections = buildChecklist(childName);
+      sections.forEach(section => {
+        sectionsHtml += '<div class="section">';
+        sectionsHtml += '<div class="section-title">' + escHtml(section.label) + '</div>';
+        section.items.forEach(item => {
+          if (item._isHeading) {
+            sectionsHtml += '<div class="heading">' + escHtml(item.text) + '</div>';
+            return;
+          }
+          sectionsHtml += '<div class="item"><span class="cb"></span><span>' + escHtml(item.text) + '</span></div>';
+          if (item.subs && item.subs.length) {
+            sectionsHtml += '<div class="subs">';
+            item.subs.forEach(sub => {
+              sectionsHtml += '<div class="sub-item"><span class="cb-small"></span><span>' + escHtml(sub) + '</span></div>';
+            });
+            sectionsHtml += '</div>';
+          }
+        });
+        sectionsHtml += '</div>';
+      });
+    }
+    
+    // Build "Prepared for" line from optional name/org
+    let preparedFor = '';
+    const trimmedName = (printName || "").trim();
+    const trimmedOrg = (printOrg || "").trim();
+    if (trimmedName || trimmedOrg) {
+      let pieces = [];
+      if (trimmedName) pieces.push(escHtml(trimmedName));
+      if (trimmedOrg) pieces.push(escHtml(trimmedOrg));
+      preparedFor = '<div class="prep">Prepared for: ' + pieces.join(' \u2022 ') + '</div>';
+    }
+    
     const html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Readiness checklist: ' + escHtml(name) + ' \u2014 Ascend Indiana</title>' +
       '<style>' +
       '@media print { @page { margin: 0.6in; } .no-print { display: none !important; } body { padding: 0 !important; max-width: none !important; } }' +
@@ -686,7 +886,8 @@
       '.hd { display: flex; align-items: center; justify-content: space-between; padding-bottom: 18px; border-bottom: 1px solid #E8E6DD; margin-bottom: 24px; }' +
       '.hd img { height: 32px; width: auto; }' +
       '.tag { font-size: 11px; letter-spacing: 2px; color: #45AADD; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }' +
-      'h1 { font-size: 26px; margin: 0 0 12px; line-height: 1.2; font-weight: 700; }' +
+      'h1 { font-size: 26px; margin: 0 0 8px; line-height: 1.2; font-weight: 700; }' +
+      '.prep { font-size: 13px; color: #5F5E5A; margin-bottom: 14px; font-weight: 700; }' +
       '.def { font-size: 13.5px; color: #444; margin-bottom: 28px; }' +
       '.section { margin-bottom: 22px; page-break-inside: avoid; }' +
       '.section-title { font-size: 11px; letter-spacing: 1.5px; color: #5F5E5A; font-weight: 700; text-transform: uppercase; margin: 0 0 10px; padding-bottom: 6px; border-bottom: 1px solid #F1EFE8; }' +
@@ -709,6 +910,7 @@
       '</div>' +
       '<div class="tag">Readiness checklist</div>' +
       '<h1>' + escHtml(name) + '</h1>' +
+      preparedFor +
       '<p class="def">' + escHtml(definition) + '</p>' +
       sectionsHtml +
       '<div class="help">' +
