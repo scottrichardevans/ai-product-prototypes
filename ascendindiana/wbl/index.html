@@ -336,6 +336,10 @@
         "Identify a team member who can mentor the student and provide skill development",
         "Work with your local intermediary to confirm aligned pathways and program structure"
       ],
+      printHelpExtra: {
+        text: "For employers interested in supporting industry-led apprenticeship, connect with your Industry Talent Association at",
+        linkUrl: "https://indianacap.org/employers/"
+      },
       memberDefs: [
         {
           name: "Modern Youth Apprenticeship",
@@ -1102,6 +1106,7 @@
       '<div class="help">' +
         '<div class="help-title">For help</div>' +
         '<p class="help-txt">Connect with a local intermediary who can help you launch this work-based learning experience:<br><a class="help-link" href="' + INTERMEDIARY_URL + '">' + INTERMEDIARY_URL + '</a></p>' +
+        (ri.printHelpExtra ? '<p class="help-txt" style="margin-top: 12px;">' + escHtml(ri.printHelpExtra.text) + '<br><a class="help-link" href="' + ri.printHelpExtra.linkUrl + '">' + escHtml(ri.printHelpExtra.linkUrl) + '</a></p>' : '') +
       '</div>' +
       '</body></html>';
     const w = window.open('', '_blank');
