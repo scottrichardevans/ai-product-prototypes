@@ -1,1 +1,1334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>Conexus Indiana Job Board — White-Label Platform Design | Scott Evans</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B2A4E;
+    --navy-deep: #0F1B36;
+    --blue-bright: #25A2DE;
+    --gold: #FAAA1C;
+    --gold-deep: #F37227;
+    --pink: #E91E63;
+    --ink: #1A1A1A;
+    --white: #FFFFFF;
+    --border: #E5E5E5;
+    --muted: #6B7280;
+    --bg: #F7F8FA;
+    --card: #FFFFFF;
+    --tag-bg: #F1ECFF;
+    --tag-remote-bg: #E6F8EE;
+    --tag-remote-text: #1F8C4D;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .doc {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  .doc-header {
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .doc-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 8px;
+  }
+  .doc-header p {
+    color: var(--muted);
+    margin: 0;
+    font-size: 14px;
+    max-width: 820px;
+    line-height: 1.5;
+  }
+  .palette {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .swatch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 10px 6px 6px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .swatch .chip {
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .section-label {
+    margin: 56px 0 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .section-label .num {
+    background: var(--navy);
+    color: var(--white);
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+  }
+  .section-label h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+  }
+  .section-label .note {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .frame {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  }
 
+  /* === App header (Home + Explore Roles) — logo on RIGHT, nav on LEFT === */
+  .app-header {
+    background: var(--navy);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    gap: 36px;
+  }
+  .app-header .left {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .nav-links a {
+    color: var(--white);
+    text-decoration: none;
+    opacity: 0.92;
+  }
+  .app-header .right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .app-header .logo {
+    height: 30px;
+    display: block;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .accent-stripe {
+    height: 4px;
+    background: var(--gold);
+  }
+
+  /* === App footer — NO LOGO === */
+  .app-footer {
+    background: var(--navy);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 32px;
+    font-size: 13px;
+    gap: 24px;
+  }
+  .app-footer .left {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .app-footer .center {
+    text-align: center;
+    flex: 1;
+  }
+  .app-footer a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .footer-stripe {
+    height: 4px;
+    background: var(--gold);
+  }
+
+  /* === Home page === */
+  .home { padding: 36px 48px 56px; }
+  .home h1 { font-size: 28px; font-weight: 700; margin: 0 0 6px; }
+  .home .sub { color: var(--muted); margin: 0 0 28px; font-size: 14px; }
+  .section { margin-bottom: 36px; }
+  .section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .section-head h3 { font-size: 17px; font-weight: 600; margin: 0; }
+  .section-head .see-all { font-size: 13px; font-weight: 500; color: var(--navy); text-decoration: none; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .grid-1 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .role-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px 16px;
+    min-height: 168px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+  }
+  .tag-row { display: flex; gap: 6px; align-items: center; margin-bottom: 10px; }
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--tag-bg);
+    color: #4b3f99;
+  }
+  .tag.remote { background: var(--tag-remote-bg); color: var(--tag-remote-text); }
+  .tag.featured {
+    background: var(--gold);
+    color: var(--ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .heart {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 18px;
+    height: 18px;
+    color: var(--muted);
+  }
+  .heart.active { color: var(--pink); }
+  .role-card .title { font-size: 15px; font-weight: 600; margin: 0 0 4px; color: var(--ink); line-height: 1.3; }
+  .role-card .company { font-size: 13px; color: var(--muted); margin: 0; }
+  .role-card .location { font-size: 13px; color: var(--muted); margin: 2px 0 0; }
+  .role-card .salary { font-size: 12px; font-weight: 600; color: var(--tag-remote-text); margin-top: 10px; }
+  .role-card .arrow { align-self: flex-end; margin-top: 8px; color: var(--navy); }
+
+  /* === Explore Roles === */
+  .explore { background: var(--white); }
+  .explore .title-row { padding: 22px 48px 4px; }
+  .explore h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--gold-deep);
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .explore-body {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 32px;
+    padding: 18px 48px 48px;
+  }
+  .filters h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin: 18px 0 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .filters h4 .chev { color: var(--muted); font-size: 12px; }
+  .filters .select-view { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+  .view-pill {
+    border: 1px solid var(--border);
+    background: var(--white);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .view-pill.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+  .view-pill .count { font-size: 13px; font-weight: 700; margin-right: 6px; }
+  .saved-filter { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 6px; }
+  .saved-filter input { accent-color: var(--navy); }
+  .filter-group { border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+  .filter-group:last-of-type { border-bottom: none; }
+  .filter-group .opt { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 6px; }
+  .filter-group input { accent-color: var(--navy); }
+  .apply-btn {
+    background: #ECEEF3;
+    color: var(--muted);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 14px;
+    width: 100%;
+    font-weight: 600;
+    font-size: 13px;
+    margin-top: 6px;
+  }
+  .results-head { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+  .search-box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    gap: 8px;
+    background: var(--white);
+  }
+  .search-box input { border: none; outline: none; width: 100%; font-size: 14px; font-family: 'Poppins', sans-serif; }
+  .clear-link { font-size: 13px; color: var(--ink); text-decoration: underline; white-space: nowrap; }
+  .sort-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    gap: 10px;
+    background: var(--white);
+  }
+  .results-count { font-size: 13px; color: var(--muted); margin: 0 0 14px; }
+  .listing {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    background: var(--white);
+  }
+  .listing .l-left h3 { font-size: 17px; font-weight: 700; margin: 0 0 10px; }
+  .listing .meta { font-size: 13px; color: var(--ink); line-height: 1.6; display: grid; gap: 4px; }
+  .listing .meta a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--gold);
+    text-underline-offset: 3px;
+  }
+  .listing .meta .row { display: flex; align-items: center; gap: 8px; }
+  .listing .l-right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; min-width: 220px; }
+  .badge-row { display: flex; gap: 6px; align-items: center; }
+  .badge { font-size: 11px; font-weight: 600; padding: 4px 8px; border-radius: 4px; }
+  .badge.featured { background: var(--gold); color: var(--ink); }
+  .badge.imported { background: var(--border); color: var(--ink); }
+  .actions { display: flex; gap: 8px; }
+  .icon-btn {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+  }
+  .icon-btn.heart-active { color: var(--pink); border-color: var(--pink); }
+
+  /* === PRIMARY BUTTON (navy on light, navy text on gold for inverse) === */
+  .cta-btn {
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 11px 20px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+  }
+  .cta-btn:hover { background: var(--navy-deep); }
+  .report-link { font-size: 12px; color: var(--muted); text-decoration: none; }
+
+  /* === SIGN-UP PAGE === */
+  .signup-page { background: var(--white); }
+  .signup-hero {
+    position: relative;
+    background:
+      linear-gradient(180deg, rgba(15,27,54,0.85) 0%, rgba(27,42,78,0.78) 100%),
+      radial-gradient(at 80% 30%, #2a4ca8 0%, transparent 50%),
+      radial-gradient(at 20% 80%, #0F1B36 0%, transparent 60%),
+      linear-gradient(135deg, #0F1B36 0%, #1B2A4E 50%, #243d7a 100%);
+    color: var(--white);
+    padding: 52px 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+    overflow: hidden;
+  }
+  .signup-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 25% 50%, rgba(255,255,255,0.04) 0, transparent 30%),
+      radial-gradient(circle at 75% 50%, rgba(255,255,255,0.05) 0, transparent 30%);
+    pointer-events: none;
+  }
+  .signup-hero .logo { height: 60px; position: relative; z-index: 1; }
+  .signup-hero .tagline { text-align: right; position: relative; z-index: 1; }
+  .signup-hero .tagline h1 {
+    font-family: 'Archivo Black', 'Poppins', sans-serif;
+    font-size: 52px;
+    line-height: 1;
+    margin: 0;
+    letter-spacing: -0.01em;
+    color: var(--white);
+  }
+  .signup-hero .tagline p {
+    margin: 12px 0 0;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    font-weight: 400;
+    color: rgba(255,255,255,0.85);
+  }
+  .signup-hero .tagline p b { font-weight: 700; color: var(--white); }
+
+  /* Feature strip */
+  .feature-strip {
+    background: var(--white);
+    padding: 22px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .feature-strip span.item {
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+  .feature-strip span.dot {
+    width: 7px;
+    height: 7px;
+    background: var(--pink);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* Active roles featured display */
+  .active-roles {
+    background: var(--navy);
+    color: var(--white);
+    padding: 48px 64px;
+    display: grid;
+    grid-template-columns: minmax(220px, 280px) 1px 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .active-roles .divider-v { width: 1px; background: rgba(255,255,255,0.18); align-self: stretch; }
+  .active-roles .stat .num {
+    font-family: 'Archivo Black', 'Poppins', sans-serif;
+    font-size: 72px;
+    line-height: 1;
+    color: var(--blue-bright);
+    letter-spacing: -0.02em;
+  }
+  .active-roles .stat .label {
+    margin-top: 8px;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    text-transform: uppercase;
+  }
+  .active-roles .copy h2 {
+    font-family: 'Archivo Black', 'Poppins', sans-serif;
+    font-size: 34px;
+    line-height: 1.1;
+    margin: 0 0 14px;
+    color: var(--white);
+  }
+  .active-roles .copy p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 0 14px;
+    color: rgba(255,255,255,0.9);
+  }
+  .active-roles .copy p b { color: var(--gold); font-weight: 700; }
+  .active-roles .employer-line {
+    font-size: 14px;
+    color: rgba(255,255,255,0.85);
+    margin-top: 6px;
+  }
+  .active-roles .employer-line a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 1px solid var(--gold);
+    margin-left: 6px;
+  }
+
+  /* Sign-up form */
+  .signup-form-section {
+    padding: 56px 64px 64px;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .signup-form-section h2 {
+    font-family: 'Archivo Black', 'Poppins', sans-serif;
+    font-size: 36px;
+    text-align: center;
+    margin: 0 0 12px;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+  .signup-form-section .subhead {
+    text-align: center;
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.55;
+    margin: 0 auto 36px;
+    max-width: 680px;
+  }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 36px; }
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field label { font-size: 18px; font-weight: 700; color: var(--ink); }
+  .field input {
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .field input::placeholder {
+    color: var(--pink);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    opacity: 1;
+  }
+  .field input:focus { outline: 2px solid var(--gold); border-color: var(--navy); }
+  .field .helper { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .signup-actions { margin-top: 36px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .signup-cta {
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 16px 56px;
+    font-weight: 700;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+  }
+  .signup-or {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    width: 100%;
+    max-width: 420px;
+  }
+  .signup-or::before, .signup-or::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  .social-row { display: flex; gap: 14px; }
+  .social-btn {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    padding: 12px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .login-link { margin-top: 6px; font-size: 14px; color: var(--muted); }
+  .login-link a {
+    color: var(--navy);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 2px solid var(--gold);
+  }
+  .legal {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    margin: 28px auto 0;
+    max-width: 540px;
+    line-height: 1.5;
+  }
+  .legal a { color: var(--navy); }
+
+  /* === Login === */
+  .login {
+    background: var(--white);
+    padding: 56px 48px;
+    display: flex;
+    justify-content: center;
+  }
+  .login-card {
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 16px;
+    padding: 44px 56px 40px;
+    width: 460px;
+    text-align: center;
+  }
+  .login-card .logo { height: 40px; margin-bottom: 22px; }
+  .login-card h2 {
+    font-family: 'Archivo Black', 'Poppins', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 8px 0 22px;
+    letter-spacing: 0.02em;
+  }
+  .login-card label {
+    display: block;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 12px 0 6px;
+    color: rgba(255,255,255,0.85);
+  }
+  .login-card input {
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    background: var(--white);
+    color: var(--ink);
+  }
+  .login-card .pw-row { position: relative; }
+  .login-card .pw-row .show {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .login-card .forgot {
+    display: block;
+    margin: 10px 0 18px;
+    text-align: right;
+    font-size: 12px;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .login-card .login-btn {
+    width: 100%;
+    background: var(--white);
+    color: var(--navy);
+    border: none;
+    border-radius: 8px;
+    padding: 13px;
+    font-weight: 700;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+  }
+  .login-card .or-div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--gold);
+    font-size: 12px;
+    margin: 18px 0;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+  .login-card .or-div::before, .login-card .or-div::after { content: ""; flex: 1; height: 1px; background: var(--gold); }
+  .login-card .social-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .login-card .social-btn { color: var(--ink); justify-content: center; }
+  .login-card .helpers { margin-top: 22px; font-size: 12px; line-height: 1.7; }
+  .login-card .helpers a { color: var(--gold); text-decoration: none; font-weight: 600; }
+  .login-card .support { font-size: 11px; margin-top: 10px; color: rgba(255,255,255,0.7); }
+
+  .placeholder-note {
+    background: #FFF8E5;
+    border: 1px dashed #E0B400;
+    color: #6B4F00;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12px;
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+  .placeholder-note b { color: #4A3500; }
+
+  /* Ascend-delta callout */
+  .delta-callout {
+    background: #F0F8FE;
+    border-left: 4px solid #45AADD;
+    border-radius: 6px;
+    padding: 12px 18px;
+    margin: 0 0 18px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #1C1C1C;
+  }
+  .delta-callout .label {
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #2C7FB8;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .delta-callout ul { margin: 0; padding-left: 18px; }
+  .delta-callout li { margin-bottom: 4px; }
+  .delta-callout li:last-child { margin-bottom: 0; }
+  .delta-callout strong { color: var(--navy); }
+  .delta-callout.summary { margin: 16px 0 0; }
+
+  @media print {
+    body { background: var(--white); }
+    .doc { padding: 0; max-width: none; }
+    .frame { box-shadow: none; page-break-inside: avoid; }
+    .section-label { page-break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <header class="doc-header">
+    <h1>Conexus Indiana Job Board — White-Label Platform Design</h1>
+    <p>
+      Ascend Indiana's job marketplace platform automates the ingestion and classification of job postings by advanced industry vertical. My team built that pipeline — the infrastructure that pulls roles from employer sources, normalizes them, and tags them by industry category. Once it existed, it raised a natural question: could the same data layer power branded job board experiences for partner organizations, without rebuilding anything from scratch each time?
+    </p>
+    <p>
+      Conexus Indiana — the state's advanced manufacturing and logistics trade association — was the first test case. Rather than building a standalone job board, we scoped a white-label model: Conexus gets a fully branded seeker experience surfacing AML-classified roles, while the Ascend pipeline continues to do the work underneath. The model is extensible to any of Ascend's sister initiatives focused on a specific advanced industry vertical.
+    </p>
+    <p>
+      This prototype documents the Conexus-branded UI across four screens — Sign-Up, Login, Home, and Role Discovery — built with AI assistance to give stakeholders something concrete to react to before any engineering time was committed. The delta callouts on each screen show exactly what changes from the Ascend baseline and why, keeping the scope clear and the dev lift predictable.
+    </p>
+    <div class="palette">
+      <div class="swatch"><div class="chip" style="background:#1B2A4E"></div>Navy #1B2A4E</div>
+      <div class="swatch"><div class="chip" style="background:#FAAA1C"></div>Gold #FAAA1C</div>
+      <div class="swatch"><div class="chip" style="background:#25A2DE"></div>Blue #25A2DE</div>
+      <div class="swatch"><div class="chip" style="background:#E91E63"></div>Pink #E91E63</div>
+      <div class="swatch"><div class="chip" style="background:#1A1A1A"></div>Ink #1A1A1A</div>
+      <div class="swatch"><div class="chip" style="background:#FFFFFF;border:1px solid #ccc"></div>White #FFFFFF</div>
+      <div class="swatch"><div class="chip" style="background:#E5E5E5"></div>Border #E5E5E5</div>
+      <div class="swatch" style="background:#1B2A4E;color:#fff;border-color:#1B2A4E">Font: Poppins · Display: Archivo Black</div>
+    </div>
+    <div class="delta-callout summary">
+      <div class="label">⇄ What changes from the Ascend baseline — and what stays the same</div>
+      <ul>
+        <li><strong>Palette:</strong> Conexus navy #1B2A4E + gold #FAAA1C replace Ascend's charcoal #1C1C1C + Ascend Blue #45AADD. Everything structural underneath is identical.</li>
+        <li><strong>Scope:</strong> The job board surfaces AML-classified roles only — copy, category labels, and result counts reflect advanced manufacturing and logistics. Ascend's platform spans all industries; the filter just narrows.</li>
+        <li><strong>Typography:</strong> Poppins body / Archivo Black display used as stand-ins. Confirm Conexus brand fonts before production.</li>
+        <li><strong>Co-branding:</strong> "Powered by The Ascend Network" appears in the footer and sign-up hero — making the platform relationship transparent to job seekers without burying the Conexus identity.</li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- 1. SIGN-UP -->
+  <div class="section-label">
+    <span class="num">01</span>
+    <h2>Sign-Up Page</h2>
+    <span class="note">Feature strip updated · Active Roles display added · Copy pulled from Conexus voice</span>
+  </div>
+
+  <div class="delta-callout">
+    <div class="label">⇄ Differs from Ascend baseline</div>
+    <ul>
+      <li>Co-branded hero added — Conexus logo + "Job Board / Powered by The Ascend Network" tagline. Ascend's sign-up uses a single brand header with no co-brand panel.</li>
+      <li>Form headline: "Create Your Account" with AML-focused subhead. Ascend uses industry-agnostic framing.</li>
+      <li>Subhead body copy mentions <em>"advanced manufacturing and logistics (AML)"</em> and "Hoosier employers" — pulled from Conexus's brand voice, not Ascend's.</li>
+      <li><strong>Intentionally matched to Ascend:</strong> the 5-item feature strip and the "Active Roles Today" featured display structure.</li>
+    </ul>
+  </div>
+
+  <div class="frame">
+    <div class="signup-page">
+      <!-- Hero -->
+      <div class="signup-hero">
+        <img class="logo" src="conexus-logo-light.svg" alt="Conexus Indiana" />
+        <div class="tagline">
+          <h1>Job Board</h1>
+          <p>POWERED BY <b>THE ASCEND NETWORK</b></p>
+        </div>
+      </div>
+
+      <!-- Feature strip (5 Ascend-style items) -->
+      <div class="feature-strip">
+        <span class="item">Advanced Industries</span>
+        <span class="dot"></span>
+        <span class="item">In-Person, Hybrid &amp; Remote</span>
+        <span class="dot"></span>
+        <span class="item">Top Indiana Employers</span>
+        <span class="dot"></span>
+        <span class="item">Always Free</span>
+        <span class="dot"></span>
+        <span class="item">Updated Daily</span>
+      </div>
+
+      <!-- Active Roles Featured Display -->
+      <div class="active-roles">
+        <div class="stat">
+          <div class="num">1,235</div>
+          <div class="label">Active Roles Today</div>
+        </div>
+        <div class="divider-v"></div>
+        <div class="copy">
+          <h2>Unlock Indiana's Career Opportunities</h2>
+          <p>Join the Conexus Indiana Job Board — <b>always free</b> — and connect with top Hoosier employers driving <b>advanced manufacturing and logistics (AML)</b>. Find rewarding work at every career stage, from apprenticeships and internships to executive roles in these rapidly evolving industries.</p>
+          <div class="employer-line">Are you an employer? <a href="#">Start Here</a></div>
+        </div>
+      </div>
+
+      <!-- Sign-up form -->
+      <div class="signup-form-section">
+        <h2>Create Your Account</h2>
+        <p class="subhead">Sign up to browse roles, save your favorites, and apply with a single click.</p>
+
+        <div class="form-grid">
+          <div class="field">
+            <label>First Name</label>
+            <input type="text" placeholder="FIRST NAME" />
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <input type="text" placeholder="LAST NAME" />
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" placeholder="YOU@EXAMPLE.COM" />
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input type="password" placeholder="••••••••••••••" />
+            <span class="helper">8+ characters, with at least one number</span>
+          </div>
+        </div>
+
+        <div class="signup-actions">
+          <button class="signup-cta">Create Account</button>
+          <div class="signup-or">or sign up with</div>
+          <div class="social-row">
+            <button class="social-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5V9h3v10zm-1.5-11.3A1.7 1.7 0 116.5 4.5a1.7 1.7 0 010 3.2zM19 19h-3v-5.5c0-1.3-.5-2.2-1.7-2.2-1 0-1.5.7-1.8 1.3-.1.2-.1.5-.1.8V19h-3V9h3v1.3c.4-.6 1.2-1.6 2.8-1.6 2 0 3.5 1.3 3.5 4.2V19z"/></svg>
+              LinkedIn
+            </button>
+            <button class="social-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M23 12.3c0-.8-.1-1.5-.2-2.2H12v4.2h6.2c-.3 1.4-1.1 2.6-2.4 3.4v2.8h3.9c2.3-2.1 3.3-5.1 3.3-8.2z"/><path fill="#34A853" d="M12 24c3.3 0 6-1.1 7.8-2.9l-3.9-2.8c-1 .7-2.3 1.1-3.9 1.1-3 0-5.6-2-6.5-4.8H1.5v3C3.3 21.5 7.3 24 12 24z"/><path fill="#FBBC05" d="M5.5 14.6c-.2-.7-.4-1.4-.4-2.1s.1-1.4.4-2.1v-3H1.5C.5 9 0 10.5 0 12.5s.5 3.5 1.5 5.1l4-3z"/><path fill="#EA4335" d="M12 4.8c1.7 0 3.2.6 4.4 1.7l3.3-3.3C17.9 1.3 15.3 0 12 0 7.3 0 3.3 2.5 1.5 6.4l4 3c.9-2.8 3.5-4.6 6.5-4.6z"/></svg>
+              Google
+            </button>
+          </div>
+          <p class="login-link">Already have an account? <a href="#">Log in</a></p>
+        </div>
+
+        <p class="legal">By creating an account, you agree to Conexus Indiana's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. LOGIN -->
+  <div class="section-label">
+    <span class="num">02</span>
+    <h2>Login Page</h2>
+    <span class="note">Primary CTA changed to white-on-navy</span>
+  </div>
+
+  <div class="delta-callout">
+    <div class="label">⇄ Differs from Ascend baseline</div>
+    <ul>
+      <li>Login card uses Conexus navy #1B2A4E (Ascend equivalent would be Charcoal #1C1C1C).</li>
+      <li>Primary "Log In" button is white-on-navy. Ascend's primary button would be Ascend Blue with white text.</li>
+      <li>Accent links ("Forgot Password," "Start Here," "Sign up Here") and the "OR" divider are Conexus gold. Ascend uses Ascend Blue for the same elements.</li>
+    </ul>
+  </div>
+
+  <div class="frame">
+    <div class="login">
+      <div class="login-card">
+        <img class="logo" src="conexus-logo-light.svg" alt="Conexus Indiana" />
+        <h2>Log In</h2>
+        <label>Email</label>
+        <input type="email" placeholder="you@example.com" />
+        <label>Password</label>
+        <div class="pw-row">
+          <input type="password" placeholder="••••••••" />
+          <span class="show">Show</span>
+        </div>
+        <a class="forgot" href="#">Forgot Your Password?</a>
+        <button class="login-btn">Log In</button>
+        <div class="or-div">OR</div>
+        <div class="social-row">
+          <button class="social-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5V9h3v10zm-1.5-11.3A1.7 1.7 0 116.5 4.5a1.7 1.7 0 010 3.2zM19 19h-3v-5.5c0-1.3-.5-2.2-1.7-2.2-1 0-1.5.7-1.8 1.3-.1.2-.1.5-.1.8V19h-3V9h3v1.3c.4-.6 1.2-1.6 2.8-1.6 2 0 3.5 1.3 3.5 4.2V19z"/></svg>
+            LinkedIn
+          </button>
+          <button class="social-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#4285F4" d="M23 12.3c0-.8-.1-1.5-.2-2.2H12v4.2h6.2c-.3 1.4-1.1 2.6-2.4 3.4v2.8h3.9c2.3-2.1 3.3-5.1 3.3-8.2z"/><path fill="#34A853" d="M12 24c3.3 0 6-1.1 7.8-2.9l-3.9-2.8c-1 .7-2.3 1.1-3.9 1.1-3 0-5.6-2-6.5-4.8H1.5v3C3.3 21.5 7.3 24 12 24z"/><path fill="#FBBC05" d="M5.5 14.6c-.2-.7-.4-1.4-.4-2.1s.1-1.4.4-2.1v-3H1.5C.5 9 0 10.5 0 12.5s.5 3.5 1.5 5.1l4-3z"/><path fill="#EA4335" d="M12 4.8c1.7 0 3.2.6 4.4 1.7l3.3-3.3C17.9 1.3 15.3 0 12 0 7.3 0 3.3 2.5 1.5 6.4l4 3c.9-2.8 3.5-4.6 6.5-4.6z"/></svg>
+            Google
+          </button>
+        </div>
+        <div class="helpers">
+          <div>Are you an Employer? <a href="#">Start Here</a></div>
+          <div>Are you a new job seeker? <a href="#">Sign up Here</a></div>
+        </div>
+        <div class="support">Need help? support@conexusindiana.com</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. HOME -->
+  <div class="section-label">
+    <span class="num">03</span>
+    <h2>Home — "New Roles for You"</h2>
+    <span class="note">Logo moved to right of header · Footer logo removed · Gold accents replace yellow-green</span>
+  </div>
+
+  <div class="delta-callout">
+    <div class="label">⇄ Differs from Ascend baseline</div>
+    <ul>
+      <li>Section labels are AML-scoped: Advanced Manufacturing, Logistics & Supply Chain, Logistics Entry Level. Ascend's home shows broader categories like Digital & Technology.</li>
+      <li>Subhead specifies "fresh advanced manufacturing and logistics (AML) matches." Ascend's version is industry-agnostic.</li>
+      <li>"Featured" tag is solid Conexus gold #FAAA1C with black text. Ascend version uses a soft Ascend Blue tint with a blue border.</li>
+      <li>Avatar background is Conexus gold (Ascend version: Ascend Blue).</li>
+    </ul>
+  </div>
+
+  <div class="frame">
+    <header class="app-header">
+      <div class="left">
+        <nav class="nav-links">
+          <a href="#">Home</a>
+          <a href="#">Explore Roles</a>
+          <a href="#">Explore Employers</a>
+        </nav>
+      </div>
+      <div class="right">
+        <img class="logo" src="conexus-logo-light.svg" alt="Conexus Indiana" />
+        <div class="avatar">SE</div>
+      </div>
+    </header>
+    <div class="accent-stripe"></div>
+
+    <div class="home">
+      <h1>New roles for you</h1>
+      <p class="sub">Based on your recent searches and activity, here are fresh advanced manufacturing and logistics (AML) matches we think you'll be interested in.</p>
+
+      <div class="section">
+        <div class="section-head">
+          <h3>Advanced Manufacturing (5,741)</h3>
+          <a class="see-all" href="#">See All →</a>
+        </div>
+        <div class="grid-3">
+          <div class="role-card">
+            <div>
+              <div class="tag-row"><span class="tag">In-Person</span></div>
+              <p class="title">CNC Machinist</p>
+              <p class="company">Aalberts Hydronic Flow Controls</p>
+              <p class="location">Fishers, Indiana</p>
+            </div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+          <div class="role-card">
+            <div>
+              <div class="tag-row"><span class="tag">In-Person</span></div>
+              <p class="title">Production Supervisor</p>
+              <p class="company">Metronet</p>
+              <p class="location">Evansville, Indiana</p>
+            </div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+          <div class="role-card">
+            <div>
+              <div class="tag-row"><span class="tag remote">Remote</span></div>
+              <p class="title">Manufacturing Engineer</p>
+              <p class="company">General Motors</p>
+              <p class="location">Remote</p>
+              <p class="salary">$125,200 – $192,700 per year</p>
+            </div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h3>Cummins · Logistics &amp; Supply Chain (1)</h3>
+          <a class="see-all" href="#">See All →</a>
+        </div>
+        <div class="grid-1">
+          <div class="role-card">
+            <div>
+              <div class="tag-row"><span class="tag">In-Person</span><span class="tag featured">★ Featured</span></div>
+              <p class="title">Senior Supply Chain Analyst</p>
+              <p class="company">Cummins</p>
+              <p class="location">Columbus, IN</p>
+            </div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h3>Logistics, Entry Level (1,704)</h3>
+          <a class="see-all" href="#">See All →</a>
+        </div>
+        <div class="grid-3">
+          <div class="role-card">
+            <div>
+              <div class="tag-row"><span class="tag">In-Person</span></div>
+              <p class="title">Warehouse Associate</p>
+              <p class="company">Metronet</p>
+              <p class="location">Evansville, Indiana</p>
+            </div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+          <div class="role-card">
+            <div>
+              <div class="tag-row"><span class="tag">In-Person</span></div>
+              <p class="title">Inventory Specialist</p>
+              <p class="company">Aalberts Hydronic Flow Controls</p>
+              <p class="location">Fishers, Indiana</p>
+            </div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+          <div class="role-card">
+            <div>
+              <div class="tag-row"><span class="tag">In-Person</span></div>
+              <p class="title">Distribution Coordinator</p>
+              <p class="company">Cummins</p>
+              <p class="location">Indianapolis, Indiana</p>
+              <p class="salary">$57,600 – $86,400 per year</p>
+            </div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h3>♡ Favorited Roles (3)</h3>
+          <a class="see-all" href="#">See All →</a>
+        </div>
+        <div class="grid-3">
+          <div class="role-card">
+            <div>
+              <div class="tag-row"><span class="tag">In-Person</span><span class="tag featured">★ Featured</span></div>
+              <p class="title">Quality Engineer</p>
+              <p class="company">Schneider-Bautista</p>
+              <p class="location">Indianapolis, IN</p>
+            </div>
+            <svg class="heart active" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+          <div class="role-card">
+            <div>
+              <div class="tag-row"><span class="tag">In-Person</span></div>
+              <p class="title">Maintenance Technician</p>
+              <p class="company">Adams Group</p>
+              <p class="location">Carmel, IN</p>
+            </div>
+            <svg class="heart active" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+          <div class="role-card">
+            <div>
+              <div class="tag-row"><span class="tag">In-Person</span></div>
+              <p class="title">Logistics Lead</p>
+              <p class="company">NMB LLC</p>
+              <p class="location">Fishers, IN</p>
+              <p class="salary">$45,000 – $50,000 per year</p>
+            </div>
+            <svg class="heart active" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-stripe"></div>
+    <footer class="app-footer">
+      <div class="left">Powered by The Ascend Network</div>
+      <div class="center">© 2026 Conexus Indiana. All rights reserved.</div>
+      <a href="#">Feedback Form</a>
+    </footer>
+  </div>
+
+  <!-- 4. EXPLORE ROLES -->
+  <div class="section-label">
+    <span class="num">04</span>
+    <h2>Explore Roles — Role Discovery</h2>
+    <span class="note">Logo on right of header · "Learn More &amp; Apply" CTA in Conexus navy</span>
+  </div>
+
+  <div class="delta-callout">
+    <div class="label">⇄ Differs from Ascend baseline</div>
+    <ul>
+      <li>"Role Discovery" page title in Conexus gold-orange #F37227. Ascend version uses Ascend Blue #45AADD.</li>
+      <li>Sort label: "Conexus Priority" (Ascend: "Ascend Priority").</li>
+      <li>Featured employer badge: solid Conexus gold #FAAA1C with star. Ascend version uses a soft blue tint with a blue border.</li>
+      <li>Featured label text: "Featured Conexus Employer" (Ascend: "Featured Ascend Employer").</li>
+      <li>"Learn More & Apply" CTA in Conexus navy. Ascend equivalent is Ascend Blue.</li>
+      <li>Results count: "1,031 roles in advanced manufacturing and logistics (AML)" (Ascend: "across Indiana's top industries").</li>
+    </ul>
+  </div>
+
+  <div class="frame">
+    <header class="app-header">
+      <div class="left">
+        <nav class="nav-links">
+          <a href="#">Home</a>
+          <a href="#">Explore Roles</a>
+          <a href="#">Explore Employers</a>
+        </nav>
+      </div>
+      <div class="right">
+        <img class="logo" src="conexus-logo-light.svg" alt="Conexus Indiana" />
+        <div class="avatar">SE</div>
+      </div>
+    </header>
+    <div class="accent-stripe"></div>
+
+    <div class="explore">
+      <div class="title-row">
+        <h1>Role Discovery</h1>
+      </div>
+      <div class="explore-body">
+        <aside class="filters">
+          <h4 style="margin-top:0">Select a View</h4>
+          <div class="select-view">
+            <div class="view-pill active"><span class="count">75,314</span> All Roles</div>
+            <div class="view-pill">♡ &nbsp;<span class="count">5</span> Favorited Roles</div>
+          </div>
+
+          <h4 style="border-top:1px solid var(--border); padding-top:14px">Filters</h4>
+          <h4>SAVED FILTERS <span class="chev">⌃</span></h4>
+          <div class="filter-group">
+            <div class="saved-filter"><input type="checkbox" checked /> Manufacturing Engineer</div>
+          </div>
+
+          <h4>EMPLOYMENT TYPE <span class="chev">⌃</span></h4>
+          <div class="filter-group">
+            <div class="opt"><input type="checkbox" /> Co-Op</div>
+            <div class="opt"><input type="checkbox" /> Contract</div>
+            <div class="opt"><input type="checkbox" /> Internship</div>
+            <div class="opt"><input type="checkbox" /> Permanent</div>
+            <button class="apply-btn">Apply</button>
+          </div>
+
+          <h4>EXPERIENCE LEVEL <span class="chev">⌄</span></h4>
+          <h4>SCHEDULE TYPE <span class="chev">⌄</span></h4>
+          <h4>SKILLS <span class="chev">⌄</span></h4>
+          <h4>SEASONS <span class="chev">⌄</span></h4>
+          <h4>CITY <span class="chev">⌄</span></h4>
+          <h4>WORK SETTING <span class="chev">⌄</span></h4>
+          <h4>ROLES <span class="chev">⌄</span></h4>
+          <h4>INDUSTRIES <span class="chev">⌄</span></h4>
+          <h4>DEGREE TYPE <span class="chev">⌄</span></h4>
+          <h4>COMPENSATION <span class="chev">⌄</span></h4>
+        </aside>
+
+        <main>
+          <div class="results-head">
+            <div class="search-box">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input placeholder="Search by title, company, or description" />
+            </div>
+            <a class="clear-link" href="#">Clear Search</a>
+            <div class="sort-box">Conexus Priority <span style="color:var(--muted)">⌄</span></div>
+          </div>
+          <p class="results-count">1,031 roles in advanced manufacturing and logistics (AML)</p>
+
+          <div class="listing">
+            <div class="l-left">
+              <h3>Manufacturing Operations Lead</h3>
+              <div class="meta">
+                <div class="row">🏢 <a href="#">Cummins</a></div>
+                <div class="row">🏷️ Cummins Inc.</div>
+                <div class="row">📍 Columbus, Indiana</div>
+                <div class="row">📅 Updated yesterday</div>
+              </div>
+            </div>
+            <div class="l-right">
+              <div class="badge-row">
+                <span class="badge featured">Featured Conexus Employer</span>
+                <span class="badge imported">Imported</span>
+              </div>
+              <div class="actions">
+                <button class="icon-btn" title="Hide">⊘</button>
+                <button class="icon-btn" title="Favorite">♡</button>
+              </div>
+              <button class="cta-btn">Learn More &amp; Apply</button>
+              <a class="report-link" href="#">⚠ Report an Issue</a>
+            </div>
+          </div>
+
+          <div class="listing">
+            <div class="l-left">
+              <h3>Logistics Coordinator</h3>
+              <div class="meta">
+                <div class="row">🏢 <a href="#">Aalberts Hydronic Flow Controls</a></div>
+                <div class="row">🏷️ aalberts.com</div>
+                <div class="row">💰 71,200 – 93,000 per year</div>
+                <div class="row">📍 Fishers, Indiana</div>
+                <div class="row">📅 Updated yesterday</div>
+              </div>
+            </div>
+            <div class="l-right">
+              <div class="badge-row">
+                <span class="badge featured">Featured Conexus Employer</span>
+                <span class="badge imported">Imported</span>
+              </div>
+              <div class="actions">
+                <button class="icon-btn" title="Hide">⊘</button>
+                <button class="icon-btn heart-active" title="Favorited">♥</button>
+              </div>
+              <button class="cta-btn">Learn More &amp; Apply</button>
+              <a class="report-link" href="#">⚠ Report an Issue</a>
+            </div>
+          </div>
+
+          <div class="listing">
+            <div class="l-left">
+              <h3>CNC Machinist II</h3>
+              <div class="meta">
+                <div class="row">🏢 <a href="#">Allegion</a></div>
+                <div class="row">🏷️ Schlage Lock Company LLC</div>
+                <div class="row">📍 Remote</div>
+                <div class="row">📅 Updated yesterday</div>
+              </div>
+            </div>
+            <div class="l-right">
+              <div class="badge-row">
+                <span class="badge featured">Featured Conexus Employer</span>
+                <span class="badge imported">Imported</span>
+              </div>
+              <div class="actions">
+                <button class="icon-btn" title="Hide">⊘</button>
+                <button class="icon-btn" title="Favorite">♡</button>
+              </div>
+              <button class="cta-btn">Learn More &amp; Apply</button>
+              <a class="report-link" href="#">⚠ Report an Issue</a>
+            </div>
+          </div>
+
+          <div class="listing">
+            <div class="l-left">
+              <h3>Supply Chain Specialist</h3>
+              <div class="meta">
+                <div class="row">🏢 <a href="#">Allegion</a></div>
+                <div class="row">🏷️ Schlage Lock Company LLC</div>
+                <div class="row">📍 Indianapolis, Indiana</div>
+                <div class="row">📅 Updated yesterday</div>
+              </div>
+            </div>
+            <div class="l-right">
+              <div class="badge-row">
+                <span class="badge featured">Featured Conexus Employer</span>
+                <span class="badge imported">Imported</span>
+              </div>
+              <div class="actions">
+                <button class="icon-btn" title="Hide">⊘</button>
+                <button class="icon-btn" title="Favorite">♡</button>
+              </div>
+              <button class="cta-btn">Learn More &amp; Apply</button>
+              <a class="report-link" href="#">⚠ Report an Issue</a>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <div class="footer-stripe"></div>
+    <footer class="app-footer">
+      <div class="left">Powered by The Ascend Network</div>
+      <div class="center">© 2026 Conexus Indiana. All rights reserved.</div>
+      <a href="#">Feedback Form</a>
+    </footer>
+  </div>
+
+  <div class="placeholder-note">
+    <b>Change log from prior version:</b><br>
+    · Footer logo removed from Home + Explore Roles (text-only footer)<br>
+    · App-header logo moved to the right (TechPoint pattern), nav now on left<br>
+    · Primary CTA color changed from #DDF247 (too loud) → Conexus navy #1B2A4E with white text; login button is white with navy text on the navy card<br>
+    · Accent stripes + avatar background now Conexus gold #FAAA1C<br>
+    · Sign-up feature strip swapped to the 5 Ascend items (Advanced Industries · In-Person, Hybrid &amp; Remote · Top Indiana Employers · Always Free · Updated Daily)<br>
+    · Added "1,235 Active Roles Today" featured display on sign-up with "Unlock Indiana's Career Opportunities" headline, mirroring the Ascend Indiana pattern<br>
+    · Copy throughout uses "advanced manufacturing and logistics (AML)" spelled out, with voice borrowed from the Conexus Indiana site ("Hoosier employers," "rewarding work," "rapidly evolving industries," "always free")<br>
+    · Display headline font is Archivo Black as a stand-in; flag if Conexus uses a specific brand font.
+  </div>
+
+</div>
+</body>
+</html>
