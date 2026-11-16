@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>BioCrossroads Job Board — Design Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- BioCrossroads uses Roboto (headlines) + Sofia Pro (body, licensed via their Adobe Fonts kit).
+     Figtree is the free stand-in for Sofia Pro until BioCrossroads confirms we can use their kit. -->
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #001442;
+    --navy-deep: #000D2E;
+    --navy-mid: #012066;
+    --blue: #003DCC;
+    --blue-dark: #002FA3;
+    --cyan: #66D4FF;
+    --pale: #E5EDFF;
+    --pink: #E91E63;
+    --ink: #0B1220;
+    --white: #FFFFFF;
+    --border: #D5DEF2;
+    --muted: #5B6783;
+    --bg: #F3F6FD;
+    --card: #FFFFFF;
+    --tag-bg: #E5EDFF;
+    --tag-text: #003DCC;
+    --tag-remote-bg: #E6F8EE;
+    --tag-remote-text: #1F8C4D;
+    --display: 'Roboto', -apple-system, 'Segoe UI', sans-serif;
+    --body: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; font-family: var(--body); background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; }
+  .doc { max-width: 1300px; margin: 0 auto; padding: 48px 24px 96px; }
+  .doc-header { margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+  .doc-header h1 { font-family: var(--display); font-size: 32px; font-weight: 500; letter-spacing: -0.02em; color: var(--navy); margin: 0 0 8px; }
+  .doc-header p { color: var(--muted); margin: 0; font-size: 14px; max-width: 840px; line-height: 1.55; }
+  .palette { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+  .swatch { display: flex; align-items: center; gap: 8px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px 6px 6px; font-size: 12px; font-weight: 500; }
+  .swatch .chip { width: 22px; height: 22px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.06); }
+  .section-label { margin: 56px 0 16px; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .section-label .num { background: var(--navy); color: var(--white); font-weight: 700; padding: 4px 10px; border-radius: 999px; font-size: 12px; }
+  .section-label h2 { font-family: var(--display); font-size: 22px; font-weight: 500; letter-spacing: -0.01em; color: var(--navy); margin: 0; }
+  .section-label .note { color: var(--muted); font-size: 13px; }
+  .frame { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0, 20, 66, 0.07); }
+
+  /* App header — logo on RIGHT, nav on LEFT (same pattern as Conexus / TechPoint) */
+  .app-header { background: var(--navy); color: var(--white); display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; gap: 36px; }
+  .app-header .left { display: flex; align-items: center; gap: 40px; }
+  .nav-links { display: flex; gap: 28px; font-size: 15px; font-weight: 700; }
+  .nav-links a { color: var(--white); text-decoration: none; opacity: 0.94; }
+  .app-header .right { display: flex; align-items: center; gap: 20px; }
+  .app-header .logo { height: 32px; display: block; }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--cyan); color: var(--navy); font-weight: 800; font-size: 13px; display: inline-flex; align-items: center; justify-content: center; }
+  .accent-stripe, .footer-stripe { height: 4px; background: var(--cyan); }
+
+  /* App footer — no logo */
+  .app-footer { background: var(--navy); color: var(--white); display: flex; align-items: center; justify-content: space-between; padding: 22px 32px; font-size: 13px; gap: 24px; }
+  .app-footer .left { font-size: 11px; color: rgba(255,255,255,0.7); letter-spacing: 0.06em; text-transform: uppercase; }
+  .app-footer .center { text-align: center; flex: 1; }
+  .app-footer a { color: var(--cyan); text-decoration: none; font-weight: 700; }
+
+  /* Home */
+  .home { padding: 36px 48px 56px; }
+  .home h1 { font-family: var(--display); font-size: 32px; font-weight: 500; letter-spacing: -0.02em; color: var(--navy); margin: 0 0 6px; }
+  .home .sub { color: var(--muted); margin: 0 0 28px; font-size: 15px; line-height: 1.5; }
+  .section { margin-bottom: 36px; }
+  .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .section-head h3 { font-family: var(--display); font-size: 19px; font-weight: 500; letter-spacing: -0.01em; color: var(--navy); margin: 0; }
+  .section-head .see-all { font-size: 13px; font-weight: 700; color: var(--blue); text-decoration: none; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .role-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px 16px; min-height: 168px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+  .tag-row { display: flex; gap: 6px; align-items: center; margin-bottom: 10px; }
+  .tag { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; background: var(--tag-bg); color: var(--tag-text); }
+  .tag.remote { background: var(--tag-remote-bg); color: var(--tag-remote-text); }
+  .tag.featured { background: var(--navy); color: var(--white); display: inline-flex; align-items: center; gap: 4px; }
+  .heart { position: absolute; top: 14px; right: 14px; width: 18px; height: 18px; color: var(--muted); }
+  .heart.active { color: var(--pink); }
+  .role-card .title { font-size: 15px; font-weight: 700; margin: 0 0 4px; color: var(--ink); line-height: 1.3; }
+  .role-card .company { font-size: 13px; color: var(--muted); margin: 0; }
+  .role-card .location { font-size: 13px; color: var(--muted); margin: 2px 0 0; }
+  .role-card .salary { font-size: 12px; font-weight: 700; color: var(--tag-remote-text); margin-top: 10px; }
+  .role-card .arrow { align-self: flex-end; margin-top: 8px; color: var(--blue); }
+
+  /* Explore roles */
+  .explore { background: var(--white); }
+  .explore .title-row { padding: 22px 48px 4px; }
+  .explore h1 { font-family: var(--display); font-size: 40px; font-weight: 500; color: var(--navy); margin: 0; letter-spacing: -0.025em; }
+  .explore-body { display: grid; grid-template-columns: 240px 1fr; gap: 32px; padding: 18px 48px 48px; }
+  .filters h4 { font-size: 13px; font-weight: 800; margin: 18px 0 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); display: flex; justify-content: space-between; align-items: center; }
+  .filters h4 .chev { color: var(--muted); font-size: 12px; }
+  .filters .select-view { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+  .view-pill { border: 1px solid var(--border); background: var(--white); border-radius: 8px; padding: 10px 14px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .view-pill.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+  .view-pill .count { font-size: 13px; font-weight: 800; margin-right: 6px; }
+  .saved-filter { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 6px; }
+  .saved-filter input, .filter-group input { accent-color: var(--blue); }
+  .filter-group { border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+  .filter-group .opt { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 6px; }
+  .apply-btn { background: #E8EDF8; color: var(--muted); border: none; border-radius: 8px; padding: 10px 14px; width: 100%; font-weight: 700; font-size: 13px; margin-top: 6px; font-family: var(--body); }
+  .results-head { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+  .search-box { flex: 1; display: flex; align-items: center; border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; gap: 8px; background: var(--white); }
+  .search-box input { border: none; outline: none; width: 100%; font-size: 14px; font-family: var(--body); }
+  .clear-link { font-size: 13px; color: var(--ink); text-decoration: underline; white-space: nowrap; }
+  .sort-box { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 13px; gap: 10px; background: var(--white); }
+  .results-count { font-size: 13px; color: var(--muted); margin: 0 0 14px; }
+  .listing { border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; background: var(--white); }
+  .listing .l-left h3 { font-size: 17px; font-weight: 700; margin: 0 0 10px; }
+  .listing .meta { font-size: 13px; color: var(--ink); line-height: 1.6; display: grid; gap: 4px; }
+  .listing .meta a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--cyan); text-underline-offset: 3px; text-decoration-thickness: 2px; }
+  .listing .meta .row { display: flex; align-items: center; gap: 8px; }
+  .listing .l-right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; min-width: 220px; }
+  .badge-row { display: flex; gap: 6px; align-items: center; }
+  .badge { font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 4px; }
+  .badge.featured { background: var(--navy); color: var(--white); }
+  .badge.imported { background: var(--pale); color: var(--navy); }
+  .actions { display: flex; gap: 8px; }
+  .icon-btn { width: 28px; height: 28px; border: 1px solid var(--border); border-radius: 6px; background: var(--white); display: inline-flex; align-items: center; justify-content: center; color: var(--muted); }
+  .icon-btn.heart-active { color: var(--pink); border-color: var(--navy); }
+  .cta-btn { background: var(--blue); color: var(--pale); border: none; border-radius: 35px; padding: 12px 24px; font-weight: 800; font-size: 14px; font-family: var(--body); cursor: pointer; }
+  .cta-btn:hover { background: var(--blue-dark); }
+  .report-link { font-size: 12px; color: var(--muted); text-decoration: none; }
+
+  /* Sign-up */
+  .signup-page { background: var(--white); }
+  .signup-hero {
+    position: relative; color: var(--white); padding: 56px 64px; display: flex; align-items: center; justify-content: space-between; gap: 48px; overflow: hidden;
+    background:
+      radial-gradient(ellipse at 82% 20%, rgba(102,212,255,0.22) 0, transparent 45%),
+      radial-gradient(ellipse at 15% 90%, rgba(0,61,204,0.45) 0, transparent 55%),
+      linear-gradient(135deg, #000D2E 0%, #001442 55%, #012066 100%);
+  }
+  .signup-hero::before { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(115deg, rgba(102,212,255,0.05) 0 2px, transparent 2px 38px); pointer-events: none; }
+  .signup-hero .logo { height: 54px; position: relative; z-index: 1; }
+  .signup-hero .tagline { text-align: right; position: relative; z-index: 1; }
+  .eyebrow { font-weight: 700; font-size: 13px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cyan); }
+  .signup-hero .tagline h1 { font-family: var(--display); font-weight: 500; font-size: 54px; line-height: 1.02; margin: 10px 0 0; letter-spacing: -0.03em; color: var(--white); }
+  .signup-hero .tagline p { margin: 14px 0 0; font-size: 13px; letter-spacing: 0.18em; color: rgba(255,255,255,0.85); }
+  .signup-hero .tagline p b { font-weight: 800; color: var(--white); }
+
+  .feature-strip { background: var(--white); padding: 22px 48px; display: flex; align-items: center; justify-content: center; gap: 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .feature-strip span.item { font-weight: 800; font-size: 13px; letter-spacing: 0.06em; color: var(--navy); text-transform: uppercase; }
+  .feature-strip span.dot { width: 7px; height: 7px; background: var(--cyan); border-radius: 50%; display: inline-block; }
+
+  .active-roles { background: linear-gradient(180deg, #001442 0%, #012066 100%); color: var(--white); padding: 52px 64px; display: grid; grid-template-columns: minmax(220px, 280px) 1px 1fr; gap: 40px; align-items: center; }
+  .active-roles .divider-v { width: 1px; background: rgba(255,255,255,0.2); align-self: stretch; }
+  .active-roles .stat .num { font-family: var(--display); font-weight: 500; font-size: 76px; line-height: 1; color: var(--cyan); letter-spacing: -0.04em; }
+  .active-roles .stat .label { margin-top: 10px; font-size: 12px; letter-spacing: 0.22em; font-weight: 700; color: rgba(255,255,255,0.85); text-transform: uppercase; }
+  .active-roles .copy h2 { font-family: var(--display); font-weight: 500; font-size: 36px; line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 14px; color: var(--white); }
+  .active-roles .copy p { font-size: 16px; line-height: 1.6; margin: 0 0 14px; color: rgba(255,255,255,0.92); }
+  .active-roles .copy p b { color: var(--cyan); font-weight: 700; }
+  .active-roles .employer-line { font-size: 14px; color: rgba(255,255,255,0.88); margin-top: 6px; }
+  .active-roles .employer-line a { color: var(--cyan); text-decoration: none; font-weight: 800; border-bottom: 1px solid var(--cyan); margin-left: 6px; }
+
+  .signup-form-section { padding: 56px 64px 64px; max-width: 920px; margin: 0 auto; }
+  .signup-form-section h2 { font-family: var(--display); font-weight: 500; font-size: 38px; letter-spacing: -0.025em; text-align: center; margin: 0 0 12px; line-height: 1.1; color: var(--navy); }
+  .signup-form-section .subhead { text-align: center; font-size: 16px; color: var(--muted); line-height: 1.55; margin: 0 auto 36px; max-width: 680px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 36px; }
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field label { font-size: 17px; font-weight: 700; color: var(--navy); }
+  .field input { border: 1px solid var(--navy); border-radius: 6px; padding: 14px 16px; font-size: 14px; font-family: var(--body); background: var(--white); color: var(--ink); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+  .field input::placeholder { color: #9AA6C0; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; opacity: 1; }
+  .field input:focus { outline: 2px solid var(--cyan); border-color: var(--blue); }
+  .field .helper { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .signup-actions { margin-top: 36px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .signup-cta { background: var(--blue); color: var(--pale); border: none; border-radius: 35px; padding: 16px 60px; font-weight: 800; font-size: 16px; font-family: var(--body); cursor: pointer; }
+  .signup-or { display: flex; align-items: center; gap: 14px; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; width: 100%; max-width: 420px; }
+  .signup-or::before, .signup-or::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  .social-row { display: flex; gap: 14px; }
+  .social-btn { border: 1px solid var(--border); border-radius: 35px; background: var(--white); padding: 12px 24px; font-size: 14px; font-weight: 700; font-family: var(--body); display: inline-flex; align-items: center; gap: 10px; cursor: pointer; color: var(--ink); }
+  .login-link { margin-top: 6px; font-size: 14px; color: var(--muted); }
+  .login-link a { color: var(--blue); font-weight: 800; text-decoration: none; border-bottom: 2px solid var(--cyan); }
+  .legal { font-size: 11px; color: var(--muted); text-align: center; margin: 28px auto 0; max-width: 540px; line-height: 1.5; }
+  .legal a { color: var(--blue); }
+
+  /* Login */
+  .login { background: var(--white); padding: 56px 48px; display: flex; justify-content: center; }
+  .login-card { background: linear-gradient(180deg, #001442 0%, #012066 100%); color: var(--white); border-radius: 18px; padding: 44px 56px 40px; width: 460px; text-align: center; }
+  .login-card .logo { height: 38px; margin-bottom: 22px; }
+  .login-card h2 { font-family: var(--display); font-size: 30px; font-weight: 500; letter-spacing: -0.02em; margin: 8px 0 22px; }
+  .login-card label { display: block; text-align: left; font-size: 12px; font-weight: 700; margin: 12px 0 6px; color: rgba(255,255,255,0.88); }
+  .login-card input { width: 100%; border: none; border-radius: 8px; padding: 12px 14px; font-size: 14px; font-family: var(--body); background: var(--white); color: var(--ink); }
+  .login-card .pw-row { position: relative; }
+  .login-card .pw-row .show { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 12px; }
+  .login-card .forgot { display: block; margin: 10px 0 18px; text-align: right; font-size: 12px; color: var(--cyan); text-decoration: none; }
+  .login-card .login-btn { width: 100%; background: var(--pale); color: var(--navy); border: none; border-radius: 35px; padding: 14px; font-weight: 800; font-size: 15px; font-family: var(--body); cursor: pointer; }
+  .login-card .or-div { display: flex; align-items: center; gap: 12px; color: var(--cyan); font-size: 12px; margin: 18px 0; font-weight: 700; letter-spacing: 0.1em; }
+  .login-card .or-div::before, .login-card .or-div::after { content: ""; flex: 1; height: 1px; background: rgba(102,212,255,0.6); }
+  .login-card .social-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .login-card .social-btn { color: var(--ink); justify-content: center; }
+  .login-card .helpers { margin-top: 22px; font-size: 12px; line-height: 1.7; }
+  .login-card .helpers a { color: var(--cyan); text-decoration: none; font-weight: 700; }
+  .login-card .support { font-size: 11px; margin-top: 10px; color: rgba(255,255,255,0.7); }
+
+  .placeholder-note { background: #FFF8E5; border: 1px dashed #E0B400; color: #6B4F00; border-radius: 8px; padding: 12px 16px; font-size: 12px; margin-top: 16px; line-height: 1.6; }
+  .placeholder-note b { color: #4A3500; }
+  .delta-callout { background: #EEF4FF; border-left: 4px solid var(--blue); border-radius: 6px; padding: 12px 18px; margin: 0 0 18px; font-size: 13px; line-height: 1.6; color: #1C1C1C; }
+  .delta-callout .label { font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--blue); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .delta-callout ul { margin: 0; padding-left: 18px; }
+  .delta-callout li { margin-bottom: 4px; }
+  .delta-callout li:last-child { margin-bottom: 0; }
+  .delta-callout strong { color: var(--navy); }
+  .delta-callout.summary { margin: 16px 0 0; }
+  @media print { body { background: var(--white); } .doc { padding: 0; max-width: none; } .frame { box-shadow: none; page-break-inside: avoid; } .section-label { page-break-after: avoid; } }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <header class="doc-header">
+    <h1>BioCrossroads Job Board — Design Mockup</h1>
+    <p>Visual reference for design sign-off. Four surfaces shown in proposed BioCrossroads styling: Sign-Up, Login, Home (New Roles), and Explore Roles. Brand pulled from the live BioCrossroads site (biocrossroads.com). Primary buttons are BioCrossroads royal blue, pill-shaped, as on their site. Copy uses "life sciences" and "Igniting IN Life Sciences" per BioCrossroads convention. Roles, employers and counts below are sample data for illustration only.</p>
+    <div class="palette">
+      <div class="swatch"><div class="chip" style="background:#001442"></div>Navy #001442</div>
+      <div class="swatch"><div class="chip" style="background:#003DCC"></div>Royal Blue #003DCC</div>
+      <div class="swatch"><div class="chip" style="background:#66D4FF"></div>Cyan #66D4FF</div>
+      <div class="swatch"><div class="chip" style="background:#E5EDFF;border:1px solid #ccc"></div>Pale Blue #E5EDFF</div>
+      <div class="swatch"><div class="chip" style="background:#012066"></div>Navy Mid #012066</div>
+      <div class="swatch"><div class="chip" style="background:#E91E63"></div>Pink #E91E63 (favorite heart only)</div>
+      <div class="swatch"><div class="chip" style="background:#0B1220"></div>Ink #0B1220</div>
+      <div class="swatch" style="background:#001442;color:#fff;border-color:#001442">Fonts: Roboto (headlines) · Sofia Pro (body; Figtree stand-in)</div>
+    </div>
+    <div class="delta-callout summary">
+      <div class="label">⇄ BioCrossroads-specific decisions vs Ascend baseline</div>
+      <ul>
+        <li><strong>Palette:</strong> BioCrossroads navy #001442, royal blue #003DCC and cyan #66D4FF (Ascend baseline uses Charcoal #1C1C1C + Ascend Blue #45AADD). Values read from the live site.</li>
+        <li><strong>Scope:</strong> Life sciences focus. Copy and categories emphasize biosciences, medical devices, pharma, diagnostics and agbiosciences. Ascend's platform spans all industries.</li>
+        <li><strong>Typography:</strong> Headlines in Roboto, as on their site. Body on their site is Sofia Pro, licensed through their Adobe Fonts kit. Figtree stands in here until BioCrossroads confirms we can use their kit.</li>
+        <li><strong>Shape:</strong> Pill-shaped buttons (their site) instead of the squarer Conexus buttons.</li>
+        <li><strong>Co-branding:</strong> "Powered by The Ascend Network" credited in the footer and sign-up hero, same as Conexus.</li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- 1. SIGN-UP -->
+  <div class="section-label">
+    <span class="num">01</span>
+    <h2>Sign-Up Page</h2>
+    <span class="note">Feature strip · Active Roles display · Copy in BioCrossroads voice</span>
+  </div>
+
+  <div class="delta-callout">
+    <div class="label">⇄ Differs from Ascend baseline</div>
+    <ul>
+      <li>Co-branded hero: BioCrossroads logo + "Job Board / Powered by The Ascend Network." Ascend's sign-up uses a single brand header with no co-brand panel.</li>
+      <li>Hero eyebrow and headline use their "Igniting IN Life Sciences" line.</li>
+      <li>Form headline "Create Your Account" with a life sciences subhead. Ascend uses industry-agnostic framing.</li>
+      <li><strong>Intentionally matched to Ascend:</strong> the 5-item feature strip and the "Active Roles Today" featured display structure.</li>
+    </ul>
+  </div>
+
+  <div class="frame">
+    <div class="signup-page">
+      <div class="signup-hero">
+        <img class="logo" src="https://biocrossroads.com/wp-content/uploads/2025/01/logo-reverse.svg" alt="BioCrossroads" />
+        <div class="tagline">
+          <div class="eyebrow">Igniting IN Life Sciences</div>
+          <h1>Job Board</h1>
+          <p>POWERED BY <b>THE ASCEND NETWORK</b></p>
+        </div>
+      </div>
+
+      <div class="feature-strip">
+        <span class="item">Life Sciences</span>
+        <span class="dot"></span>
+        <span class="item">In-Person, Hybrid &amp; Remote</span>
+        <span class="dot"></span>
+        <span class="item">Top Indiana Employers</span>
+        <span class="dot"></span>
+        <span class="item">Always Free</span>
+        <span class="dot"></span>
+        <span class="item">Updated Daily</span>
+      </div>
+
+      <div class="active-roles">
+        <div class="stat">
+          <div class="num">1,100</div>
+          <div class="label">Active Roles Today</div>
+        </div>
+        <div class="divider-v"></div>
+        <div class="copy">
+          <h2>Build Your Career in Indiana Life Sciences</h2>
+          <p>Join the BioCrossroads Job Board, <b>always free</b>, and connect with the Hoosier employers driving <b>life sciences</b> innovation, from research labs and medical devices to pharma, diagnostics and agbiosciences. Find rewarding work at every career stage, from apprenticeships and internships to executive roles.</p>
+          <div class="employer-line">Are you an employer? <a href="#">Start Here</a></div>
+        </div>
+      </div>
+
+      <div class="signup-form-section">
+        <h2>Create Your Account</h2>
+        <p class="subhead">Sign up to browse roles, save your favorites, and apply with a single click.</p>
+
+        <div class="form-grid">
+          <div class="field"><label>First Name</label><input type="text" placeholder="FIRST NAME" /></div>
+          <div class="field"><label>Last Name</label><input type="text" placeholder="LAST NAME" /></div>
+          <div class="field"><label>Email</label><input type="email" placeholder="YOU@EXAMPLE.COM" /></div>
+          <div class="field"><label>Password</label><input type="password" placeholder="••••••••••••••" /><span class="helper">8+ characters, with at least one number</span></div>
+        </div>
+
+        <div class="signup-actions">
+          <button class="signup-cta">Create Account</button>
+          <div class="signup-or">or sign up with</div>
+          <div class="social-row">
+            <button class="social-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5V9h3v10zm-1.5-11.3A1.7 1.7 0 116.5 4.5a1.7 1.7 0 010 3.2zM19 19h-3v-5.5c0-1.3-.5-2.2-1.7-2.2-1 0-1.5.7-1.8 1.3-.1.2-.1.5-.1.8V19h-3V9h3v1.3c.4-.6 1.2-1.6 2.8-1.6 2 0 3.5 1.3 3.5 4.2V19z"/></svg>
+              LinkedIn
+            </button>
+            <button class="social-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M23 12.3c0-.8-.1-1.5-.2-2.2H12v4.2h6.2c-.3 1.4-1.1 2.6-2.4 3.4v2.8h3.9c2.3-2.1 3.3-5.1 3.3-8.2z"/><path fill="#34A853" d="M12 24c3.3 0 6-1.1 7.8-2.9l-3.9-2.8c-1 .7-2.3 1.1-3.9 1.1-3 0-5.6-2-6.5-4.8H1.5v3C3.3 21.5 7.3 24 12 24z"/><path fill="#FBBC05" d="M5.5 14.6c-.2-.7-.4-1.4-.4-2.1s.1-1.4.4-2.1v-3H1.5C.5 9 0 10.5 0 12.5s.5 3.5 1.5 5.1l4-3z"/><path fill="#EA4335" d="M12 4.8c1.7 0 3.2.6 4.4 1.7l3.3-3.3C17.9 1.3 15.3 0 12 0 7.3 0 3.3 2.5 1.5 6.4l4 3c.9-2.8 3.5-4.6 6.5-4.6z"/></svg>
+              Google
+            </button>
+          </div>
+          <p class="login-link">Already have an account? <a href="#">Log in</a></p>
+        </div>
+
+        <p class="legal">By creating an account, you agree to BioCrossroads' <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. LOGIN -->
+  <div class="section-label">
+    <span class="num">02</span>
+    <h2>Login Page</h2>
+    <span class="note">Pale-blue pill primary CTA on navy card</span>
+  </div>
+
+  <div class="delta-callout">
+    <div class="label">⇄ Differs from Ascend baseline</div>
+    <ul>
+      <li>Login card uses BioCrossroads navy (Ascend equivalent would be Charcoal #1C1C1C).</li>
+      <li>Primary "Log In" button is a pale-blue pill on navy. Ascend's primary button would be Ascend Blue with white text.</li>
+      <li>Accent links ("Forgot Password," "Start Here," "Sign up Here") and the "OR" divider are BioCrossroads cyan. Ascend uses Ascend Blue for the same elements.</li>
+    </ul>
+  </div>
+
+  <div class="frame">
+    <div class="login">
+      <div class="login-card">
+        <img class="logo" src="https://biocrossroads.com/wp-content/uploads/2025/01/logo-reverse.svg" alt="BioCrossroads" />
+        <h2>Log In</h2>
+        <label>Email</label>
+        <input type="email" placeholder="you@example.com" />
+        <label>Password</label>
+        <div class="pw-row"><input type="password" placeholder="••••••••" /><span class="show">Show</span></div>
+        <a class="forgot" href="#">Forgot Your Password?</a>
+        <button class="login-btn">Log In</button>
+        <div class="or-div">OR</div>
+        <div class="social-row">
+          <button class="social-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5V9h3v10zm-1.5-11.3A1.7 1.7 0 116.5 4.5a1.7 1.7 0 010 3.2zM19 19h-3v-5.5c0-1.3-.5-2.2-1.7-2.2-1 0-1.5.7-1.8 1.3-.1.2-.1.5-.1.8V19h-3V9h3v1.3c.4-.6 1.2-1.6 2.8-1.6 2 0 3.5 1.3 3.5 4.2V19z"/></svg>
+            LinkedIn
+          </button>
+          <button class="social-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#4285F4" d="M23 12.3c0-.8-.1-1.5-.2-2.2H12v4.2h6.2c-.3 1.4-1.1 2.6-2.4 3.4v2.8h3.9c2.3-2.1 3.3-5.1 3.3-8.2z"/><path fill="#34A853" d="M12 24c3.3 0 6-1.1 7.8-2.9l-3.9-2.8c-1 .7-2.3 1.1-3.9 1.1-3 0-5.6-2-6.5-4.8H1.5v3C3.3 21.5 7.3 24 12 24z"/><path fill="#FBBC05" d="M5.5 14.6c-.2-.7-.4-1.4-.4-2.1s.1-1.4.4-2.1v-3H1.5C.5 9 0 10.5 0 12.5s.5 3.5 1.5 5.1l4-3z"/><path fill="#EA4335" d="M12 4.8c1.7 0 3.2.6 4.4 1.7l3.3-3.3C17.9 1.3 15.3 0 12 0 7.3 0 3.3 2.5 1.5 6.4l4 3c.9-2.8 3.5-4.6 6.5-4.6z"/></svg>
+            Google
+          </button>
+        </div>
+        <div class="helpers">
+          <div>Are you an Employer? <a href="#">Start Here</a></div>
+          <div>Are you a new job seeker? <a href="#">Sign up Here</a></div>
+        </div>
+        <div class="support">Need help? [support email — to confirm with BioCrossroads]</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. HOME -->
+  <div class="section-label">
+    <span class="num">03</span>
+    <h2>Home — "New Roles for You"</h2>
+    <span class="note">Logo on right of header · No footer logo · Cyan accents</span>
+  </div>
+
+  <div class="delta-callout">
+    <div class="label">⇄ Differs from Ascend baseline</div>
+    <ul>
+      <li>Section labels are life-sciences scoped: Biosciences &amp; Research, Medical Devices &amp; Diagnostics, Entry Level Lab &amp; Production. Ascend's home shows broader categories like Digital &amp; Technology.</li>
+      <li>Subhead specifies "fresh life sciences matches." Ascend's version is industry-agnostic.</li>
+      <li>"Featured" tag is solid BioCrossroads navy with white text. Avatar is cyan on navy.</li>
+    </ul>
+  </div>
+
+  <div class="frame">
+    <header class="app-header">
+      <div class="left"><nav class="nav-links"><a href="#">Home</a><a href="#">Explore Roles</a><a href="#">Explore Employers</a></nav></div>
+      <div class="right">
+        <img class="logo" src="https://biocrossroads.com/wp-content/uploads/2025/01/logo-reverse.svg" alt="BioCrossroads" />
+        <div class="avatar">SE</div>
+      </div>
+    </header>
+    <div class="accent-stripe"></div>
+
+    <div class="home">
+      <h1>New roles for you</h1>
+      <p class="sub">Based on your recent searches and activity, here are fresh life sciences matches we think you'll be interested in.</p>
+
+      <div class="section">
+        <div class="section-head"><h3>Biosciences &amp; Research (3,120)</h3><a class="see-all" href="#">See All →</a></div>
+        <div class="grid-3">
+          <div class="role-card">
+            <div><div class="tag-row"><span class="tag">In-Person</span></div><p class="title">Research Associate, Biology</p><p class="company">Eli Lilly and Company</p><p class="location">Indianapolis, Indiana</p></div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+          <div class="role-card">
+            <div><div class="tag-row"><span class="tag">In-Person</span></div><p class="title">Clinical Research Coordinator</p><p class="company">Indiana University Health</p><p class="location">Indianapolis, Indiana</p></div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+          <div class="role-card">
+            <div><div class="tag-row"><span class="tag remote">Remote</span></div><p class="title">Senior Bioinformatics Scientist</p><p class="company">Elanco Animal Health</p><p class="location">Remote</p><p class="salary">$118,000 – $165,000 per year</p></div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h3>Medical Devices &amp; Diagnostics (1,480)</h3><a class="see-all" href="#">See All →</a></div>
+        <div class="grid-3">
+          <div class="role-card">
+            <div><div class="tag-row"><span class="tag">In-Person</span><span class="tag featured">★ Featured</span></div><p class="title">Quality Engineer, Medical Devices</p><p class="company">Cook Medical</p><p class="location">Bloomington, IN</p></div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+          <div class="role-card">
+            <div><div class="tag-row"><span class="tag">In-Person</span></div><p class="title">Manufacturing Engineer</p><p class="company">Zimmer Biomet</p><p class="location">Warsaw, Indiana</p><p class="salary">$84,000 – $112,000 per year</p></div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+          <div class="role-card">
+            <div><div class="tag-row"><span class="tag">In-Person</span></div><p class="title">Assay Development Scientist</p><p class="company">Roche Diagnostics</p><p class="location">Indianapolis, Indiana</p></div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h3>Entry Level Lab &amp; Production (860)</h3><a class="see-all" href="#">See All →</a></div>
+        <div class="grid-3">
+          <div class="role-card">
+            <div><div class="tag-row"><span class="tag">In-Person</span></div><p class="title">Laboratory Technician I</p><p class="company">Catalent</p><p class="location">Bloomington, Indiana</p></div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+          <div class="role-card">
+            <div><div class="tag-row"><span class="tag">In-Person</span></div><p class="title">Pharmaceutical Production Operator</p><p class="company">Eli Lilly and Company</p><p class="location">Lebanon, Indiana</p><p class="salary">$24 – $31 per hour</p></div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+          <div class="role-card">
+            <div><div class="tag-row"><span class="tag">In-Person</span></div><p class="title">Quality Control Analyst</p><p class="company">Corteva Agriscience</p><p class="location">Indianapolis, Indiana</p></div>
+            <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h3>♡ Favorited Roles (3)</h3><a class="see-all" href="#">See All →</a></div>
+        <div class="grid-3">
+          <div class="role-card">
+            <div><div class="tag-row"><span class="tag">In-Person</span><span class="tag featured">★ Featured</span></div><p class="title">Regulatory Affairs Specialist</p><p class="company">Cook Medical</p><p class="location">Bloomington, IN</p></div>
+            <svg class="heart active" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+          <div class="role-card">
+            <div><div class="tag-row"><span class="tag">In-Person</span></div><p class="title">Process Development Associate</p><p class="company">Elanco Animal Health</p><p class="location">Greenfield, IN</p></div>
+            <svg class="heart active" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+          <div class="role-card">
+            <div><div class="tag-row"><span class="tag">In-Person</span></div><p class="title">Biomedical Equipment Technician</p><p class="company">Beckman Coulter</p><p class="location">Indianapolis, IN</p><p class="salary">$52,000 – $68,000 per year</p></div>
+            <svg class="heart active" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <div class="arrow">→</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-stripe"></div>
+    <footer class="app-footer">
+      <div class="left">Powered by The Ascend Network</div>
+      <div class="center">© 2026 BioCrossroads. All rights reserved.</div>
+      <a href="#">Feedback Form</a>
+    </footer>
+  </div>
+
+  <!-- 4. EXPLORE ROLES -->
+  <div class="section-label">
+    <span class="num">04</span>
+    <h2>Explore Roles — Role Discovery</h2>
+    <span class="note">Logo on right of header · "Learn More &amp; Apply" pill CTA in royal blue</span>
+  </div>
+
+  <div class="delta-callout">
+    <div class="label">⇄ Differs from Ascend baseline</div>
+    <ul>
+      <li>"Role Discovery" page title in BioCrossroads navy. Ascend version uses Ascend Blue #45AADD.</li>
+      <li>Sort label: "BioCrossroads Priority" (Ascend: "Ascend Priority").</li>
+      <li>Featured employer badge: solid navy with white text. Label: "Featured BioCrossroads Partner" (Ascend: "Featured Ascend Employer").</li>
+      <li>"Learn More &amp; Apply" CTA is a royal blue pill. Ascend equivalent is Ascend Blue.</li>
+      <li>Results count: "1,100 roles in Indiana life sciences" (Ascend: "across Indiana's top industries").</li>
+    </ul>
+  </div>
+
+  <div class="frame">
+    <header class="app-header">
+      <div class="left"><nav class="nav-links"><a href="#">Home</a><a href="#">Explore Roles</a><a href="#">Explore Employers</a></nav></div>
+      <div class="right">
+        <img class="logo" src="https://biocrossroads.com/wp-content/uploads/2025/01/logo-reverse.svg" alt="BioCrossroads" />
+        <div class="avatar">SE</div>
+      </div>
+    </header>
+    <div class="accent-stripe"></div>
+
+    <div class="explore">
+      <div class="title-row"><h1>Role Discovery</h1></div>
+      <div class="explore-body">
+        <aside class="filters">
+          <h4 style="margin-top:0">Select a View</h4>
+          <div class="select-view">
+            <div class="view-pill active"><span class="count">12,480</span> All Roles</div>
+            <div class="view-pill">♡ &nbsp;<span class="count">5</span> Favorited Roles</div>
+          </div>
+
+          <h4 style="border-top:1px solid var(--border); padding-top:14px">Filters</h4>
+          <h4>SAVED FILTERS <span class="chev">⌃</span></h4>
+          <div class="filter-group"><div class="saved-filter"><input type="checkbox" checked /> Research Associate</div></div>
+
+          <h4>EMPLOYMENT TYPE <span class="chev">⌃</span></h4>
+          <div class="filter-group">
+            <div class="opt"><input type="checkbox" /> Co-Op</div>
+            <div class="opt"><input type="checkbox" /> Contract</div>
+            <div class="opt"><input type="checkbox" /> Internship</div>
+            <div class="opt"><input type="checkbox" /> Permanent</div>
+            <button class="apply-btn">Apply</button>
+          </div>
+
+          <h4>EXPERIENCE LEVEL <span class="chev">⌄</span></h4>
+          <h4>SCHEDULE TYPE <span class="chev">⌄</span></h4>
+          <h4>SKILLS <span class="chev">⌄</span></h4>
+          <h4>SEASONS <span class="chev">⌄</span></h4>
+          <h4>CITY <span class="chev">⌄</span></h4>
+          <h4>WORK SETTING <span class="chev">⌄</span></h4>
+          <h4>ROLES <span class="chev">⌄</span></h4>
+          <h4>INDUSTRIES <span class="chev">⌄</span></h4>
+          <h4>DEGREE TYPE <span class="chev">⌄</span></h4>
+          <h4>COMPENSATION <span class="chev">⌄</span></h4>
+        </aside>
+
+        <main>
+          <div class="results-head">
+            <div class="search-box">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA6C0" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input placeholder="Search by title, company, or description" />
+            </div>
+            <a class="clear-link" href="#">Clear Search</a>
+            <div class="sort-box">BioCrossroads Priority <span style="color:var(--muted)">⌄</span></div>
+          </div>
+          <p class="results-count">1,100 roles in Indiana life sciences</p>
+
+          <div class="listing">
+            <div class="l-left">
+              <h3>Research Associate, Biology</h3>
+              <div class="meta">
+                <div class="row">🏢 <a href="#">Eli Lilly and Company</a></div>
+                <div class="row">🏷️ lilly.com</div>
+                <div class="row">📍 Indianapolis, Indiana</div>
+                <div class="row">📅 Updated yesterday</div>
+              </div>
+            </div>
+            <div class="l-right">
+              <div class="badge-row"><span class="badge featured">Featured BioCrossroads Partner</span><span class="badge imported">Imported</span></div>
+              <div class="actions"><button class="icon-btn" title="Hide">⊘</button><button class="icon-btn" title="Favorite">♡</button></div>
+              <button class="cta-btn">Learn More &amp; Apply</button>
+              <a class="report-link" href="#">⚠ Report an Issue</a>
+            </div>
+          </div>
+
+          <div class="listing">
+            <div class="l-left">
+              <h3>Quality Engineer, Medical Devices</h3>
+              <div class="meta">
+                <div class="row">🏢 <a href="#">Cook Medical</a></div>
+                <div class="row">🏷️ cookmedical.com</div>
+                <div class="row">💰 78,000 – 102,000 per year</div>
+                <div class="row">📍 Bloomington, Indiana</div>
+                <div class="row">📅 Updated yesterday</div>
+              </div>
+            </div>
+            <div class="l-right">
+              <div class="badge-row"><span class="badge featured">Featured BioCrossroads Partner</span><span class="badge imported">Imported</span></div>
+              <div class="actions"><button class="icon-btn" title="Hide">⊘</button><button class="icon-btn heart-active" title="Favorited">♥</button></div>
+              <button class="cta-btn">Learn More &amp; Apply</button>
+              <a class="report-link" href="#">⚠ Report an Issue</a>
+            </div>
+          </div>
+
+          <div class="listing">
+            <div class="l-left">
+              <h3>Senior Bioinformatics Scientist</h3>
+              <div class="meta">
+                <div class="row">🏢 <a href="#">Elanco Animal Health</a></div>
+                <div class="row">🏷️ elanco.com</div>
+                <div class="row">📍 Remote</div>
+                <div class="row">📅 Updated yesterday</div>
+              </div>
+            </div>
+            <div class="l-right">
+              <div class="badge-row"><span class="badge featured">Featured BioCrossroads Partner</span><span class="badge imported">Imported</span></div>
+              <div class="actions"><button class="icon-btn" title="Hide">⊘</button><button class="icon-btn" title="Favorite">♡</button></div>
+              <button class="cta-btn">Learn More &amp; Apply</button>
+              <a class="report-link" href="#">⚠ Report an Issue</a>
+            </div>
+          </div>
+
+          <div class="listing">
+            <div class="l-left">
+              <h3>Assay Development Scientist</h3>
+              <div class="meta">
+                <div class="row">🏢 <a href="#">Roche Diagnostics</a></div>
+                <div class="row">🏷️ diagnostics.roche.com</div>
+                <div class="row">📍 Indianapolis, Indiana</div>
+                <div class="row">📅 Updated yesterday</div>
+              </div>
+            </div>
+            <div class="l-right">
+              <div class="badge-row"><span class="badge featured">Featured BioCrossroads Partner</span><span class="badge imported">Imported</span></div>
+              <div class="actions"><button class="icon-btn" title="Hide">⊘</button><button class="icon-btn" title="Favorite">♡</button></div>
+              <button class="cta-btn">Learn More &amp; Apply</button>
+              <a class="report-link" href="#">⚠ Report an Issue</a>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <div class="footer-stripe"></div>
+    <footer class="app-footer">
+      <div class="left">Powered by The Ascend Network</div>
+      <div class="center">© 2026 BioCrossroads. All rights reserved.</div>
+      <a href="#">Feedback Form</a>
+    </footer>
+  </div>
+
+  <div class="placeholder-note">
+    <b>v1 — first draft for BioCrossroads feedback.</b><br>
+    · Brand values (colors, fonts, pill buttons) read from the live biocrossroads.com site. Replace with values from the BioCrossroads brand guide once they send it.<br>
+    · Logo is the white footer SVG hot-linked from biocrossroads.com. Swap in the official logo files (full-color and white-on-dark) when received.<br>
+    · Body font: BioCrossroads uses Sofia Pro (Adobe Fonts). Figtree is a free stand-in until they confirm we can use their font kit.<br>
+    · Roles, employers, salaries and counts are <em>sample data for illustration</em>, not live listings or confirmed partners.<br>
+    · Support email, terms and privacy links need BioCrossroads input.<br>
+    · Open question for BioCrossroads: which industries beyond core life sciences (for example agbiosciences) belong in the "Featured Partner" list.
+  </div>
+
+</div>
+</body>
+</html>
