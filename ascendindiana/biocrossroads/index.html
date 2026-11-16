@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- BioCrossroads uses Roboto (headlines) + Sofia Pro (body, licensed via their Adobe Fonts kit).
      Figtree is the free stand-in for Sofia Pro until BioCrossroads confirms we can use their kit. -->
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Figtree:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --navy: #001442;
@@ -204,6 +204,15 @@
   .delta-callout li:last-child { margin-bottom: 0; }
   .delta-callout strong { color: var(--navy); }
   .delta-callout.summary { margin: 16px 0 0; }
+
+  /* Inside the app (behind the sign-in): Archivo with Tahoma as backup, icons static black and white */
+  .app-scope { --display: 'Archivo', Tahoma, sans-serif; --body: 'Archivo', Tahoma, sans-serif; font-family: var(--body); }
+  .ico { width: 16px; height: 16px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .ico.fill { fill: currentColor; }
+  .icon-btn .ico { width: 14px; height: 14px; }
+  .report-link { display: inline-flex; align-items: center; gap: 6px; }
+  .report-link .ico { width: 13px; height: 13px; }
+  .heart.active, .icon-btn.heart-active { color: var(--ink); }
   @media print { body { background: var(--white); } .doc { padding: 0; max-width: none; } .frame { box-shadow: none; page-break-inside: avoid; } .section-label { page-break-after: avoid; } }
 </style>
 </head>
@@ -219,16 +228,15 @@
       <div class="swatch"><div class="chip" style="background:#66D4FF"></div>Cyan #66D4FF</div>
       <div class="swatch"><div class="chip" style="background:#E5EDFF;border:1px solid #ccc"></div>Pale Blue #E5EDFF</div>
       <div class="swatch"><div class="chip" style="background:#012066"></div>Navy Mid #012066</div>
-      <div class="swatch"><div class="chip" style="background:#E91E63"></div>Pink #E91E63 (favorite heart only)</div>
       <div class="swatch"><div class="chip" style="background:#0B1220"></div>Ink #0B1220</div>
-      <div class="swatch" style="background:#001442;color:#fff;border-color:#001442">Fonts: Roboto (headlines) · Sofia Pro (body; Figtree stand-in)</div>
+      <div class="swatch" style="background:#001442;color:#fff;border-color:#001442">Public pages: Roboto + Sofia Pro (Figtree stand-in) · In-app: Archivo, Tahoma backup</div>
     </div>
     <div class="delta-callout summary">
       <div class="label">⇄ BioCrossroads-specific decisions vs Ascend baseline</div>
       <ul>
         <li><strong>Palette:</strong> BioCrossroads navy #001442, royal blue #003DCC and cyan #66D4FF (Ascend baseline uses Charcoal #1C1C1C + Ascend Blue #45AADD). Values read from the live site.</li>
         <li><strong>Scope:</strong> Life sciences focus. Copy and categories emphasize biosciences, medical devices, pharma, diagnostics and agbiosciences. Ascend's platform spans all industries.</li>
-        <li><strong>Typography:</strong> Headlines in Roboto, as on their site. Body on their site is Sofia Pro, licensed through their Adobe Fonts kit. Figtree stands in here until BioCrossroads confirms we can use their kit.</li>
+        <li><strong>Typography:</strong> Sign-up and login use BioCrossroads' fonts: Roboto headlines, and Figtree standing in for Sofia Pro (licensed through their Adobe Fonts kit) until they confirm we can use it. Inside the app (home and role discovery) the font stays Archivo with Tahoma as backup, and icons stay static black and white, the same as every Ascend Network board.</li>
         <li><strong>Shape:</strong> Pill-shaped buttons (their site) instead of the squarer Conexus buttons.</li>
         <li><strong>Co-branding:</strong> "Powered by The Ascend Network" credited in the footer and sign-up hero, same as Conexus.</li>
       </ul>
@@ -380,10 +388,11 @@
       <li>Section labels are life-sciences scoped: Biosciences &amp; Research, Medical Devices &amp; Diagnostics, Entry Level Lab &amp; Production. Ascend's home shows broader categories like Digital &amp; Technology.</li>
       <li>Subhead specifies "fresh life sciences matches." Ascend's version is industry-agnostic.</li>
       <li>"Featured" tag is solid BioCrossroads navy with white text. Avatar is cyan on navy.</li>
+      <li>Behind the sign-in the font is Archivo with Tahoma as backup, and icons are static black and white. Same as Ascend baseline.</li>
     </ul>
   </div>
 
-  <div class="frame">
+  <div class="frame app-scope">
     <header class="app-header">
       <div class="left"><nav class="nav-links"><a href="#">Home</a><a href="#">Explore Roles</a><a href="#">Explore Employers</a></nav></div>
       <div class="right">
@@ -505,10 +514,11 @@
       <li>Featured employer badge: solid navy with white text. Label: "Featured BioCrossroads Partner" (Ascend: "Featured Ascend Employer").</li>
       <li>"Learn More &amp; Apply" CTA is a royal blue pill. Ascend equivalent is Ascend Blue.</li>
       <li>Results count: "1,100 roles in Indiana life sciences" (Ascend: "across Indiana's top industries").</li>
+      <li>Font is Archivo with Tahoma as backup, and icons are static black and white. Same as Ascend baseline.</li>
     </ul>
   </div>
 
-  <div class="frame">
+  <div class="frame app-scope">
     <header class="app-header">
       <div class="left"><nav class="nav-links"><a href="#">Home</a><a href="#">Explore Roles</a><a href="#">Explore Employers</a></nav></div>
       <div class="right">
@@ -568,17 +578,17 @@
             <div class="l-left">
               <h3>Research Associate, Biology</h3>
               <div class="meta">
-                <div class="row">🏢 <a href="#">Eli Lilly and Company</a></div>
-                <div class="row">🏷️ lilly.com</div>
-                <div class="row">📍 Indianapolis, Indiana</div>
-                <div class="row">📅 Updated yesterday</div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4a1 1 0 011-1h8a1 1 0 011 1v17M15 9h3a1 1 0 011 1v11M3 21h18M9 7h2M9 11h2M9 15h2"/></svg> <a href="#">Eli Lilly and Company</a></div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3A4 4 0 0011 18.7l1-1"/></svg> lilly.com</div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Indianapolis, Indiana</div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/></svg> Updated yesterday</div>
               </div>
             </div>
             <div class="l-right">
               <div class="badge-row"><span class="badge featured">Featured BioCrossroads Partner</span><span class="badge imported">Imported</span></div>
-              <div class="actions"><button class="icon-btn" title="Hide">⊘</button><button class="icon-btn" title="Favorite">♡</button></div>
+              <div class="actions"><button class="icon-btn" title="Hide">⊘</button><button class="icon-btn" title="Favorite"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
               <button class="cta-btn">Learn More &amp; Apply</button>
-              <a class="report-link" href="#">⚠ Report an Issue</a>
+              <a class="report-link" href="#"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg> Report an Issue</a>
             </div>
           </div>
 
@@ -586,18 +596,18 @@
             <div class="l-left">
               <h3>Quality Engineer, Medical Devices</h3>
               <div class="meta">
-                <div class="row">🏢 <a href="#">Cook Medical</a></div>
-                <div class="row">🏷️ cookmedical.com</div>
-                <div class="row">💰 78,000 – 102,000 per year</div>
-                <div class="row">📍 Bloomington, Indiana</div>
-                <div class="row">📅 Updated yesterday</div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4a1 1 0 011-1h8a1 1 0 011 1v17M15 9h3a1 1 0 011 1v11M3 21h18M9 7h2M9 11h2M9 15h2"/></svg> <a href="#">Cook Medical</a></div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3A4 4 0 0011 18.7l1-1"/></svg> cookmedical.com</div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M16 7.5C15.3 6.5 14 6 12 6c-2.2 0-4 1-4 3s1.8 2.7 4 3 4 1 4 3-1.8 3-4 3c-2 0-3.4-.6-4-1.5"/></svg> 78,000 – 102,000 per year</div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Bloomington, Indiana</div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/></svg> Updated yesterday</div>
               </div>
             </div>
             <div class="l-right">
               <div class="badge-row"><span class="badge featured">Featured BioCrossroads Partner</span><span class="badge imported">Imported</span></div>
-              <div class="actions"><button class="icon-btn" title="Hide">⊘</button><button class="icon-btn heart-active" title="Favorited">♥</button></div>
+              <div class="actions"><button class="icon-btn" title="Hide">⊘</button><button class="icon-btn heart-active" title="Favorited"><svg class="ico fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
               <button class="cta-btn">Learn More &amp; Apply</button>
-              <a class="report-link" href="#">⚠ Report an Issue</a>
+              <a class="report-link" href="#"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg> Report an Issue</a>
             </div>
           </div>
 
@@ -605,17 +615,17 @@
             <div class="l-left">
               <h3>Senior Bioinformatics Scientist</h3>
               <div class="meta">
-                <div class="row">🏢 <a href="#">Elanco Animal Health</a></div>
-                <div class="row">🏷️ elanco.com</div>
-                <div class="row">📍 Remote</div>
-                <div class="row">📅 Updated yesterday</div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4a1 1 0 011-1h8a1 1 0 011 1v17M15 9h3a1 1 0 011 1v11M3 21h18M9 7h2M9 11h2M9 15h2"/></svg> <a href="#">Elanco Animal Health</a></div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3A4 4 0 0011 18.7l1-1"/></svg> elanco.com</div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Remote</div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/></svg> Updated yesterday</div>
               </div>
             </div>
             <div class="l-right">
               <div class="badge-row"><span class="badge featured">Featured BioCrossroads Partner</span><span class="badge imported">Imported</span></div>
-              <div class="actions"><button class="icon-btn" title="Hide">⊘</button><button class="icon-btn" title="Favorite">♡</button></div>
+              <div class="actions"><button class="icon-btn" title="Hide">⊘</button><button class="icon-btn" title="Favorite"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
               <button class="cta-btn">Learn More &amp; Apply</button>
-              <a class="report-link" href="#">⚠ Report an Issue</a>
+              <a class="report-link" href="#"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg> Report an Issue</a>
             </div>
           </div>
 
@@ -623,17 +633,17 @@
             <div class="l-left">
               <h3>Assay Development Scientist</h3>
               <div class="meta">
-                <div class="row">🏢 <a href="#">Roche Diagnostics</a></div>
-                <div class="row">🏷️ diagnostics.roche.com</div>
-                <div class="row">📍 Indianapolis, Indiana</div>
-                <div class="row">📅 Updated yesterday</div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4a1 1 0 011-1h8a1 1 0 011 1v17M15 9h3a1 1 0 011 1v11M3 21h18M9 7h2M9 11h2M9 15h2"/></svg> <a href="#">Roche Diagnostics</a></div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3A4 4 0 0011 18.7l1-1"/></svg> diagnostics.roche.com</div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Indianapolis, Indiana</div>
+                <div class="row"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/></svg> Updated yesterday</div>
               </div>
             </div>
             <div class="l-right">
               <div class="badge-row"><span class="badge featured">Featured BioCrossroads Partner</span><span class="badge imported">Imported</span></div>
-              <div class="actions"><button class="icon-btn" title="Hide">⊘</button><button class="icon-btn" title="Favorite">♡</button></div>
+              <div class="actions"><button class="icon-btn" title="Hide">⊘</button><button class="icon-btn" title="Favorite"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
               <button class="cta-btn">Learn More &amp; Apply</button>
-              <a class="report-link" href="#">⚠ Report an Issue</a>
+              <a class="report-link" href="#"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg> Report an Issue</a>
             </div>
           </div>
         </main>
@@ -652,7 +662,7 @@
     <b>v1 — first draft for BioCrossroads feedback.</b><br>
     · Brand values (colors, fonts, pill buttons) read from the live biocrossroads.com site. Replace with values from the BioCrossroads brand guide once they send it.<br>
     · Logo is the PNG supplied by BioCrossroads, recolored to white lettering for the navy backgrounds. Swap in their official vector files when received.<br>
-    · Body font: BioCrossroads uses Sofia Pro (Adobe Fonts). Figtree is a free stand-in until they confirm we can use their font kit.<br>
+    · Public pages (sign-up, login): BioCrossroads uses Sofia Pro (Adobe Fonts); Figtree is a free stand-in until they confirm we can use their font kit. In-app screens stay in Archivo with Tahoma as backup, with static black-and-white icons.<br>
     · Roles, employers, salaries and counts are <em>sample data for illustration</em>, not live listings or confirmed partners.<br>
     · Support email, terms and privacy links need BioCrossroads input.<br>
     · Open question for BioCrossroads: which industries beyond core life sciences (for example agbiosciences) belong in the "Featured Partner" list.
